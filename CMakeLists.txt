@@ -10,7 +10,7 @@ pkg_check_modules(glew REQUIRED IMPORTED_TARGET glew)
 
 set(CMAKE_FIND_FRAMEWORK ONLY)
 
-add_executable(myopengl Application.cpp)
+add_executable(myopengl Application.cpp Renderer.h Renderer.cpp VertexBuffer.h VertexBuffer.cpp IndexBuffer.h IndexBuffer.cpp)
 # mac
 target_link_libraries(myopengl PRIVATE "-framework Cocoa" "-framework IOKit" "-framework OpenGL")
 target_link_libraries(myopengl PRIVATE PkgConfig::glfw3 PkgConfig::glew)

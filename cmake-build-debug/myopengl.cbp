@@ -83,6 +83,24 @@
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/Application.cpp">
 			<Option target="myopengl"/>
 		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/IndexBuffer.cpp">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/IndexBuffer.h">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/Renderer.cpp">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/Renderer.h">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/VertexBuffer.cpp">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/VertexBuffer.h">
+			<Option target="myopengl"/>
+		</Unit>
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

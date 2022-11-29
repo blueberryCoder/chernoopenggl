@@ -153,6 +153,78 @@ Application.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Application.cpp.s
 .PHONY : Application.cpp.s
 
+IndexBuffer.o: IndexBuffer.cpp.o
+.PHONY : IndexBuffer.o
+
+# target to build an object file
+IndexBuffer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/IndexBuffer.cpp.o
+.PHONY : IndexBuffer.cpp.o
+
+IndexBuffer.i: IndexBuffer.cpp.i
+.PHONY : IndexBuffer.i
+
+# target to preprocess a source file
+IndexBuffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/IndexBuffer.cpp.i
+.PHONY : IndexBuffer.cpp.i
+
+IndexBuffer.s: IndexBuffer.cpp.s
+.PHONY : IndexBuffer.s
+
+# target to generate assembly for a file
+IndexBuffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/IndexBuffer.cpp.s
+.PHONY : IndexBuffer.cpp.s
+
+Renderer.o: Renderer.cpp.o
+.PHONY : Renderer.o
+
+# target to build an object file
+Renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Renderer.cpp.o
+.PHONY : Renderer.cpp.o
+
+Renderer.i: Renderer.cpp.i
+.PHONY : Renderer.i
+
+# target to preprocess a source file
+Renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Renderer.cpp.i
+.PHONY : Renderer.cpp.i
+
+Renderer.s: Renderer.cpp.s
+.PHONY : Renderer.s
+
+# target to generate assembly for a file
+Renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Renderer.cpp.s
+.PHONY : Renderer.cpp.s
+
+VertexBuffer.o: VertexBuffer.cpp.o
+.PHONY : VertexBuffer.o
+
+# target to build an object file
+VertexBuffer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/VertexBuffer.cpp.o
+.PHONY : VertexBuffer.cpp.o
+
+VertexBuffer.i: VertexBuffer.cpp.i
+.PHONY : VertexBuffer.i
+
+# target to preprocess a source file
+VertexBuffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/VertexBuffer.cpp.i
+.PHONY : VertexBuffer.cpp.i
+
+VertexBuffer.s: VertexBuffer.cpp.s
+.PHONY : VertexBuffer.s
+
+# target to generate assembly for a file
+VertexBuffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/VertexBuffer.cpp.s
+.PHONY : VertexBuffer.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -165,6 +237,15 @@ help:
 	@echo "... Application.o"
 	@echo "... Application.i"
 	@echo "... Application.s"
+	@echo "... IndexBuffer.o"
+	@echo "... IndexBuffer.i"
+	@echo "... IndexBuffer.s"
+	@echo "... Renderer.o"
+	@echo "... Renderer.i"
+	@echo "... Renderer.s"
+	@echo "... VertexBuffer.o"
+	@echo "... VertexBuffer.i"
+	@echo "... VertexBuffer.s"
 .PHONY : help
 
 
