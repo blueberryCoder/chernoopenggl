@@ -118,12 +118,40 @@ CMakeFiles/myopengl.dir/IndexBuffer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/IndexBuffer.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/IndexBuffer.cpp -o CMakeFiles/myopengl.dir/IndexBuffer.cpp.s
 
+CMakeFiles/myopengl.dir/VertexArray.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/VertexArray.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/VertexArray.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/myopengl.dir/VertexArray.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/VertexArray.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/VertexArray.cpp
+
+CMakeFiles/myopengl.dir/VertexArray.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/VertexArray.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/VertexArray.cpp > CMakeFiles/myopengl.dir/VertexArray.cpp.i
+
+CMakeFiles/myopengl.dir/VertexArray.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/VertexArray.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/VertexArray.cpp -o CMakeFiles/myopengl.dir/VertexArray.cpp.s
+
+CMakeFiles/myopengl.dir/Shader.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/Shader.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/Shader.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/myopengl.dir/Shader.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/Shader.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/Shader.cpp
+
+CMakeFiles/myopengl.dir/Shader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/Shader.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/Shader.cpp > CMakeFiles/myopengl.dir/Shader.cpp.i
+
+CMakeFiles/myopengl.dir/Shader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/Shader.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/Shader.cpp -o CMakeFiles/myopengl.dir/Shader.cpp.s
+
 # Object files for target myopengl
 myopengl_OBJECTS = \
 "CMakeFiles/myopengl.dir/Application.cpp.o" \
 "CMakeFiles/myopengl.dir/Renderer.cpp.o" \
 "CMakeFiles/myopengl.dir/VertexBuffer.cpp.o" \
-"CMakeFiles/myopengl.dir/IndexBuffer.cpp.o"
+"CMakeFiles/myopengl.dir/IndexBuffer.cpp.o" \
+"CMakeFiles/myopengl.dir/VertexArray.cpp.o" \
+"CMakeFiles/myopengl.dir/Shader.cpp.o"
 
 # External object files for target myopengl
 myopengl_EXTERNAL_OBJECTS =
@@ -132,11 +160,13 @@ myopengl: CMakeFiles/myopengl.dir/Application.cpp.o
 myopengl: CMakeFiles/myopengl.dir/Renderer.cpp.o
 myopengl: CMakeFiles/myopengl.dir/VertexBuffer.cpp.o
 myopengl: CMakeFiles/myopengl.dir/IndexBuffer.cpp.o
+myopengl: CMakeFiles/myopengl.dir/VertexArray.cpp.o
+myopengl: CMakeFiles/myopengl.dir/Shader.cpp.o
 myopengl: CMakeFiles/myopengl.dir/build.make
 myopengl: /usr/local/lib/libglfw3.a
 myopengl: /usr/local/lib/libGLEW.dylib
 myopengl: CMakeFiles/myopengl.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable myopengl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable myopengl"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/myopengl.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -201,6 +201,54 @@ Renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Renderer.cpp.s
 .PHONY : Renderer.cpp.s
 
+Shader.o: Shader.cpp.o
+.PHONY : Shader.o
+
+# target to build an object file
+Shader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Shader.cpp.o
+.PHONY : Shader.cpp.o
+
+Shader.i: Shader.cpp.i
+.PHONY : Shader.i
+
+# target to preprocess a source file
+Shader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Shader.cpp.i
+.PHONY : Shader.cpp.i
+
+Shader.s: Shader.cpp.s
+.PHONY : Shader.s
+
+# target to generate assembly for a file
+Shader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Shader.cpp.s
+.PHONY : Shader.cpp.s
+
+VertexArray.o: VertexArray.cpp.o
+.PHONY : VertexArray.o
+
+# target to build an object file
+VertexArray.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/VertexArray.cpp.o
+.PHONY : VertexArray.cpp.o
+
+VertexArray.i: VertexArray.cpp.i
+.PHONY : VertexArray.i
+
+# target to preprocess a source file
+VertexArray.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/VertexArray.cpp.i
+.PHONY : VertexArray.cpp.i
+
+VertexArray.s: VertexArray.cpp.s
+.PHONY : VertexArray.s
+
+# target to generate assembly for a file
+VertexArray.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/VertexArray.cpp.s
+.PHONY : VertexArray.cpp.s
+
 VertexBuffer.o: VertexBuffer.cpp.o
 .PHONY : VertexBuffer.o
 
@@ -243,6 +291,12 @@ help:
 	@echo "... Renderer.o"
 	@echo "... Renderer.i"
 	@echo "... Renderer.s"
+	@echo "... Shader.o"
+	@echo "... Shader.i"
+	@echo "... Shader.s"
+	@echo "... VertexArray.o"
+	@echo "... VertexArray.i"
+	@echo "... VertexArray.s"
 	@echo "... VertexBuffer.o"
 	@echo "... VertexBuffer.i"
 	@echo "... VertexBuffer.s"

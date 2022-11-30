@@ -11,6 +11,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/bytedance/code/my/cherno/OpenGL/Application.cpp" "/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles/myopengl.dir/Application.cpp.o"
   "/Users/bytedance/code/my/cherno/OpenGL/IndexBuffer.cpp" "/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles/myopengl.dir/IndexBuffer.cpp.o"
   "/Users/bytedance/code/my/cherno/OpenGL/Renderer.cpp" "/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles/myopengl.dir/Renderer.cpp.o"
+  "/Users/bytedance/code/my/cherno/OpenGL/Shader.cpp" "/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles/myopengl.dir/Shader.cpp.o"
+  "/Users/bytedance/code/my/cherno/OpenGL/VertexArray.cpp" "/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles/myopengl.dir/VertexArray.cpp.o"
   "/Users/bytedance/code/my/cherno/OpenGL/VertexBuffer.cpp" "/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles/myopengl.dir/VertexBuffer.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")

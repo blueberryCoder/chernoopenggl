@@ -95,10 +95,25 @@
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/Renderer.h">
 			<Option target="myopengl"/>
 		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/Shader.cpp">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/Shader.h">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/VertexArray.cpp">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/VertexArray.h">
+			<Option target="myopengl"/>
+		</Unit>
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/VertexBuffer.cpp">
 			<Option target="myopengl"/>
 		</Unit>
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/VertexBuffer.h">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/VertexBufferLayout.h">
 			<Option target="myopengl"/>
 		</Unit>
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/CMakeLists.txt">
