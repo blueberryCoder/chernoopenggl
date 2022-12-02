@@ -225,6 +225,30 @@ Shader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Shader.cpp.s
 .PHONY : Shader.cpp.s
 
+Texture.o: Texture.cpp.o
+.PHONY : Texture.o
+
+# target to build an object file
+Texture.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Texture.cpp.o
+.PHONY : Texture.cpp.o
+
+Texture.i: Texture.cpp.i
+.PHONY : Texture.i
+
+# target to preprocess a source file
+Texture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Texture.cpp.i
+.PHONY : Texture.cpp.i
+
+Texture.s: Texture.cpp.s
+.PHONY : Texture.s
+
+# target to generate assembly for a file
+Texture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/Texture.cpp.s
+.PHONY : Texture.cpp.s
+
 VertexArray.o: VertexArray.cpp.o
 .PHONY : VertexArray.o
 
@@ -273,6 +297,126 @@ VertexBuffer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/VertexBuffer.cpp.s
 .PHONY : VertexBuffer.cpp.s
 
+vendor/imgui/imgui.o: vendor/imgui/imgui.cpp.o
+.PHONY : vendor/imgui/imgui.o
+
+# target to build an object file
+vendor/imgui/imgui.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.o
+.PHONY : vendor/imgui/imgui.cpp.o
+
+vendor/imgui/imgui.i: vendor/imgui/imgui.cpp.i
+.PHONY : vendor/imgui/imgui.i
+
+# target to preprocess a source file
+vendor/imgui/imgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.i
+.PHONY : vendor/imgui/imgui.cpp.i
+
+vendor/imgui/imgui.s: vendor/imgui/imgui.cpp.s
+.PHONY : vendor/imgui/imgui.s
+
+# target to generate assembly for a file
+vendor/imgui/imgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.s
+.PHONY : vendor/imgui/imgui.cpp.s
+
+vendor/imgui/imgui_demo.o: vendor/imgui/imgui_demo.cpp.o
+.PHONY : vendor/imgui/imgui_demo.o
+
+# target to build an object file
+vendor/imgui/imgui_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.o
+.PHONY : vendor/imgui/imgui_demo.cpp.o
+
+vendor/imgui/imgui_demo.i: vendor/imgui/imgui_demo.cpp.i
+.PHONY : vendor/imgui/imgui_demo.i
+
+# target to preprocess a source file
+vendor/imgui/imgui_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.i
+.PHONY : vendor/imgui/imgui_demo.cpp.i
+
+vendor/imgui/imgui_demo.s: vendor/imgui/imgui_demo.cpp.s
+.PHONY : vendor/imgui/imgui_demo.s
+
+# target to generate assembly for a file
+vendor/imgui/imgui_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.s
+.PHONY : vendor/imgui/imgui_demo.cpp.s
+
+vendor/imgui/imgui_draw.o: vendor/imgui/imgui_draw.cpp.o
+.PHONY : vendor/imgui/imgui_draw.o
+
+# target to build an object file
+vendor/imgui/imgui_draw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.o
+.PHONY : vendor/imgui/imgui_draw.cpp.o
+
+vendor/imgui/imgui_draw.i: vendor/imgui/imgui_draw.cpp.i
+.PHONY : vendor/imgui/imgui_draw.i
+
+# target to preprocess a source file
+vendor/imgui/imgui_draw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.i
+.PHONY : vendor/imgui/imgui_draw.cpp.i
+
+vendor/imgui/imgui_draw.s: vendor/imgui/imgui_draw.cpp.s
+.PHONY : vendor/imgui/imgui_draw.s
+
+# target to generate assembly for a file
+vendor/imgui/imgui_draw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.s
+.PHONY : vendor/imgui/imgui_draw.cpp.s
+
+vendor/imgui/imgui_impl_glfw_gl3.o: vendor/imgui/imgui_impl_glfw_gl3.cpp.o
+.PHONY : vendor/imgui/imgui_impl_glfw_gl3.o
+
+# target to build an object file
+vendor/imgui/imgui_impl_glfw_gl3.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.o
+.PHONY : vendor/imgui/imgui_impl_glfw_gl3.cpp.o
+
+vendor/imgui/imgui_impl_glfw_gl3.i: vendor/imgui/imgui_impl_glfw_gl3.cpp.i
+.PHONY : vendor/imgui/imgui_impl_glfw_gl3.i
+
+# target to preprocess a source file
+vendor/imgui/imgui_impl_glfw_gl3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.i
+.PHONY : vendor/imgui/imgui_impl_glfw_gl3.cpp.i
+
+vendor/imgui/imgui_impl_glfw_gl3.s: vendor/imgui/imgui_impl_glfw_gl3.cpp.s
+.PHONY : vendor/imgui/imgui_impl_glfw_gl3.s
+
+# target to generate assembly for a file
+vendor/imgui/imgui_impl_glfw_gl3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.s
+.PHONY : vendor/imgui/imgui_impl_glfw_gl3.cpp.s
+
+vendor/stb_image/stb_image.o: vendor/stb_image/stb_image.cpp.o
+.PHONY : vendor/stb_image/stb_image.o
+
+# target to build an object file
+vendor/stb_image/stb_image.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.o
+.PHONY : vendor/stb_image/stb_image.cpp.o
+
+vendor/stb_image/stb_image.i: vendor/stb_image/stb_image.cpp.i
+.PHONY : vendor/stb_image/stb_image.i
+
+# target to preprocess a source file
+vendor/stb_image/stb_image.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.i
+.PHONY : vendor/stb_image/stb_image.cpp.i
+
+vendor/stb_image/stb_image.s: vendor/stb_image/stb_image.cpp.s
+.PHONY : vendor/stb_image/stb_image.s
+
+# target to generate assembly for a file
+vendor/stb_image/stb_image.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.s
+.PHONY : vendor/stb_image/stb_image.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -294,12 +438,30 @@ help:
 	@echo "... Shader.o"
 	@echo "... Shader.i"
 	@echo "... Shader.s"
+	@echo "... Texture.o"
+	@echo "... Texture.i"
+	@echo "... Texture.s"
 	@echo "... VertexArray.o"
 	@echo "... VertexArray.i"
 	@echo "... VertexArray.s"
 	@echo "... VertexBuffer.o"
 	@echo "... VertexBuffer.i"
 	@echo "... VertexBuffer.s"
+	@echo "... vendor/imgui/imgui.o"
+	@echo "... vendor/imgui/imgui.i"
+	@echo "... vendor/imgui/imgui.s"
+	@echo "... vendor/imgui/imgui_demo.o"
+	@echo "... vendor/imgui/imgui_demo.i"
+	@echo "... vendor/imgui/imgui_demo.s"
+	@echo "... vendor/imgui/imgui_draw.o"
+	@echo "... vendor/imgui/imgui_draw.i"
+	@echo "... vendor/imgui/imgui_draw.s"
+	@echo "... vendor/imgui/imgui_impl_glfw_gl3.o"
+	@echo "... vendor/imgui/imgui_impl_glfw_gl3.i"
+	@echo "... vendor/imgui/imgui_impl_glfw_gl3.s"
+	@echo "... vendor/stb_image/stb_image.o"
+	@echo "... vendor/stb_image/stb_image.i"
+	@echo "... vendor/stb_image/stb_image.s"
 .PHONY : help
 
 

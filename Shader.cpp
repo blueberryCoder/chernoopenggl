@@ -2,6 +2,7 @@
 // Created by blueberry on 2022/11/30.
 //
 
+
 #include "Shader.h"
 
 #include <sstream>
@@ -19,6 +20,11 @@ Shader::~Shader() {
     GLCall(glDeleteProgram(m_RendererID));
 }
 
+void Shader::SetUniformMat4f(const std::string &name, const glm::mat4 &matrix) {
+    auto location = GetUniformLocation(name);
+    GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]))
+}
+
 void Shader::SetUniform4f(const std::string &name, float v0, float v1, float v2, float v3) {
     auto location = GetUniformLocation(name);
     GLCall(glUniform4f(location, v0, v1, v2, v3))
@@ -27,6 +33,11 @@ void Shader::SetUniform4f(const std::string &name, float v0, float v1, float v2,
 void Shader::SetUniform1f(const std::string &name, float value) {
     auto location = GetUniformLocation(name);
     GLCall(glUniform1f(location, value))
+}
+
+void Shader::SetUniform1i(const std::string &name, int value) {
+    auto location = GetUniformLocation(name);
+    GLCall(glUniform1i(location, value))
 }
 
 void Shader::Bind() const {

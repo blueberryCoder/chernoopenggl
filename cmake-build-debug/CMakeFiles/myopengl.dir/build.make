@@ -144,6 +144,84 @@ CMakeFiles/myopengl.dir/Shader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/Shader.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/Shader.cpp -o CMakeFiles/myopengl.dir/Shader.cpp.s
 
+CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/vendor/stb_image/stb_image.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/vendor/stb_image/stb_image.cpp
+
+CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/vendor/stb_image/stb_image.cpp > CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.i
+
+CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/vendor/stb_image/stb_image.cpp -o CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.s
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_impl_glfw_gl3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_impl_glfw_gl3.cpp
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_impl_glfw_gl3.cpp > CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.i
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_impl_glfw_gl3.cpp -o CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.s
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_draw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_draw.cpp
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_draw.cpp > CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.i
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_draw.cpp -o CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.s
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui.cpp
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui.cpp > CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.i
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui.cpp -o CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.s
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_demo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_demo.cpp
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_demo.cpp > CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.i
+
+CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_demo.cpp -o CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.s
+
+CMakeFiles/myopengl.dir/Texture.cpp.o: CMakeFiles/myopengl.dir/flags.make
+CMakeFiles/myopengl.dir/Texture.cpp.o: /Users/bytedance/code/my/cherno/OpenGL/Texture.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/myopengl.dir/Texture.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myopengl.dir/Texture.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/Texture.cpp
+
+CMakeFiles/myopengl.dir/Texture.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myopengl.dir/Texture.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bytedance/code/my/cherno/OpenGL/Texture.cpp > CMakeFiles/myopengl.dir/Texture.cpp.i
+
+CMakeFiles/myopengl.dir/Texture.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myopengl.dir/Texture.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bytedance/code/my/cherno/OpenGL/Texture.cpp -o CMakeFiles/myopengl.dir/Texture.cpp.s
+
 # Object files for target myopengl
 myopengl_OBJECTS = \
 "CMakeFiles/myopengl.dir/Application.cpp.o" \
@@ -151,7 +229,13 @@ myopengl_OBJECTS = \
 "CMakeFiles/myopengl.dir/VertexBuffer.cpp.o" \
 "CMakeFiles/myopengl.dir/IndexBuffer.cpp.o" \
 "CMakeFiles/myopengl.dir/VertexArray.cpp.o" \
-"CMakeFiles/myopengl.dir/Shader.cpp.o"
+"CMakeFiles/myopengl.dir/Shader.cpp.o" \
+"CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.o" \
+"CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.o" \
+"CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.o" \
+"CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.o" \
+"CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.o" \
+"CMakeFiles/myopengl.dir/Texture.cpp.o"
 
 # External object files for target myopengl
 myopengl_EXTERNAL_OBJECTS =
@@ -162,11 +246,17 @@ myopengl: CMakeFiles/myopengl.dir/VertexBuffer.cpp.o
 myopengl: CMakeFiles/myopengl.dir/IndexBuffer.cpp.o
 myopengl: CMakeFiles/myopengl.dir/VertexArray.cpp.o
 myopengl: CMakeFiles/myopengl.dir/Shader.cpp.o
+myopengl: CMakeFiles/myopengl.dir/vendor/stb_image/stb_image.cpp.o
+myopengl: CMakeFiles/myopengl.dir/vendor/imgui/imgui_impl_glfw_gl3.cpp.o
+myopengl: CMakeFiles/myopengl.dir/vendor/imgui/imgui_draw.cpp.o
+myopengl: CMakeFiles/myopengl.dir/vendor/imgui/imgui.cpp.o
+myopengl: CMakeFiles/myopengl.dir/vendor/imgui/imgui_demo.cpp.o
+myopengl: CMakeFiles/myopengl.dir/Texture.cpp.o
 myopengl: CMakeFiles/myopengl.dir/build.make
 myopengl: /usr/local/lib/libglfw3.a
 myopengl: /usr/local/lib/libGLEW.dylib
 myopengl: CMakeFiles/myopengl.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable myopengl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable myopengl"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/myopengl.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
