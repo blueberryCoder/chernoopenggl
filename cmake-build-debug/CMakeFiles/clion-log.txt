@@ -1,4 +1,0 @@
-cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - Unix Makefiles" /Users/bytedance/code/my/cherno/OpenGL
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/bytedance/code/my/cherno/OpenGL/cmake-build-debug
