@@ -12,6 +12,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/myopengl.dir/VertexArray.cpp.o"
   "CMakeFiles/myopengl.dir/VertexBuffer.cpp.o"
   "CMakeFiles/myopengl.dir/tests/TestClearColor.cpp.o"
+  "CMakeFiles/myopengl.dir/tests/TestTexture.cpp.o"
+  "CMakeFiles/myopengl.dir/tests/TestTriangle.cpp.o"
   "myopengl"
   "myopengl.pdb"
 )

@@ -6,6 +6,8 @@
 #include "../Renderer.h"
 #include "imgui/imgui.h"
 
+#include <iostream>
+
 namespace test {
 
     TestClearColor::TestClearColor()
@@ -16,6 +18,8 @@ namespace test {
 
     TestClearColor::~TestClearColor() {
 
+        GLCall(glClearColor(0,0,0,0))
+        GLCall(glClear(GL_COLOR_BUFFER_BIT))
     }
 
     void TestClearColor::OnUpdate(float deltaTime) {

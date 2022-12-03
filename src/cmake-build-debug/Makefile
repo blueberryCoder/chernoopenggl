@@ -441,6 +441,54 @@ tests/TestClearColor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/tests/TestClearColor.cpp.s
 .PHONY : tests/TestClearColor.cpp.s
 
+tests/TestTexture.o: tests/TestTexture.cpp.o
+.PHONY : tests/TestTexture.o
+
+# target to build an object file
+tests/TestTexture.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/tests/TestTexture.cpp.o
+.PHONY : tests/TestTexture.cpp.o
+
+tests/TestTexture.i: tests/TestTexture.cpp.i
+.PHONY : tests/TestTexture.i
+
+# target to preprocess a source file
+tests/TestTexture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/tests/TestTexture.cpp.i
+.PHONY : tests/TestTexture.cpp.i
+
+tests/TestTexture.s: tests/TestTexture.cpp.s
+.PHONY : tests/TestTexture.s
+
+# target to generate assembly for a file
+tests/TestTexture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/tests/TestTexture.cpp.s
+.PHONY : tests/TestTexture.cpp.s
+
+tests/TestTriangle.o: tests/TestTriangle.cpp.o
+.PHONY : tests/TestTriangle.o
+
+# target to build an object file
+tests/TestTriangle.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/tests/TestTriangle.cpp.o
+.PHONY : tests/TestTriangle.cpp.o
+
+tests/TestTriangle.i: tests/TestTriangle.cpp.i
+.PHONY : tests/TestTriangle.i
+
+# target to preprocess a source file
+tests/TestTriangle.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/tests/TestTriangle.cpp.i
+.PHONY : tests/TestTriangle.cpp.i
+
+tests/TestTriangle.s: tests/TestTriangle.cpp.s
+.PHONY : tests/TestTriangle.s
+
+# target to generate assembly for a file
+tests/TestTriangle.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/myopengl.dir/build.make CMakeFiles/myopengl.dir/tests/TestTriangle.cpp.s
+.PHONY : tests/TestTriangle.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -489,6 +537,12 @@ help:
 	@echo "... tests/TestClearColor.o"
 	@echo "... tests/TestClearColor.i"
 	@echo "... tests/TestClearColor.s"
+	@echo "... tests/TestTexture.o"
+	@echo "... tests/TestTexture.i"
+	@echo "... tests/TestTexture.s"
+	@echo "... tests/TestTriangle.o"
+	@echo "... tests/TestTriangle.i"
+	@echo "... tests/TestTriangle.s"
 .PHONY : help
 
 

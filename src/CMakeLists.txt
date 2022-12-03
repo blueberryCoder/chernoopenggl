@@ -11,8 +11,22 @@ pkg_check_modules(glew REQUIRED IMPORTED_TARGET glew)
 
 set(CMAKE_FIND_FRAMEWORK ONLY)
 
-add_executable(myopengl Application.cpp Renderer.h Renderer.cpp VertexBuffer.h VertexBuffer.cpp IndexBuffer.h
-        IndexBuffer.cpp VertexArray.h VertexArray.cpp VertexBufferLayout.h Shader.cpp Shader.h
+add_executable(myopengl
+        Application.cpp
+        Renderer.h
+        Renderer.cpp
+        VertexBuffer.h
+        VertexBuffer.cpp
+        IndexBuffer.h
+        IndexBuffer.cpp
+        VertexArray.h
+        VertexArray.cpp
+        VertexBufferLayout.h
+        Shader.h
+        Shader.cpp
+        Texture.h
+        Texture.cpp
+
         ../vendor/stb_image/stb_image.h
         ../vendor/stb_image/stb_image.cpp
 
@@ -21,8 +35,14 @@ add_executable(myopengl Application.cpp Renderer.h Renderer.cpp VertexBuffer.h V
         ../vendor/imgui/imgui.cpp
         ../vendor/imgui/imgui_demo.cpp
 
-        Texture.h
-        Texture.cpp tests/Test.h tests/TestClearColor.h tests/TestClearColor.cpp)
+
+        tests/Test.h
+        tests/TestClearColor.h
+        tests/TestClearColor.cpp
+        tests/TestTexture.h
+        tests/TestTexture.cpp
+        tests/TestTriangle.h
+        tests/TestTriangle.cpp)
 # mac
 target_link_libraries(myopengl PRIVATE "-framework Cocoa" "-framework IOKit" "-framework OpenGL")
 target_link_libraries(myopengl PRIVATE PkgConfig::glfw3 PkgConfig::glew)

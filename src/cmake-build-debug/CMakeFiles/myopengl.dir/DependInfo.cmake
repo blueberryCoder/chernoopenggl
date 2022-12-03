@@ -21,6 +21,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/bytedance/code/my/cherno/OpenGL/src/VertexArray.cpp" "/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/myopengl.dir/VertexArray.cpp.o"
   "/Users/bytedance/code/my/cherno/OpenGL/src/VertexBuffer.cpp" "/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/myopengl.dir/VertexBuffer.cpp.o"
   "/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestClearColor.cpp" "/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/myopengl.dir/tests/TestClearColor.cpp.o"
+  "/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTexture.cpp" "/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/myopengl.dir/tests/TestTexture.cpp.o"
+  "/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTriangle.cpp" "/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/myopengl.dir/tests/TestTriangle.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

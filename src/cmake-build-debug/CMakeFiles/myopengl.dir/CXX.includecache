@@ -32,21 +32,29 @@ VertexBuffer.h
 
 /Users/bytedance/code/my/cherno/OpenGL/src/VertexBuffer.h
 
+/Users/bytedance/code/my/cherno/OpenGL/src/VertexBufferLayout.h
+vector
+-
+GL/glew.h
+-
+Renderer.h
+/Users/bytedance/code/my/cherno/OpenGL/src/Renderer.h
+
 /Users/bytedance/code/my/cherno/OpenGL/src/tests/Test.h
 
-/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestClearColor.cpp
-TestClearColor.h
-/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestClearColor.h
-GL/glew.h
-/Users/bytedance/code/my/cherno/OpenGL/src/tests/GL/glew.h
-../Renderer.h
-/Users/bytedance/code/my/cherno/OpenGL/src/Renderer.h
-imgui/imgui.h
-/Users/bytedance/code/my/cherno/OpenGL/src/tests/imgui/imgui.h
+/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTriangle.cpp
+TestTriangle.h
+/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTriangle.h
 
-/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestClearColor.h
+/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTriangle.h
 Test.h
 /Users/bytedance/code/my/cherno/OpenGL/src/tests/Test.h
+../VertexArray.h
+/Users/bytedance/code/my/cherno/OpenGL/src/VertexArray.h
+../VertexBuffer.h
+/Users/bytedance/code/my/cherno/OpenGL/src/VertexBuffer.h
+../VertexBufferLayout.h
+/Users/bytedance/code/my/cherno/OpenGL/src/VertexBufferLayout.h
 
 /Users/bytedance/code/my/cherno/OpenGL/vendor/glm/common.hpp
 detail/func_common.hpp
@@ -751,24 +759,6 @@ detail/type_vec4.hpp
 /Users/bytedance/code/my/cherno/OpenGL/vendor/glm/vector_relational.hpp
 detail/func_vector_relational.hpp
 /Users/bytedance/code/my/cherno/OpenGL/vendor/glm/detail/func_vector_relational.hpp
-
-/Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imconfig.h
-
-/Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui.h
-imconfig.h
-/Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imconfig.h
-float.h
--
-stdarg.h
--
-stddef.h
--
-string.h
--
-assert.h
--
-imgui_user.h
-/Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui_user.h
 
 /usr/local/include/GL/glew.h
 stddef.h

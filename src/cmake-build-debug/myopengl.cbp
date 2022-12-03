@@ -135,6 +135,18 @@
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestClearColor.h">
 			<Option target="myopengl"/>
 		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTexture.cpp">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTexture.h">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTriangle.cpp">
+			<Option target="myopengl"/>
+		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/tests/TestTriangle.h">
+			<Option target="myopengl"/>
+		</Unit>
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/vendor/imgui/imgui.cpp">
 			<Option target="myopengl"/>
 		</Unit>
