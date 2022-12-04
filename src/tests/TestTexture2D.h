@@ -15,13 +15,15 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include <memory>
+
 namespace test {
 
-    class TestTexture : public Test {
+    class TestTexture2D : public Test {
     public:
-        TestTexture();
+        TestTexture2D();
 
-        ~TestTexture();
+        ~TestTexture2D();
 
         void OnUpdate(float deltaTime) override;
 
@@ -30,18 +32,14 @@ namespace test {
         void OnImGuiRender() override;
 
     private:
-        float m_Position[4][4];
-        unsigned int m_Indices[6];
-        VertexArray va;
-        VertexBuffer vb;
-        IndexBuffer ib;
-        Shader shader;
-        Texture texture;
-        Renderer renderer;
-        glm::mat4 mvp;
-        glm::vec3 translationA;
-        glm::vec3 translationB;
+        std::unique_ptr<VertexArray> m_VAO;
+        std::unique_ptr<VertexBuffer> m_VertexBuffer;
+        std::unique_ptr<IndexBuffer> m_IndexBuffer;
+        std::unique_ptr<Shader> m_Shader;
+        std::unique_ptr<Texture> m_Texture;
 
+        glm::mat4 m_Proj, m_View;
+        glm::vec3 m_TranslationA, m_TranslationB;
 
     };
 }

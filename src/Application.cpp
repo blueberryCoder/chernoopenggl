@@ -17,7 +17,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw_gl3.h"
 #include "tests/TestClearColor.h"
-#include "tests/TestTexture.h"
+#include "tests/TestTexture2D.h"
 #include "tests/TestTriangle.h"
 
 int main(void) {
@@ -61,7 +61,7 @@ int main(void) {
 
         testMenu->RegisterTest<test::TestClearColor>("Clear color");
         testMenu->RegisterTest<test::TestTriangle>( "Triangle");
-        testMenu->RegisterTest<test::TestTexture>( "2D texture");
+        testMenu->RegisterTest<test::TestTexture2D>("2D m_Texture");
 
         Renderer renderer;
         while (!glfwWindowShouldClose(window)) {

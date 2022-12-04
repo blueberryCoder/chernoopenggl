@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(myopengl)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE Debug)
 
 include_directories()
@@ -40,8 +40,8 @@ add_executable(myopengl
         tests/Test.cpp
         tests/TestClearColor.h
         tests/TestClearColor.cpp
-        tests/TestTexture.h
-        tests/TestTexture.cpp
+        tests/TestTexture2D.h
+        tests/TestTexture2D.cpp
         tests/TestTriangle.h
         tests/TestTriangle.cpp
         )
