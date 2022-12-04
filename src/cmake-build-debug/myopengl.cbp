@@ -126,6 +126,9 @@
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/VertexBufferLayout.h">
 			<Option target="myopengl"/>
 		</Unit>
+		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/tests/Test.cpp">
+			<Option target="myopengl"/>
+		</Unit>
 		<Unit filename="/Users/bytedance/code/my/cherno/OpenGL/src/tests/Test.h">
 			<Option target="myopengl"/>
 		</Unit>

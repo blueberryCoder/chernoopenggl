@@ -11,6 +11,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/myopengl.dir/Users/bytedance/code/my/cherno/OpenGL/vendor/stb_image/stb_image.cpp.o"
   "CMakeFiles/myopengl.dir/VertexArray.cpp.o"
   "CMakeFiles/myopengl.dir/VertexBuffer.cpp.o"
+  "CMakeFiles/myopengl.dir/tests/Test.cpp.o"
   "CMakeFiles/myopengl.dir/tests/TestClearColor.cpp.o"
   "CMakeFiles/myopengl.dir/tests/TestTexture.cpp.o"
   "CMakeFiles/myopengl.dir/tests/TestTriangle.cpp.o"

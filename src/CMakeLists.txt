@@ -37,12 +37,14 @@ add_executable(myopengl
 
 
         tests/Test.h
+        tests/Test.cpp
         tests/TestClearColor.h
         tests/TestClearColor.cpp
         tests/TestTexture.h
         tests/TestTexture.cpp
         tests/TestTriangle.h
-        tests/TestTriangle.cpp)
+        tests/TestTriangle.cpp
+        )
 # mac
 target_link_libraries(myopengl PRIVATE "-framework Cocoa" "-framework IOKit" "-framework OpenGL")
 target_link_libraries(myopengl PRIVATE PkgConfig::glfw3 PkgConfig::glew)

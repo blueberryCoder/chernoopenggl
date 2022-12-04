@@ -55,61 +55,44 @@ int main(void) {
         ImGui::StyleColorsDark();
 
 
-//        test::Test * test = new test::TestClearColor();
-        test::Test * test = new test::TestTexture();
+        test::Test *currentTest = nullptr;
+        test::TestMenu *testMenu = new test::TestMenu(currentTest);
+        currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestClearColor>("Clear color");
+        testMenu->RegisterTest<test::TestTriangle>( "Triangle");
+        testMenu->RegisterTest<test::TestTexture>( "2D texture");
 
+        Renderer renderer;
         while (!glfwWindowShouldClose(window)) {
-            test -> OnUpdate(0.0f);
 
-            test -> OnRender();
-
+            renderer.Clear();
             ImGui_ImplGlfwGL3_NewFrame();
 
-            test -> OnImGuiRender();
-
-            {
-                bool my_tool_active = false;
-                ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_MenuBar);
-
-                if (ImGui::BeginMenuBar())
-                {
-                    if (ImGui::BeginMenu("Samples"))
-                    {
-                        if (ImGui::MenuItem("clear Color", "Ctrl+O")) {
-                            if(test) {
-                                delete test;
-                                test = new test::TestClearColor();
-                            }
-                        }
-                        if (ImGui::MenuItem("hello triangle", "Ctrl+S"))   {
-                            if(test) {
-                                delete test;
-                                test = new test::TestTriangle();
-                            }
-                        }
-                        if (ImGui::MenuItem("texture", "Ctrl+W"))  {
-
-                            if(test) {
-                                delete test;
-                                test = new test::TestTexture();
-                            }
-                        }
-                        ImGui::EndMenu();
-                    }
-                    ImGui::EndMenuBar();
+            if (currentTest) {
+                currentTest->OnUpdate(0.0f);
+                currentTest->OnRender();
+                ImGui::Begin("Test");
+                if (currentTest != testMenu && ImGui::Button("<-")) {
+                    delete currentTest;
+                    currentTest = testMenu;
                 }
+                currentTest->OnImGuiRender();
                 ImGui::End();
             }
+
             ImGui::Render();
             ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
 
-        if(test != nullptr)  {
-            delete test;
+        delete currentTest;
+        if (currentTest != testMenu) {
+            delete testMenu;
         }
+
+
     }
     ImGui_ImplGlfwGL3_Shutdown();
     ImGui::DestroyContext();
