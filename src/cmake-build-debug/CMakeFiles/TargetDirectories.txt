@@ -1,3 +1,0 @@
-/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/myopengl.dir
-/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/bytedance/code/my/cherno/OpenGL/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir

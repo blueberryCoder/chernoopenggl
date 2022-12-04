@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/bytedance/code/my/cherno/OpenGL/build",
-  "command": "/usr/bin/clang++  -isystem /usr/local/include -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++11 -o CMakeFiles/myopengl.dir/Application.cpp.o -c /Users/bytedance/code/my/cherno/OpenGL/Application.cpp",
-  "file": "/Users/bytedance/code/my/cherno/OpenGL/Application.cpp"
-}
-]
