@@ -44,6 +44,10 @@ add_executable(myopengl
         tests/TestTexture2D.cpp
         tests/TestTriangle.h
         tests/TestTriangle.cpp
+        tests/TestBatchVertex.h
+        tests/TestBatchVertex.cpp
+        tests/TestBatchTexture.h
+        tests/TestBatchTexture.cpp
         )
 # mac
 target_link_libraries(myopengl PRIVATE "-framework Cocoa" "-framework IOKit" "-framework OpenGL")

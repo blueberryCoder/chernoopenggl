@@ -19,6 +19,8 @@
 #include "tests/TestClearColor.h"
 #include "tests/TestTexture2D.h"
 #include "tests/TestTriangle.h"
+#include "tests/TestBatchVertex.h"
+#include "tests/TestBatchTexture.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -62,6 +64,8 @@ int main(void) {
         testMenu->RegisterTest<test::TestClearColor>("Clear color");
         testMenu->RegisterTest<test::TestTriangle>( "Triangle");
         testMenu->RegisterTest<test::TestTexture2D>("2D m_Texture");
+        testMenu->RegisterTest<test::TestBatchVertex>("Batch Vertex");
+        testMenu->RegisterTest<test::TestBatchTexture>("Batch Texture");
 
         Renderer renderer;
         while (!glfwWindowShouldClose(window)) {
