@@ -35,7 +35,6 @@ add_executable(myopengl
         ../vendor/imgui/imgui.cpp
         ../vendor/imgui/imgui_demo.cpp
 
-
         tests/Test.h
         tests/Test.cpp
         tests/TestClearColor.h
@@ -48,6 +47,8 @@ add_executable(myopengl
         tests/TestBatchVertex.cpp
         tests/TestBatchTexture.h
         tests/TestBatchTexture.cpp
+        tests/TestBatchDynamic.h
+        tests/TestBatchDynamic.cpp
         )
 # mac
 target_link_libraries(myopengl PRIVATE "-framework Cocoa" "-framework IOKit" "-framework OpenGL")

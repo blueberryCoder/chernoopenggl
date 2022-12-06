@@ -21,6 +21,7 @@
 #include "tests/TestTriangle.h"
 #include "tests/TestBatchVertex.h"
 #include "tests/TestBatchTexture.h"
+#include "tests/TestBatchDynamic.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -66,6 +67,7 @@ int main(void) {
         testMenu->RegisterTest<test::TestTexture2D>("2D m_Texture");
         testMenu->RegisterTest<test::TestBatchVertex>("Batch Vertex");
         testMenu->RegisterTest<test::TestBatchTexture>("Batch Texture");
+        testMenu->RegisterTest<test::TestBatchDynamic>("Batch Dynamic");
 
         Renderer renderer;
         while (!glfwWindowShouldClose(window)) {
