@@ -1,8 +1,12 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.18)
 
 project(myopengl)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE Debug)
+# xcrun --sdk macosx --show-sdk-path
+execute_process(COMMAND xcrun --sdk macosx --show-sdk-path OUTPUT_VARIABLE MY_SYSROOT ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "Using ${MY_SYSROOT}")
+set(CMAKE_OSX_SYSROOT ${MY_SYSROOT})
 
 include_directories()
 find_package(PkgConfig REQUIRED)
@@ -49,7 +53,10 @@ add_executable(myopengl
         tests/TestBatchTexture.cpp
         tests/TestBatchDynamic.h
         tests/TestBatchDynamic.cpp
+        tests/TestMeanBlur.h
+        tests/TestMeanBlur.cpp
         )
+
 # mac
 target_link_libraries(myopengl PRIVATE "-framework Cocoa" "-framework IOKit" "-framework OpenGL")
 target_link_libraries(myopengl PRIVATE PkgConfig::glfw3 PkgConfig::glew)

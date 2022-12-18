@@ -22,6 +22,7 @@
 #include "tests/TestBatchVertex.h"
 #include "tests/TestBatchTexture.h"
 #include "tests/TestBatchDynamic.h"
+#include "tests/TestMeanBlur.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -68,6 +69,7 @@ int main(void) {
         testMenu->RegisterTest<test::TestBatchVertex>("Batch Vertex");
         testMenu->RegisterTest<test::TestBatchTexture>("Batch Texture");
         testMenu->RegisterTest<test::TestBatchDynamic>("Batch Dynamic");
+        testMenu->RegisterTest<test::TestMeanBlur>("Mean Blur");
 
         Renderer renderer;
         while (!glfwWindowShouldClose(window)) {

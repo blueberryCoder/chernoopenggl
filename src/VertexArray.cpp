@@ -11,7 +11,7 @@ VertexArray::VertexArray() {
 }
 
 VertexArray::~VertexArray() {
-    GLCall(glDeleteVertexArrays(1,&m_RendererID));
+    GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 
 void VertexArray::AddBuffer(const VertexBuffer &vb, const VertexBufferLayout &layout) {

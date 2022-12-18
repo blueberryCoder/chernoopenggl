@@ -35,6 +35,11 @@ void Shader::SetUniform1f(const std::string &name, float value) {
     GLCall(glUniform1f(location, value))
 }
 
+void Shader::SetUniform2f(const std::string &name, float v0, float v1) {
+    auto location = GetUniformLocation(name);
+    GLCall(glUniform2f(location, v0, v1))
+}
+
 void Shader::SetUniform1i(const std::string &name, int value) {
     auto location = GetUniformLocation(name);
     GLCall(glUniform1i(location, value))
