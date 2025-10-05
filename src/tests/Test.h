@@ -8,23 +8,39 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 namespace test {
     class Test {
     public :
-        Test() {}
+        Test() {
+        }
 
-        virtual ~Test() {}
+        virtual ~Test();
 
-        virtual void OnUpdate(float deltaTime) {}
+        virtual void OnUpdate(float deltaTime) {
+        }
 
-        virtual void OnRender() {}
+        virtual void OnRender() {
+        }
 
-        virtual void OnImGuiRender() {}
+        virtual void OnImGuiRender() {
+        }
+
+        virtual void ProcessInputEvent(GLFWwindow *window, float deltaTime) {
+        }
+
+        virtual void ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {}
+
+        virtual void ProcessMouseScroll(GLFWwindow *window, double yoffset) {}
+
+    protected:
+        void SetupCursorCallback();
+
     };
 
     class TestMenu : public Test {
-
     public :
         TestMenu(Test *&currentTestPointer);
 
@@ -36,9 +52,8 @@ namespace test {
             m_Tests.push_back(std::make_pair(name, []() { return new T(); }));
         };
 
-
     private:
         Test *&m_CurrentTest;
-        std::vector<std::pair<std::string, std::function<Test *()>>> m_Tests;
+        std::vector<std::pair<std::string, std::function<Test *()> > > m_Tests;
     };
 }

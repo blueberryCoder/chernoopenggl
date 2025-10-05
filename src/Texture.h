@@ -6,6 +6,7 @@
 #define MYOPENGL_TEXTURE_H
 
 #include "Renderer.h"
+using namespace std;
 class Texture {
 
 private:
@@ -13,8 +14,10 @@ private:
     std::string m_FilePath;
     unsigned char* m_LocalBuffer;
     int m_Width,m_Height,m_BPP;
+    std::string m_Type;
+
 public :
-    Texture(const std::string &path);
+    Texture(const std::string &path, int flip = 1);
 
     ~Texture();
 
@@ -26,6 +29,20 @@ public :
 
     inline int GetHeight() const { return m_Height; }
 
+    string GetType() {
+        return m_Type;
+    }
+    void SetType(std::string type) {
+        this->m_Type = type;
+    }
+
+    unsigned int GetID() {
+        return m_RendererId;
+    }
+
+    string GetPath() {
+        return m_FilePath;
+    }
 };
 
 

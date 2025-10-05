@@ -13,6 +13,10 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(glfw3 REQUIRED IMPORTED_TARGET glfw3)
 pkg_check_modules(glew REQUIRED IMPORTED_TARGET glew)
 
+set(ENV{PKG_CONFIG_PATH} "../vcpkg_installed/arm64-osx/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+pkg_check_modules(assimp REQUIRED IMPORTED_TARGET assimp)
+
+
 set(CMAKE_FIND_FRAMEWORK ONLY)
 
 add_executable(myopengl
@@ -30,6 +34,10 @@ add_executable(myopengl
         Shader.cpp
         Texture.h
         Texture.cpp
+        GLStructures.cpp
+        GLStructures.h
+        Model.cpp
+        Model.h
 
         ../vendor/stb_image/stb_image.h
         ../vendor/stb_image/stb_image.cpp
@@ -55,11 +63,24 @@ add_executable(myopengl
         tests/TestBatchDynamic.cpp
         tests/TestMeanBlur.h
         tests/TestMeanBlur.cpp
-        )
+        tests/TestAssimp.cpp
+        tests/TestAssimp.h
+        FileUtil.cpp
+        FileUtil.h
+        Camera.cpp
+        Camera.h
+        WindowManager.cpp
+        WindowManager.h
+
+)
+
+#find_package(assimp CONFIG REQUIRED)
+#target_link_libraries(myopengl PRIVATE assimp::assimp)
 
 # mac
 target_link_libraries(myopengl PRIVATE "-framework Cocoa" "-framework IOKit" "-framework OpenGL")
-target_link_libraries(myopengl PRIVATE PkgConfig::glfw3 PkgConfig::glew)
+target_link_libraries(myopengl PRIVATE PkgConfig::glfw3 PkgConfig::glew PkgConfig::assimp)
+
 target_include_directories(myopengl PRIVATE "../vendor")
 target_include_directories(myopengl PRIVATE "tests")
 

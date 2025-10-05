@@ -7,9 +7,11 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "TestAssimp.h"
 #include "Texture.h"
 
 #include "VertexBufferLayout.h"
+#include "WindowManager.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -41,6 +43,7 @@ int main(void) {
         glfwTerminate();
         return -1;
     }
+    WindowManager::shared().SetWindow(window);
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
@@ -63,8 +66,9 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestAssimp>("Assimp");
         testMenu->RegisterTest<test::TestClearColor>("Clear color");
-        testMenu->RegisterTest<test::TestTriangle>( "Triangle");
+        testMenu->RegisterTest<test::TestTriangle>("Triangle");
         testMenu->RegisterTest<test::TestTexture2D>("2D m_Texture");
         testMenu->RegisterTest<test::TestBatchVertex>("Batch Vertex");
         testMenu->RegisterTest<test::TestBatchTexture>("Batch Texture");
@@ -72,14 +76,22 @@ int main(void) {
         testMenu->RegisterTest<test::TestMeanBlur>("Mean Blur");
 
         Renderer renderer;
-        while (!glfwWindowShouldClose(window)) {
 
+        double lastFrame = glfwGetTime();
+
+        while (!glfwWindowShouldClose(window)) {
             renderer.Clear();
             ImGui_ImplGlfwGL3_NewFrame();
 
             if (currentTest) {
-                currentTest->OnUpdate(0.0f);
+
+                double currentFrame = glfwGetTime();
+                double deltaTime = currentFrame - lastFrame;
+                lastFrame = currentFrame;
+
+                currentTest->OnUpdate(deltaTime);
                 currentTest->OnRender();
+                currentTest->ProcessInputEvent(window, deltaTime);
                 ImGui::Begin("Test");
                 if (currentTest != testMenu && ImGui::Button("<-")) {
                     delete currentTest;
@@ -91,6 +103,7 @@ int main(void) {
 
             ImGui::Render();
             ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
@@ -99,8 +112,6 @@ int main(void) {
         if (currentTest != testMenu) {
             delete testMenu;
         }
-
-
     }
     ImGui_ImplGlfwGL3_Shutdown();
     ImGui::DestroyContext();
