@@ -71,6 +71,8 @@ add_executable(myopengl
         Camera.h
         WindowManager.cpp
         WindowManager.h
+        tests/TestDepth.cpp
+        tests/TestDepth.h
 
 )
 

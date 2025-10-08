@@ -43,7 +43,7 @@ namespace test {
     }
 
     void TestAssimp::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
-        m_Camera.ProcessInput(window, deltaTime);
+        m_Camera.ProcessInputEvent(window, deltaTime);
     }
 
     void TestAssimp::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {

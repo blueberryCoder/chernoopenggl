@@ -4,10 +4,14 @@
 
 #include "Camera.h"
 
+#include <iostream>
+
 #include "glm/detail/func_geometric.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 front) : m_CamPos(position), m_CamUp(up), m_CamFront(front) {
+Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up) : m_CamPos(position), m_WorldUp(up),
+                                                                    m_CamFront(front) {
+    updateCameraCoords();
 }
 
 Camera::~Camera() {
@@ -17,18 +21,20 @@ glm::mat4 Camera::GetViewMatrix() {
     return glm::lookAt(m_CamPos, m_CamPos + m_CamFront, m_CamUp);
 }
 
-void Camera::ProcessInput(GLFWwindow *window, float deltaTime) {
+void Camera::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
     const float speed = 2.0 * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         m_CamPos += m_CamFront * speed;
     } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         m_CamPos -= m_CamFront * speed;
     } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        m_CamPos -= glm::normalize(glm::cross(m_CamFront, m_CamUp)) * speed;
+        m_CamPos -= m_CamRight * speed;
     } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        m_CamPos += glm::normalize(glm::cross(m_CamFront, m_CamUp)) * speed;
+        m_CamPos += m_CamRight * speed;
     }
+    updateCameraCoords();
 }
+
 
 void Camera::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
     if (firstMouse) {
@@ -54,20 +60,27 @@ void Camera::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double yp
         m_Pitch = -89.0f;
     }
 
-    glm::vec3 direction;
-    direction.x = glm::cos(glm::radians(m_Yaw) * glm::cos(glm::radians(m_Pitch)));
-    direction.y = glm::sin(glm::radians(m_Pitch));
-    direction.z = glm::sin(glm::radians(m_Yaw) * glm::cos(glm::radians(m_Pitch)));
-    m_CamFront = glm::normalize(direction);
-
+    updateCameraCoords();
 }
 
 void Camera::ProcessMouseScroll(double yoffset) {
-    zoom -= yoffset ;
+    zoom -= yoffset;
     if (zoom < 1.0f) {
         zoom = 1.0f;
     }
     if (zoom > 45.0f) {
         zoom = 45.0f;
     }
+}
+
+void Camera::updateCameraCoords() {
+    glm::vec3 direction;
+    std::cout << "Yaw: " << m_Yaw << ",Pitch:" << m_Pitch << std::endl;
+    direction.x = glm::cos(glm::radians(m_Yaw)) * glm::cos(glm::radians(m_Pitch));
+    direction.y = glm::sin(glm::radians(m_Pitch));
+    direction.z = glm::sin(glm::radians(m_Yaw)) * glm::cos(glm::radians(m_Pitch));
+    m_CamFront = glm::normalize(direction);
+
+    m_CamRight = glm::normalize(glm::cross(m_CamFront, m_WorldUp));
+    m_CamUp = glm::normalize(glm::cross(m_CamRight, m_CamFront));
 }

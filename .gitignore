@@ -3,3 +3,4 @@ prebuilt/
 *.o
 build/
 src/cmake-build-debug/
+vcpkg_installed/

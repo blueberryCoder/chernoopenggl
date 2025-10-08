@@ -14,13 +14,12 @@
 class Camera {
 public:
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
-           glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
-           glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f));
+           glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f),
+           glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
 
     ~Camera();
 
-    void ProcessInput(GLFWwindow *window, float deltaTime);
-
+    void ProcessInputEvent(GLFWwindow *window, float deltaTime);
     void ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos);
     void ProcessMouseScroll(double yoffset);
 
@@ -34,6 +33,8 @@ private:
     glm::vec3 m_CamPos;
     glm::vec3 m_CamFront;
     glm::vec3 m_CamUp;
+    glm::vec3 m_CamRight;
+    glm::vec3 m_WorldUp;
 
     double m_Yaw = -90.0f;
     double m_Pitch = 0;
@@ -45,4 +46,7 @@ private:
 
     bool firstMouse = true;
     double zoom = 45.0f;
+
+    void updateCameraCoords();
+
 };
