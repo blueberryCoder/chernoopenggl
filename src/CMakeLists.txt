@@ -73,6 +73,8 @@ add_executable(myopengl
         WindowManager.h
         tests/TestDepth.cpp
         tests/TestDepth.h
+        FrameBuffer.cpp
+        FrameBuffer.h
 
 )
 

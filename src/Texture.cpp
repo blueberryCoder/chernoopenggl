@@ -9,13 +9,11 @@
 #include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string &path, int flip)
-        : m_RendererId(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0) {
-
+    : m_RendererId(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0) {
     stbi_set_flip_vertically_on_load(flip);
 
     m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 0);
-    if(m_LocalBuffer) {
-
+    if (m_LocalBuffer) {
         GLenum format;
         if (m_BPP == 1)
             format = GL_RED;
@@ -30,8 +28,8 @@ Texture::Texture(const std::string &path, int flip)
         // https://stackoverflow.com/questions/34497195/difference-between-format-and-internalformat
         GLCall(glTexImage2D(GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, format, GL_UNSIGNED_BYTE, m_LocalBuffer));
         GLCall(glGenerateMipmap(GL_TEXTURE_2D));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
@@ -41,6 +39,28 @@ Texture::Texture(const std::string &path, int flip)
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(m_LocalBuffer);
     }
+}
+
+Texture::Texture(int width, int height, int format) : m_RendererId(0),
+                                          m_FilePath(""),
+                                          m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0) {
+    if (format == GL_DEPTH_COMPONENT) {
+        // Create depth texture.
+        GLCall(glGenTextures(1, &m_RendererId));
+        GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId));
+
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE));
+        GLCall(glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT32F,
+            width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
+        GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+    }
+
+    this->m_Width = width;
+    this->m_Height = height;
 }
 
 Texture::~Texture() {
@@ -55,4 +75,3 @@ void Texture::Bind(unsigned int slot) const {
 void Texture::Unbind() const {
     GLCall(glBindTexture(GL_TEXTURE_2D, 0))
 }
-

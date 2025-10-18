@@ -35,4 +35,5 @@ uniform Material material;
 void main()
 {    
     color = texture(material.texture_diffuse1, TexCoords);
+
 }

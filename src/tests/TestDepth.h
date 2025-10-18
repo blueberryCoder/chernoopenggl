@@ -5,6 +5,7 @@
 #pragma once
 #include "Test.h"
 #include "../Camera.h"
+#include "../FrameBuffer.h"
 #include "../GLStructures.h"
 #include "../Shader.h"
 
@@ -83,7 +84,6 @@ namespace test {
         };
 
         float planeVertices[5 * 6] = {
-            // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
             5.0f, -0.5f, 5.0f, 2.0f, 0.0f,
             -5.0f, -0.5f, 5.0f, 0.0f, 0.0f,
             -5.0f, -0.5f, -5.0f, 0.0f, 2.0f,
@@ -98,12 +98,26 @@ namespace test {
             6, 7, 8, 9, 10, 11
         };
 
-        std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_CubeVAO, m_PlaneVAO;
-        std::shared_ptr<VertexBuffer> m_CubeVBO, m_PlaneVBO;
-        std::shared_ptr<IndexBuffer> m_CubeIBO, m_PlaneIBO;
+        float depthVertices[16] = {
+            -100.0f, -100.0f, 0.0f, 0.0f,
+             100.0f, -100.0f, 1.0f, 0.0f,
+             100.0f,  100.0f, 1.0f, 1.0f,
+            -100.0f,  100.0f, 0.0f, 1.0f,
+        };
+
+        unsigned int depthIndices[6] = {
+            0, 1, 2, 2, 3, 0
+        };
+
+
+        std::shared_ptr<Shader> m_Shader, m_DepthShader;
+        std::shared_ptr<VertexArray> m_CubeVAO, m_PlaneVAO, m_DepthVAO;
+        std::shared_ptr<VertexBuffer> m_CubeVBO, m_PlaneVBO, m_DepthVBO;
+        std::shared_ptr<IndexBuffer> m_CubeIBO, m_PlaneIBO, m_DepthIBO;
         std::shared_ptr<Texture> m_CubeTexture, m_FloorTexture;
 
         std::shared_ptr<Camera> m_Camera;
+        std::shared_ptr<FrameBuffer> m_Fbo;
+        std::shared_ptr<Texture> m_DepthTexture;
     };
 }

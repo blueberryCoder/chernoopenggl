@@ -17,7 +17,9 @@ private:
     std::string m_Type;
 
 public :
-    Texture(const std::string &path, int flip = 1);
+    explicit Texture(const std::string &path, int flip = 1);
+
+    Texture(int width, int height, int format = GL_DEPTH_COMPONENT);
 
     ~Texture();
 

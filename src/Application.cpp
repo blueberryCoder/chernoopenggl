@@ -70,7 +70,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
-        testMenu->RegisterTest<test::TestDepth>("Deptch");
+        testMenu->RegisterTest<test::TestDepth>("Depth");
         testMenu->RegisterTest<test::TestAssimp>("Assimp");
         testMenu->RegisterTest<test::TestClearColor>("Clear color");
         testMenu->RegisterTest<test::TestTriangle>("Triangle");

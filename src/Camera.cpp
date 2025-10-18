@@ -75,7 +75,7 @@ void Camera::ProcessMouseScroll(double yoffset) {
 
 void Camera::updateCameraCoords() {
     glm::vec3 direction;
-    std::cout << "Yaw: " << m_Yaw << ",Pitch:" << m_Pitch << std::endl;
+    // std::cout << "Yaw: " << m_Yaw << ",Pitch:" << m_Pitch << std::endl;
     direction.x = glm::cos(glm::radians(m_Yaw)) * glm::cos(glm::radians(m_Pitch));
     direction.y = glm::sin(glm::radians(m_Pitch));
     direction.z = glm::sin(glm::radians(m_Yaw)) * glm::cos(glm::radians(m_Pitch));
