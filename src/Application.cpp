@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "TestAssimp.h"
 #include "TestDepth.h"
+#include "TestStencil.h"
 #include "Texture.h"
 
 #include "VertexBufferLayout.h"
@@ -70,6 +71,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestStencil>("stencil");
         testMenu->RegisterTest<test::TestDepth>("Depth");
         testMenu->RegisterTest<test::TestAssimp>("Assimp");
         testMenu->RegisterTest<test::TestClearColor>("Clear color");
@@ -89,19 +91,21 @@ int main(void) {
             ImGui_ImplGlfwGL3_NewFrame();
 
             if (currentTest) {
-
                 double currentFrame = glfwGetTime();
                 double deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
                 currentTest->OnUpdate(deltaTime);
                 currentTest->OnRender();
+
                 currentTest->ProcessInputEvent(window, deltaTime);
                 ImGui::Begin("Test");
-                if (currentTest != testMenu && ImGui::Button("<-")) {
+                if (currentTest != testMenu && (ImGui::Button("<-") || glfwGetKey(window, GLFW_KEY_ESCAPE) ==
+                                                GLFW_PRESS)) {
                     delete currentTest;
                     currentTest = testMenu;
                 }
+
                 currentTest->OnImGuiRender();
                 ImGui::End();
             }

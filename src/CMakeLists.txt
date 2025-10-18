@@ -65,14 +65,17 @@ add_executable(myopengl
         tests/TestMeanBlur.cpp
         tests/TestAssimp.cpp
         tests/TestAssimp.h
+        tests/TestDepth.cpp
+        tests/TestDepth.h
+        tests/TestStencil.h
+        tests/TestStencil.cpp
+
         FileUtil.cpp
         FileUtil.h
         Camera.cpp
         Camera.h
         WindowManager.cpp
         WindowManager.h
-        tests/TestDepth.cpp
-        tests/TestDepth.h
         FrameBuffer.cpp
         FrameBuffer.h
 

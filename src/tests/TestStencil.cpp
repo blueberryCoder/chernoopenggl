@@ -2,16 +2,17 @@
 // Created by blueberry on 2025/10/7.
 //
 
-#include "TestDepth.h"
+#include "TestStencil.h"
 
 #include "../FileUtil.h"
 #include "../src/VertexBufferLayout.h"
 #include "glm/gtc/matrix_transform.hpp"
 
 namespace test {
-    TestDepth::TestDepth() {
+    TestStencil::TestStencil() {
         SetupCursorCallback();
 
+        m_OneColorShader= std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/single_color.shader"));
         m_Shader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_depth.shader"));
         m_CubeTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/marble.jpg"));
         m_FloorTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/metal.png"));
@@ -36,85 +37,78 @@ namespace test {
         m_Shader->SetUniform1i("texture1", 0);
 
         GLCall(glEnable(GL_DEPTH_TEST));
-        m_DepthTexture = std::make_shared<Texture>(960, 540);
-        m_Fbo = std::make_shared<FrameBuffer>();
-        m_Fbo->AttachDepth(m_DepthTexture);
-        m_Fbo->Unbind();
-        m_DepthVBO = std::make_shared<VertexBuffer>(depthVertices, sizeof(depthVertices));
-        m_DepthIBO = std::make_shared<IndexBuffer>(depthIndices, 6);
-        VertexBufferLayout depthLayout{};
-        depthLayout.Push<float>(2);
-        depthLayout.Push<float>(2);
-        m_DepthVAO = std::make_shared<VertexArray>();
-        m_DepthVAO->AddBuffer(*m_DepthVBO, depthLayout);
-
-        m_DepthShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/draw_depth.shader"));
-        m_DepthShader->Bind();
-        m_DepthShader->SetUniform1i("u_Texture", 2);
-        m_DepthShader->SetUniformMat4f("model", glm::mat4(1.0f));
-        m_DepthShader->SetUniformMat4f(
-            "view", glm::translate(glm::mat4(1.0f), glm::vec3(960 - 100.0f, 540.0 - 100.0f, 0.0f)));
-        m_DepthShader->SetUniformMat4f("projection", glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f));
 
         m_CubeTexture->Bind();
         m_FloorTexture->Bind(1);
-        m_DepthTexture->Bind(2);
     }
 
-    TestDepth::~TestDepth() {
+    TestStencil::~TestStencil() {
         GLCall(glDisable(GL_DEPTH_TEST));
+        GLCall(glDisable(GL_STENCIL_TEST));
+
     }
 
-    void TestDepth::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
-        Test::ProcessInputEvent(window, deltaTime);
+    void TestStencil::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
         m_Camera->ProcessInputEvent(window, deltaTime);
     }
 
-    void TestDepth::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
+    void TestStencil::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
         m_Camera->ProcessMouseScroll(yoffset);
     }
 
-    void TestDepth::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
+    void TestStencil::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
         m_Camera->ProcessCursorPosCallback(window, xpos, ypos);
     }
 
-    void TestDepth::OnImGuiRender() {
+    void TestStencil::OnImGuiRender() {
     }
 
-    void TestDepth::OnRender() {
-        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    void TestStencil::OnRender() {
+        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
+
+        GLCall(glEnable(GL_DEPTH_TEST));
+        GLCall(glEnable(GL_STENCIL_TEST));
+        GLCall(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
 
         Renderer renderer;
         m_Shader->Bind();
-        m_Shader->SetUniform1i("texture1", 0);
+        // Draw plane.
+        // make sure we don't update the stencil buffer while drawing the floor.
+        GLCall(glStencilMask(0x00));
+        m_Shader->SetUniformMat4f("model", glm::mat4(1.0f));
+        m_Shader->SetUniform1i("texture1", 1);
+        renderer.Draw(*m_PlaneVAO, *m_PlaneIBO, *m_Shader);
 
+        // Draw 2 cube. this time we update the stencil
+        GLCall(glStencilFunc(GL_ALWAYS, 1, 0xFF));
+        glStencilMask(0xFF); // update stencil buffer
+
+        m_Shader->SetUniform1i("texture1", 0);
         glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(-0.8f, 0.0f, -1.0f));
         m_Shader->SetUniformMat4f("model", model);
-
         renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_Shader);
         auto model2 = glm::translate(model, glm::vec3(0.5f, 0.0f, -3.0f));
         m_Shader->SetUniformMat4f("model", model2);
         renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_Shader);
 
-        m_Shader->SetUniform1i("texture1", 1);
 
-        renderer.Draw(*m_PlaneVAO, *m_PlaneIBO, *m_Shader);
+        // Draw 2 scale cube, this time don't update stencil buffer.
+        m_OneColorShader->Bind();
+        GLCall(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
+        GLCall(glStencilMask(0x00)); // disable don't update stencil buffer.
+        GLCall(glDisable(GL_DEPTH_TEST));
 
-        // Copy depth buffer to fbo
-        GLCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, 0));
-        GLCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Fbo->GetID()));
-        GLCall(glBlitFramebuffer(0,0, 960, 540,
-            0, 0, 960,540, GL_DEPTH_BUFFER_BIT, GL_NEAREST));
-        GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-        m_DepthShader->Bind();
-        m_DepthShader->SetUniform1i("u_Texture", 2);
+        model = glm::scale(model, glm::vec3(1.1f, 1.1f, 1.1f));
+        m_OneColorShader->SetUniformMat4f("model", model);
+        renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_OneColorShader);
+        model2 = glm::scale(model2, glm::vec3(1.1f, 1.1f, 1.1f));
+        m_OneColorShader->SetUniformMat4f("model", model2);
+        renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_OneColorShader);
 
-        glDisable(GL_DEPTH_TEST);
-        renderer.Draw(*m_DepthVAO, *m_DepthIBO, *m_DepthShader);
-        glEnable(GL_DEPTH_TEST);
+        GLCall(glStencilMask(0xFF));
     }
 
-    void TestDepth::OnUpdate(float deltaTime) {
+    void TestStencil::OnUpdate(float deltaTime) {
         Test::OnUpdate(deltaTime);
         glm::mat4 view = m_Camera->GetViewMatrix();
         auto fov = glm::radians(m_Camera->GetZoom());
@@ -122,5 +116,9 @@ namespace test {
         m_Shader->Bind();
         m_Shader->SetUniformMat4f("view", view);
         m_Shader->SetUniformMat4f("projection", proj);
+
+        m_OneColorShader->Bind();
+        m_OneColorShader->SetUniformMat4f("view", view);
+        m_OneColorShader->SetUniformMat4f("projection", proj);
     }
 }

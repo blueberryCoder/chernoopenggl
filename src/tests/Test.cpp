@@ -20,7 +20,7 @@ namespace test {
 
     void Test::SetupCursorCallback() {
         auto window = WindowManager::shared().getWindow();
-        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         if (!window) { return; }
         glfwSetWindowUserPointer(window, this);
         glfwSetCursorPosCallback(window, [](GLFWwindow *window, double xpos, double ypos) {
@@ -43,5 +43,7 @@ namespace test {
         glfwSetCursorPosCallback(window, nullptr);
         glfwSetWindowUserPointer(window, nullptr);
         glfwSetScrollCallback(window, nullptr);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
     }
 }
