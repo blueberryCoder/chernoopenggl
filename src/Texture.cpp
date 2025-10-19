@@ -8,9 +8,9 @@
 
 #include "stb_image/stb_image.h"
 
-Texture::Texture(const std::string &path, int flip)
+Texture::Texture(const std::string &path,  const TextureInitParams& params)
     : m_RendererId(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0) {
-    stbi_set_flip_vertically_on_load(flip);
+    stbi_set_flip_vertically_on_load(params.flip);
 
     m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 0);
     if (m_LocalBuffer) {
@@ -28,8 +28,8 @@ Texture::Texture(const std::string &path, int flip)
         // https://stackoverflow.com/questions/34497195/difference-between-format-and-internalformat
         GLCall(glTexImage2D(GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, format, GL_UNSIGNED_BYTE, m_LocalBuffer));
         GLCall(glGenerateMipmap(GL_TEXTURE_2D));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, params.WRAP_S));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, params.WRAP_T));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 

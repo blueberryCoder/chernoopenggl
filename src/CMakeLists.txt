@@ -69,6 +69,8 @@ add_executable(myopengl
         tests/TestDepth.h
         tests/TestStencil.h
         tests/TestStencil.cpp
+        tests/TestBlending.h
+        tests/TestBlending.cpp
 
         FileUtil.cpp
         FileUtil.h

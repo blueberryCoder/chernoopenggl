@@ -9,6 +9,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "TestAssimp.h"
+#include "TestBlending.h"
 #include "TestDepth.h"
 #include "TestStencil.h"
 #include "Texture.h"
@@ -71,6 +72,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestBlending>("blending");
         testMenu->RegisterTest<test::TestStencil>("stencil");
         testMenu->RegisterTest<test::TestDepth>("Depth");
         testMenu->RegisterTest<test::TestAssimp>("Assimp");

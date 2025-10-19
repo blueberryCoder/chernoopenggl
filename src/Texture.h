@@ -7,7 +7,16 @@
 
 #include "Renderer.h"
 using namespace std;
+
+struct TextureInitParams {
+    int WRAP_S = GL_REPEAT;
+    int WRAP_T = GL_REPEAT;
+    int flip = 1;
+    // InitParams() : WRAP_S(GL_REPEAT), WRAP_T(GL_REPEAT), flip(1) {}
+};
+
 class Texture {
+public:
 
 private:
     unsigned int m_RendererId;
@@ -17,7 +26,7 @@ private:
     std::string m_Type;
 
 public :
-    explicit Texture(const std::string &path, int flip = 1);
+    explicit Texture(const std::string &path, const TextureInitParams& params  = TextureInitParams());
 
     Texture(int width, int height, int format = GL_DEPTH_COMPONENT);
 
