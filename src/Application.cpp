@@ -11,6 +11,7 @@
 #include "TestAssimp.h"
 #include "TestBlending.h"
 #include "TestDepth.h"
+#include "TestFaceCulling.h"
 #include "TestStencil.h"
 #include "Texture.h"
 
@@ -72,6 +73,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestFaceCulling>("faceculling");
         testMenu->RegisterTest<test::TestBlending>("blending");
         testMenu->RegisterTest<test::TestStencil>("stencil");
         testMenu->RegisterTest<test::TestDepth>("Depth");

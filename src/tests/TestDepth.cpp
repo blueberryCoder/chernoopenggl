@@ -39,6 +39,10 @@ namespace test {
         m_DepthTexture = std::make_shared<Texture>(960, 540);
         m_Fbo = std::make_shared<FrameBuffer>();
         m_Fbo->AttachDepth(m_DepthTexture);
+        auto status  = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE) {
+            std::cerr << "Framebuffer is not complete!" << std::endl;
+        }
         m_Fbo->Unbind();
         m_DepthVBO = std::make_shared<VertexBuffer>(depthVertices, sizeof(depthVertices));
         m_DepthIBO = std::make_shared<IndexBuffer>(depthIndices, 6);

@@ -71,6 +71,8 @@ add_executable(myopengl
         tests/TestStencil.cpp
         tests/TestBlending.h
         tests/TestBlending.cpp
+        tests/TestFaceCulling.cpp
+        tests/TestFaceCulling.h
 
         FileUtil.cpp
         FileUtil.h
