@@ -37,6 +37,8 @@ namespace test {
 
     TestFaceCulling::~TestFaceCulling() {
         GLCall(glDisable(GL_DEPTH_TEST));
+        glCullFace(GL_BACK);
+        GLCall(glDisable(GL_CULL_FACE));
     }
 
     void TestFaceCulling::ProcessInputEvent(GLFWwindow *window, float deltaTime) {

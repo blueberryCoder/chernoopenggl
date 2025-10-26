@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "TestAssimp.h"
 #include "TestBlending.h"
+#include "TestCubeMap.h"
 #include "TestDepth.h"
 #include "TestFaceCulling.h"
 #include "TestStencil.h"
@@ -73,6 +74,8 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+
+        testMenu->RegisterTest<test::TestCubeMap>("skybox");
         testMenu->RegisterTest<test::TestFaceCulling>("faceculling");
         testMenu->RegisterTest<test::TestBlending>("blending");
         testMenu->RegisterTest<test::TestStencil>("stencil");

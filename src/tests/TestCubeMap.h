@@ -1,53 +1,28 @@
 //
-// Created by blueberry on 2025/10/7.
+// Created by blueberry on 2025/10/26.
 //
 
 #pragma once
 #include "Test.h"
 #include "../Camera.h"
-#include "../FrameBuffer.h"
-#include "../GLStructures.h"
+#include "../IndexBuffer.h"
 #include "../Shader.h"
+#include "../Texture.h"
+#include "../VertexArray.h"
 
 namespace test {
-    class TestFaceCulling : public Test {
+    class TestCubeMap : public Test {
     public:
-        TestFaceCulling();
-
-        ~TestFaceCulling() override;
-
+        TestCubeMap();
+        ~TestCubeMap() override;
         void OnUpdate(float deltaTime) override;
-
         void OnRender() override;
-
-        void OnImGuiRender() override;
-
-        void ProcessInputEvent(GLFWwindow *window, float deltaTime) override;
-
         void ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) override;
-
+        void ProcessInputEvent(GLFWwindow *window, float deltaTime) override;
         void ProcessMouseScroll(GLFWwindow *window, double yoffset) override;
 
     private:
-        /*
-    Remember: to specify vertices in a counter-clockwise winding order you need to visualize the triangle
-    as if you're in front of the triangle and from that point of view, is where you set their order.
-
-    To define the order of a triangle on the right side of the cube for example, you'd imagine yourself looking
-    straight at the right side of the cube, and then visualize the triangle and make sure their order is specified
-    in a counter-clockwise order. This takes some practice, but try visualizing this yourself and see that this
-    is correct.
-*/
-        /**
-         *
-         *                1                          3       1
-         *              / |       +                  |     /
-         *           /    |                          |   /
-         *        0       2                          0
-         *
-         *      0 -> 1 -> 2                       1 -> 0 - > 3
-         */
-        float cubeVertices[36 * 5] = {
+         float cubeVertices[36 * 5] = {
             // Back face
             -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // Bottom-left
             0.5f, 0.5f, -0.5f, 1.0f, 1.0f, // top-right
@@ -97,7 +72,8 @@ namespace test {
             -0.5f, 0.5f, 0.5f, 0.0f, 0.0f // bottom-left
         };
 
-        unsigned int cubeIndices[6 * 36] = {
+
+        unsigned int cubeIndices[36] = {
             0, 1, 2, 3, 4, 5,
             6, 7, 8, 9, 10, 11,
             12, 13, 14, 15, 16, 17,
@@ -106,13 +82,68 @@ namespace test {
             30, 31, 32, 33, 34, 35
         };
 
+        float skyboxVertices[3 * 36] = {
+            // positions
+            -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+             1.0f, -1.0f, -1.0f,
+             1.0f, -1.0f, -1.0f,
+             1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
 
-        std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_CubeVAO;
-        std::shared_ptr<VertexBuffer> m_CubeVBO;
-        std::shared_ptr<IndexBuffer> m_CubeIBO;
-        std::shared_ptr<Texture> m_CubeTexture;
+            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+             1.0f, -1.0f, -1.0f,
+             1.0f, -1.0f,  1.0f,
+             1.0f,  1.0f,  1.0f,
+             1.0f,  1.0f,  1.0f,
+             1.0f,  1.0f, -1.0f,
+             1.0f, -1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+             1.0f,  1.0f,  1.0f,
+             1.0f,  1.0f,  1.0f,
+             1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            -1.0f,  1.0f, -1.0f,
+             1.0f,  1.0f, -1.0f,
+             1.0f,  1.0f,  1.0f,
+             1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+             1.0f, -1.0f, -1.0f,
+             1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+             1.0f, -1.0f,  1.0f
+        };
+
+        unsigned int skyboxIndices[36] = {
+            0, 1, 2, 3, 4, 5,
+            6, 7, 8, 9, 10, 11,
+            12, 13, 14, 15, 16, 17,
+            18, 19, 20, 21, 22, 23,
+            24, 25, 26, 27, 28, 29,
+            30, 31, 32, 33, 34, 35
+        };
+
+        std::shared_ptr<Shader> m_Shader, m_SkyboxShader;
+        std::shared_ptr<VertexArray> m_CubeVAO, m_SkyboxVAO;
+        std::shared_ptr<VertexBuffer> m_CubeVBO, m_SkyboxVBO;
+        std::shared_ptr<IndexBuffer> m_CubeIBO, m_SkyboxIBO;
+        std::shared_ptr<Texture> m_CubeTexture, m_SkyboxTexture;
 
         std::shared_ptr<Camera> m_Camera;
+        Renderer renderer;
+
     };
 }

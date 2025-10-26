@@ -13,6 +13,9 @@ struct TextureInitParams {
     int WRAP_T = GL_REPEAT;
     int flip = 1;
     // InitParams() : WRAP_S(GL_REPEAT), WRAP_T(GL_REPEAT), flip(1) {}
+
+    int type = GL_TEXTURE_2D;
+    std::vector<std::string> textureFaces;
 };
 
 class Texture {
@@ -24,6 +27,8 @@ private:
     unsigned char* m_LocalBuffer;
     int m_Width,m_Height,m_BPP;
     std::string m_Type;
+
+    TextureInitParams m_InitParams;
 
 public :
     explicit Texture(const std::string &path, const TextureInitParams& params  = TextureInitParams());

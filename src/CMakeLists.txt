@@ -73,6 +73,8 @@ add_executable(myopengl
         tests/TestBlending.cpp
         tests/TestFaceCulling.cpp
         tests/TestFaceCulling.h
+        tests/TestCubeMap.h
+        tests/TestCubeMap.cpp
 
         FileUtil.cpp
         FileUtil.h
@@ -82,6 +84,10 @@ add_executable(myopengl
         WindowManager.h
         FrameBuffer.cpp
         FrameBuffer.h
+        RenderBuffer.cpp
+        RenderBuffer.h
+        tests/TestCubeMap.cpp
+        tests/TestCubeMap.h
 
 )
 
