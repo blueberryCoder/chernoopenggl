@@ -21,6 +21,10 @@ glm::mat4 Camera::GetViewMatrix() {
     return glm::lookAt(m_CamPos, m_CamPos + m_CamFront, m_CamUp);
 }
 
+glm::vec3 Camera::GetPosition() {
+    return m_CamPos;
+}
+
 void Camera::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
     const float speed = 2.0 * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {

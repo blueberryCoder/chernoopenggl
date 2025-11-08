@@ -24,6 +24,7 @@ public:
     void ProcessMouseScroll(double yoffset);
 
     glm::mat4 GetViewMatrix();
+    glm::vec3 GetPosition();
 
     double GetZoom() {
         return zoom;

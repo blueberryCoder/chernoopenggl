@@ -16,6 +16,7 @@ namespace test {
 
         m_Shader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_depth.shader"));
         m_CubeTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/marble.jpg"));
+        m_ReflectCubeShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_reflect.shader"));
 
         m_CubeVBO = std::make_shared<VertexBuffer>(cubeVertices, sizeof(cubeVertices));
         m_CubeIBO = std::make_shared<IndexBuffer>(cubeIndices, sizeof(cubeIndices) / sizeof(cubeIndices[0]));
@@ -26,12 +27,23 @@ namespace test {
         m_CubeVAO = std::make_shared<VertexArray>();
         m_CubeVAO->AddBuffer(*m_CubeVBO, layout);
 
+        m_ReflectCubeVBO = std::make_shared<VertexBuffer>(cubeReflectVertices, sizeof(cubeReflectVertices));
+        m_ReflectCubeIBO = std::make_shared<IndexBuffer>(cubeIndices, sizeof(cubeIndices) / sizeof(cubeIndices[0]));
+
+        VertexBufferLayout layout2{};
+        layout2.Push<float>(3);
+        layout2.Push<float>(3);
+        m_ReflectCubeVAO = std::make_shared<VertexArray>();
+        m_ReflectCubeVAO->AddBuffer(*m_ReflectCubeVBO, layout2);
+
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
         m_Shader->Bind();
 
         m_Shader->SetUniform1i("texture1", 0);
         m_CubeTexture->Bind();
 
+        m_ReflectCubeShader->Bind();
+        m_ReflectCubeShader->SetUniform1i("skybox", 1);
 
         // skybox
         m_SkyboxVBO = std::make_shared<VertexBuffer>(skyboxVertices, sizeof(skyboxVertices));
@@ -64,7 +76,6 @@ namespace test {
 
     TestCubeMap::~TestCubeMap() {
         GLCall(glDisable(GL_DEPTH_TEST));
-
     };
 
     void TestCubeMap::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
@@ -88,25 +99,34 @@ namespace test {
         m_Shader->SetUniformMat4f("view", view);
         m_Shader->SetUniformMat4f("projection", proj);
 
+        m_ReflectCubeShader->Bind();
+        m_ReflectCubeShader->SetUniformMat4f("view", view);
+        m_ReflectCubeShader->SetUniformMat4f("projection", proj);
+
         m_SkyboxShader->Bind();
-        m_SkyboxShader->SetUniformMat4f("view", view);
+        m_SkyboxShader->SetUniformMat4f("view", glm::mat4(glm::mat3(view)));
+        // m_SkyboxShader->SetUniformMat4f("view", view);
         m_SkyboxShader->SetUniformMat4f("projection", proj);
     }
 
     void TestCubeMap::OnRender() {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-        glDepthMask(GL_FALSE);
-
-        m_SkyboxShader->Bind();
-        m_SkyboxShader->SetUniformMat4f("model", glm::translate(glm::mat4(1.0), glm::vec3(0, 0, -1.0)));
-        renderer.Draw(*m_SkyboxVAO, *m_SkyboxIBO, *m_SkyboxShader);
-
-        glDepthMask(GL_TRUE);
-
+        GLCall(glDepthFunc(GL_LESS));
         glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(-0.8f, 0.0f, -1.0f));
         m_Shader->Bind();
         m_Shader->SetUniformMat4f("model", model);
         renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_Shader);
+
+
+        glm::mat4 model2 = glm::translate(glm::mat4(1.0f), glm::vec3(-2.5f, 0.0f, -1.2f));
+        m_ReflectCubeShader->Bind();
+        m_ReflectCubeShader->SetUniformMat4f("model", model2);
+        renderer.Draw(*m_ReflectCubeVAO, *m_ReflectCubeIBO, *m_ReflectCubeShader);
+
+        GLCall(glDepthFunc(GL_EQUAL));
+        m_SkyboxShader->Bind();
+        m_SkyboxShader->SetUniformMat4f("model", glm::translate(glm::mat4(1.0), glm::vec3(0, 0, 0.0)));
+        renderer.Draw(*m_SkyboxVAO, *m_SkyboxIBO, *m_SkyboxShader);
     }
 }
