@@ -9,20 +9,28 @@
 #include "../Shader.h"
 #include "../Texture.h"
 #include "../VertexArray.h"
+#include "../src/Model.h"
+
 
 namespace test {
     class TestCubeMap : public Test {
     public:
         TestCubeMap();
+
         ~TestCubeMap() override;
+
         void OnUpdate(float deltaTime) override;
+
         void OnRender() override;
+
         void ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) override;
+
         void ProcessInputEvent(GLFWwindow *window, float deltaTime) override;
+
         void ProcessMouseScroll(GLFWwindow *window, double yoffset) override;
 
     private:
-         float cubeVertices[36 * 5] = {
+        float cubeVertices[36 * 5] = {
             // Back face
             -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // Bottom-left
             0.5f, 0.5f, -0.5f, 1.0f, 1.0f, // top-right
@@ -72,52 +80,52 @@ namespace test {
             -0.5f, 0.5f, 0.5f, 0.0f, 0.0f // bottom-left
         };
 
-         // set up vertex data (and buffer(s)) and configure vertex attributes
-         // ------------------------------------------------------------------
-         float cubeReflectVertices[36 * 6] = {
-             // positions          // normals
-             -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-              0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-              0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-              0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-             -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-             -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        // set up vertex data (and buffer(s)) and configure vertex attributes
+        // ------------------------------------------------------------------
+        float cubeReflectVertices[36 * 6] = {
+            // positions          // normals
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+            0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+            0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+            0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+            -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
 
-             -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-              0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-              0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-              0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-             -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-             -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+            0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+            -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
 
-             -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-             -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-             -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-             -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-             -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-             -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
 
-              0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-              0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-              0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-              0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-              0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-              0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+            0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
 
-             -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-              0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-              0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-              0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-             -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-             -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+            0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+            0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+            0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
 
-             -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-              0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-              0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-              0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-             -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-             -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-         };
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
+        };
 
         unsigned int cubeIndices[36] = {
             0, 1, 2, 3, 4, 5,
@@ -130,47 +138,47 @@ namespace test {
 
         float skyboxVertices[3 * 36] = {
             // positions
-            -1.0f,  1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
             -1.0f, -1.0f, -1.0f,
-             1.0f, -1.0f, -1.0f,
-             1.0f, -1.0f, -1.0f,
-             1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
 
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
             -1.0f, -1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f,  1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
-             1.0f, -1.0f, -1.0f,
-             1.0f, -1.0f,  1.0f,
-             1.0f,  1.0f,  1.0f,
-             1.0f,  1.0f,  1.0f,
-             1.0f,  1.0f, -1.0f,
-             1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
 
-            -1.0f, -1.0f,  1.0f,
-            -1.0f,  1.0f,  1.0f,
-             1.0f,  1.0f,  1.0f,
-             1.0f,  1.0f,  1.0f,
-             1.0f, -1.0f,  1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
-            -1.0f,  1.0f, -1.0f,
-             1.0f,  1.0f, -1.0f,
-             1.0f,  1.0f,  1.0f,
-             1.0f,  1.0f,  1.0f,
-            -1.0f,  1.0f,  1.0f,
-            -1.0f,  1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, -1.0f,
 
             -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f,  1.0f,
-             1.0f, -1.0f, -1.0f,
-             1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f,  1.0f,
-             1.0f, -1.0f,  1.0f
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f
         };
 
         unsigned int skyboxIndices[36] = {
@@ -182,14 +190,16 @@ namespace test {
             30, 31, 32, 33, 34, 35
         };
 
-        std::shared_ptr<Shader> m_Shader,       m_SkyboxShader, m_ReflectCubeShader;
+        std::shared_ptr<Shader> m_Shader, m_SkyboxShader, m_ReflectCubeShader,
+                m_RefractCubeShader, m_ReflectBackpackShader;
         std::shared_ptr<VertexArray> m_CubeVAO, m_SkyboxVAO, m_ReflectCubeVAO;
-        std::shared_ptr<VertexBuffer> m_CubeVBO,m_SkyboxVBO, m_ReflectCubeVBO;
+        std::shared_ptr<VertexBuffer> m_CubeVBO, m_SkyboxVBO, m_ReflectCubeVBO;
         std::shared_ptr<IndexBuffer> m_CubeIBO, m_SkyboxIBO, m_ReflectCubeIBO;
         std::shared_ptr<Texture> m_CubeTexture, m_SkyboxTexture, m_ReflectCubeTexture;
 
+        std::shared_ptr<Model> m_Model;
+
         std::shared_ptr<Camera> m_Camera;
         Renderer renderer;
-
     };
 }

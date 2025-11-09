@@ -24,7 +24,7 @@ namespace test {
         glm::mat4 view = m_Camera.GetViewMatrix();
 
         auto fov = glm::radians(m_Camera.GetZoom());
-        std::cout<< "fov:" << fov << std::endl;
+        // std::cout<< "fov:" << fov << std::endl;
         glm::mat4 proj = glm::perspective(fov, 960.0 / 540.0, 0.1, 100.0);
         m_Shader->Bind();
         m_Shader->SetUniformMat4f("model", model);

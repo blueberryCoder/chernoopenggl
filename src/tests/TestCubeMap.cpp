@@ -8,7 +8,6 @@
 #include "../src/VertexBufferLayout.h"
 #include "glm/gtc/matrix_transform.hpp"
 
-
 namespace test {
     TestCubeMap::TestCubeMap() {
         SetupCursorCallback();
@@ -17,6 +16,10 @@ namespace test {
         m_Shader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_depth.shader"));
         m_CubeTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/marble.jpg"));
         m_ReflectCubeShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_reflect.shader"));
+        m_RefractCubeShader= std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_refract.shader"));
+        m_ReflectBackpackShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_reflect_backpack.shader"));
+
+        m_Model = std::make_shared<Model>("../../res/models/backpack/backpack.obj");
 
         m_CubeVBO = std::make_shared<VertexBuffer>(cubeVertices, sizeof(cubeVertices));
         m_CubeIBO = std::make_shared<IndexBuffer>(cubeIndices, sizeof(cubeIndices) / sizeof(cubeIndices[0]));
@@ -39,11 +42,18 @@ namespace test {
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
         m_Shader->Bind();
 
-        m_Shader->SetUniform1i("texture1", 0);
-        m_CubeTexture->Bind();
+        m_Shader->SetUniform1i("texture1", 4);
+        m_CubeTexture->Bind(4);
 
         m_ReflectCubeShader->Bind();
-        m_ReflectCubeShader->SetUniform1i("skybox", 1);
+        m_ReflectCubeShader->SetUniform1i("skybox", 5);
+
+        m_ReflectBackpackShader->Bind();
+        m_ReflectBackpackShader->SetUniform1i("skybox", 5);
+
+        m_RefractCubeShader->Bind();
+        m_RefractCubeShader->SetUniform1i("skybox", 5);
+
 
         // skybox
         m_SkyboxVBO = std::make_shared<VertexBuffer>(skyboxVertices, sizeof(skyboxVertices));
@@ -67,14 +77,16 @@ namespace test {
             .type = GL_TEXTURE_CUBE_MAP,
             .textureFaces = skyboxTextures
         };
+
         m_SkyboxTexture = std::make_shared<Texture>("", initParams);
-        //
-        m_SkyboxTexture->Bind(1);
+        m_SkyboxTexture->Bind(5);
+
         m_SkyboxShader->Bind();
-        m_SkyboxShader->SetUniform1i("texture1", 1);
+        m_SkyboxShader->SetUniform1i("texture1", 5);
     }
 
     TestCubeMap::~TestCubeMap() {
+        GLCall(glDepthFunc(GL_LESS));
         GLCall(glDisable(GL_DEPTH_TEST));
     };
 
@@ -102,10 +114,21 @@ namespace test {
         m_ReflectCubeShader->Bind();
         m_ReflectCubeShader->SetUniformMat4f("view", view);
         m_ReflectCubeShader->SetUniformMat4f("projection", proj);
+        m_ReflectCubeShader->SetUniformVec3f("cameraPos", m_Camera->GetPosition());
+
+        m_ReflectBackpackShader->Bind();
+        m_ReflectBackpackShader->SetUniformMat4f("view", view);
+        m_ReflectBackpackShader->SetUniformMat4f("projection", proj);
+        m_ReflectBackpackShader->SetUniformVec3f("cameraPos", m_Camera->GetPosition());
+
+        m_RefractCubeShader->Bind();
+        m_RefractCubeShader->SetUniformMat4f("view", view);
+        m_RefractCubeShader->SetUniformMat4f("projection", proj);
+        m_RefractCubeShader->SetUniformVec3f("cameraPos", m_Camera->GetPosition());
 
         m_SkyboxShader->Bind();
+        // Only keep linear transform.
         m_SkyboxShader->SetUniformMat4f("view", glm::mat4(glm::mat3(view)));
-        // m_SkyboxShader->SetUniformMat4f("view", view);
         m_SkyboxShader->SetUniformMat4f("projection", proj);
     }
 
@@ -123,6 +146,16 @@ namespace test {
         m_ReflectCubeShader->Bind();
         m_ReflectCubeShader->SetUniformMat4f("model", model2);
         renderer.Draw(*m_ReflectCubeVAO, *m_ReflectCubeIBO, *m_ReflectCubeShader);
+
+        glm::mat4 model3 = glm::translate(glm::mat4(1.0f), glm::vec3(-4.5f, 0.0f, -1.2f));
+        m_RefractCubeShader->Bind();
+        m_RefractCubeShader->SetUniformMat4f("model", model3);
+        renderer.Draw(*m_ReflectCubeVAO, *m_ReflectCubeIBO, *m_RefractCubeShader);
+
+        glm::mat4 model4 = glm::translate(glm::mat4(1.0f), glm::vec3(-6.5f, 0.0f, -2.2f));
+        m_ReflectBackpackShader->Bind();
+        m_ReflectBackpackShader->SetUniformMat4f("model", model4);
+        m_Model->Draw(*m_ReflectBackpackShader);
 
         GLCall(glDepthFunc(GL_EQUAL));
         m_SkyboxShader->Bind();
