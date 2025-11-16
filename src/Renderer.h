@@ -24,6 +24,7 @@ bool GLLogCall(const char *function, const char *file, int line);
 class Renderer {
 public :
     void Clear() const ;
+    void ClearDepth() const;
     void Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader);
     void DrawPoints(const VertexArray &va,const IndexBuffer &ib, const Shader &shader);
 };

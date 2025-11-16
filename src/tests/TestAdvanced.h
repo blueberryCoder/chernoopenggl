@@ -4,12 +4,15 @@
 
 #pragma once
 #include "Test.h"
+#include <array>
 #include "../Camera.h"
 #include "../IndexBuffer.h"
 #include "../Shader.h"
 #include "../VertexArray.h"
 #include "../VertexBuffer.h"
 #include "../Texture.h"
+#include "../UniformBuffer.h"
+
 
 
  namespace test {
@@ -38,6 +41,8 @@
         Camera m_Camera;
         std::shared_ptr<Texture> m_BackTexture;
         std::shared_ptr<Texture> m_FrontTexture;
+        std::shared_ptr<UniformBuffer> m_UBO;
+        std::array<std::shared_ptr<Shader>, 4> m_UboShaders{};
 
         float cubeVertices[36 * 5] = {
             // Back face

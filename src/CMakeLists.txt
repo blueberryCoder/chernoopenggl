@@ -90,6 +90,8 @@ add_executable(myopengl
         FrameBuffer.h
         RenderBuffer.cpp
         RenderBuffer.h
+        UniformBuffer.cpp
+        UniformBuffer.h
 
 )
 

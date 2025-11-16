@@ -21,6 +21,7 @@
 
 ## Testing Guidelines
 - Tests are self-contained scenes derived from `test::Test` (`src/tests/Test.h`); keep GL state scoped so the next scene starts clean.
+- Whenever a test enables a GL capability (depth test, blending, polygon mode, etc.) in its constructor, disable or restore it in the destructor so other scenes are unaffected.
 - Name new tests `Test<Feature>` and register them via `testMenu->RegisterTest` in `Application.cpp`.
 - Run `./build/myopengl`, open the new scene, and capture logs or screenshots for your PR.
 

@@ -30,5 +30,5 @@ void main()
    if (gl_FrontFacing)
         color = texture(frontTexture, TexCoords);
    else
-        color =texture(backTexture, TexCoords);
+        color = texture(backTexture, TexCoords);
 }

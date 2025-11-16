@@ -62,6 +62,11 @@ void Shader::Unbind() const {
     GLCall(glUseProgram(0));
 }
 
+void Shader::BindUniformToPoint(const std::string &name, unsigned int point) {
+    auto idx = GetUniformBlockIndex(name);
+    GLCall(glUniformBlockBinding(m_RendererID, idx, point));
+}
+
 int Shader::GetUniformLocation(const std::string &name) const {
 
     if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end()) {
@@ -73,6 +78,18 @@ int Shader::GetUniformLocation(const std::string &name) const {
     }
     m_UniformLocationCache[name] = location;
     return location;
+}
+
+unsigned int Shader::GetUniformBlockIndex(const std::string &name) {
+    if (m_UniformBlockIndexCache.find(name) != m_UniformBlockIndexCache.end()) {
+        return m_UniformBlockIndexCache[name];
+    }
+    GLCall(auto idx = glGetUniformBlockIndex(m_RendererID, name.c_str()));
+    if (idx == GL_INVALID_INDEX) {
+        std::cout << "Warning: uniform block '" << name << "' doesn't exist!" << std::endl;
+    }
+    m_UniformBlockIndexCache[name] = idx;
+    return idx;
 }
 
 

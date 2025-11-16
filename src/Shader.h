@@ -7,6 +7,8 @@
 
 #include <string>
 #include <unordered_map>
+
+#include "UniformBuffer.h"
 #include "glm/glm.hpp"
 
 struct ShaderProgramSource {
@@ -19,6 +21,7 @@ private:
     std::string m_FilePath;
     unsigned int m_RendererID;
     mutable std::unordered_map<std::string, int> m_UniformLocationCache;
+    mutable std::unordered_map<std::string, unsigned int> m_UniformBlockIndexCache;
 
 public:
     Shader(const std::string &filepath);
@@ -37,6 +40,8 @@ public:
     void SetUniform1i(const std::string &name, int value);
     void SetUniform1iv(const std::string &name, const int size, const int* value);
 
+    void BindUniformToPoint(const std::string &name, unsigned int);
+
 private:
 
     ShaderProgramSource ParseShader(const std::string &filepath);
@@ -45,7 +50,9 @@ private:
 
     unsigned int CreateShader(const std::string &vertexShader, const std::string &fragmentShader);
 
-     int GetUniformLocation(const std::string &name) const;
+    int GetUniformLocation(const std::string &name) const;
+
+    unsigned int GetUniformBlockIndex(const std::string &name);
 };
 
 
