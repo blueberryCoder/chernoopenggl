@@ -9,6 +9,7 @@
 #include "../Shader.h"
 #include "../VertexArray.h"
 #include "../VertexBuffer.h"
+#include "../Texture.h"
 
 
  namespace test {
@@ -32,7 +33,11 @@
 
     private:
         std::shared_ptr<Shader> m_PointShader;
+        std::shared_ptr<Shader> m_FacingShader;
+        std::shared_ptr<Shader> m_FgCoordsShader;
         Camera m_Camera;
+        std::shared_ptr<Texture> m_BackTexture;
+        std::shared_ptr<Texture> m_FrontTexture;
 
         float cubeVertices[36 * 5] = {
             // Back face
