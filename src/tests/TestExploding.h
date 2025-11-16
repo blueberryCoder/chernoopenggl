@@ -26,8 +26,12 @@ namespace test {
 
     private:
         std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<Shader> m_NormalShader;
         std::shared_ptr<Model> m_Model;
         Camera m_Camera;
         float m_Time = 0.0f;
+        glm::mat4 m_ModelMatrix{1.0f};
+        glm::mat4 m_ViewMatrix{1.0f};
+        glm::mat4 m_ProjectionMatrix{1.0f};
     };
 }
