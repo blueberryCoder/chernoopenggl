@@ -78,6 +78,10 @@ int Shader::GetUniformLocation(const std::string &name) const {
 
 ShaderProgramSource Shader::ParseShader(const std::string &filepath) {
     std::ifstream stream(filepath);
+    if (!stream.is_open()) {
+        std::cerr << "Error: could not open shader file '" << filepath << "'" << std::endl;
+        return {"", ""};
+    }
     enum class ShaderType {
         NONE = -1,
         VERTEXT = 0,
@@ -138,4 +142,3 @@ unsigned int Shader::CreateShader(const std::string &vertexShader, const std::st
     GLCall(glDeleteShader(fs));
     return program;
 }
-
