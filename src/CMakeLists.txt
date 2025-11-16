@@ -79,6 +79,8 @@ add_executable(myopengl
         tests/TestCubeMap.h
         tests/TestAdvanced.cpp
         tests/TestAdvanced.h
+        tests/TestGeometry.cpp
+        tests/TestGeometry.h
 
         FileUtil.cpp
         FileUtil.h
@@ -104,4 +106,3 @@ target_link_libraries(myopengl PRIVATE PkgConfig::glfw3 PkgConfig::glew PkgConfi
 
 target_include_directories(myopengl PRIVATE "../vendor")
 target_include_directories(myopengl PRIVATE "tests")
-

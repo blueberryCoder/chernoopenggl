@@ -32,6 +32,7 @@
 #include "tests/TestBatchDynamic.h"
 #include "tests/TestMeanBlur.h"
 #include "tests/TestAdvanced.h"
+#include "tests/TestGeometry.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -76,6 +77,7 @@ int main(void) {
         currentTest = testMenu;
 
 
+        testMenu->RegisterTest<test::TestGeometry>("geometry");
         testMenu->RegisterTest<test::TestAdvanced>("advanced");
         testMenu->RegisterTest<test::TestCubeMap>("skybox");
         testMenu->RegisterTest<test::TestFaceCulling>("faceculling");

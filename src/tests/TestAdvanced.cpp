@@ -68,6 +68,8 @@ namespace test {
 
     TestAdvanced::~TestAdvanced() {
         GLCall(glPointSize(1.0f));
+        GLCall(glDisable(GL_DEPTH_TEST));
+
     };
 
     void TestAdvanced::OnUpdate(float deltaTime) {
