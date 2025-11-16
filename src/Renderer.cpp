@@ -17,12 +17,18 @@ bool GLLogCall(const char* function, const char* file, int line) {
     return true;
 }
 
-
 void Renderer::Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) {
     shader.Bind();
     va.Bind();
     ib.Bind();
     GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr))
+}
+
+void Renderer::DrawPoints(const VertexArray &va,const IndexBuffer &ib, const Shader &shader) {
+     shader.Bind();
+     va.Bind();
+     ib.Bind();
+     GLCall(glDrawElements(GL_POINTS, ib.GetCount() , GL_UNSIGNED_INT, nullptr));
 }
 
 void Renderer::Clear() const{
