@@ -33,6 +33,7 @@
 #include "tests/TestMeanBlur.h"
 #include "tests/TestAdvanced.h"
 #include "tests/TestGeometry.h"
+#include "tests/TestExploding.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -79,6 +80,7 @@ int main(void) {
 
         testMenu->RegisterTest<test::TestGeometry>("geometry");
         testMenu->RegisterTest<test::TestAdvanced>("advanced");
+        testMenu->RegisterTest<test::TestExploding>("exploding");
         testMenu->RegisterTest<test::TestCubeMap>("skybox");
         testMenu->RegisterTest<test::TestFaceCulling>("faceculling");
         testMenu->RegisterTest<test::TestBlending>("blending");

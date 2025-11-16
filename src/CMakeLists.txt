@@ -81,6 +81,8 @@ add_executable(myopengl
         tests/TestAdvanced.h
         tests/TestGeometry.cpp
         tests/TestGeometry.h
+        tests/TestExploding.cpp
+        tests/TestExploding.h
 
         FileUtil.cpp
         FileUtil.h
