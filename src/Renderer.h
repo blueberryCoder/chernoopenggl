@@ -26,6 +26,7 @@ public :
     void Clear() const ;
     void ClearDepth() const;
     void Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader);
+    void DrawInstanced(const VertexArray &va, const IndexBuffer &ib, const Shader &shader, unsigned int instanceCount);
     void DrawPoints(const VertexArray &va,const IndexBuffer &ib, const Shader &shader);
 };
 

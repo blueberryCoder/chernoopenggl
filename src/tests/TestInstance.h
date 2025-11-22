@@ -45,7 +45,7 @@ namespace test {
 
         Renderer m_Renderer;
         std::unique_ptr<VertexArray> m_VertexArray;
-        std::unique_ptr<VertexBuffer> m_VertexBuffer;
+        std::unique_ptr<VertexBuffer> m_VertexBuffer, m_OffsetVBO;
         std::unique_ptr<IndexBuffer> m_IndexBuffer;
         std::unique_ptr<Shader> m_Shader;
     };
