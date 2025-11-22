@@ -83,6 +83,8 @@ add_executable(myopengl
         tests/TestGeometry.h
         tests/TestExploding.cpp
         tests/TestExploding.h
+        tests/TestAsteroid.cpp
+        tests/TestAsteroid.h
         tests/TestInstance.cpp
         tests/TestInstance.h
 

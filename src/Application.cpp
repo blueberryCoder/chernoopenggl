@@ -35,6 +35,7 @@
 #include "tests/TestGeometry.h"
 #include "tests/TestExploding.h"
 #include "tests/TestInstance.h"
+#include "tests/TestAsteroid.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -78,6 +79,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestAsteroid>("Asteroid");
         testMenu->RegisterTest<test::TestInstance>("Instance");
         testMenu->RegisterTest<test::TestGeometry>("geometry");
         testMenu->RegisterTest<test::TestAdvanced>("advanced");
