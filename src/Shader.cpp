@@ -30,6 +30,10 @@ void Shader::SetUniformVec3f(const std::string &name, const glm::vec3 &vector) {
     auto location = GetUniformLocation(name);
     GLCall(glUniform3fv(location, 1,&vector[0]))
 }
+void Shader::SetUniformVec2f(const std::string &name, const glm::vec2 &vector) {
+    auto location = GetUniformLocation(name);
+    GLCall(glUniform2fv(location, 1,&vector[0]))
+}
 void Shader::SetUniform4f(const std::string &name, float v0, float v1, float v2, float v3) {
     auto location = GetUniformLocation(name);
     GLCall(glUniform4f(location, v0, v1, v2, v3))
