@@ -115,11 +115,16 @@ vector<shared_ptr<Texture>> Model::loadMaterialTextures(aiMaterial *mat, aiTextu
 }
 
 
-void Model::Draw(Shader &shader) {
+void Model::Draw(Shader &shader, unsigned int count) {
     for (unsigned int i = 0; i < meshes.size(); i++) {
-        meshes[i].Draw(shader);
+        meshes[i].Draw(shader, count);
     }
 }
+
+vector<Mesh> &Model::GetMeshes() {
+    return meshes;
+}
+
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma) {
     string filename = string(path);

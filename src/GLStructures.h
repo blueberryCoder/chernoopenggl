@@ -31,7 +31,9 @@ public:
     vector<shared_ptr<Texture>>      textures;
 
     Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<shared_ptr<Texture>> textures);
-    void Draw(Shader &shader);
+    void Draw(Shader &shader, unsigned int count = 0);
+
+    std::shared_ptr<VertexArray> GetVertexArray();
 private:
 
     // render data

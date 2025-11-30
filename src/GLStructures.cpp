@@ -30,7 +30,7 @@
         m_VertexArray->AddBuffer(*m_VBO, layout);
     }
 
-    void Mesh::Draw(Shader &shader) {
+    void Mesh::Draw(Shader &shader, unsigned int count) {
         shader.Bind();
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
@@ -50,8 +50,17 @@
 
         // draw mesh
         m_VertexArray->Bind();
-        m_Renderer.Draw(*m_VertexArray, *m_IBO, shader);
+        if (count  == 0) {
+            m_Renderer.Draw(*m_VertexArray, *m_IBO, shader);
+        } else {
+            m_Renderer.DrawInstanced(*m_VertexArray, *m_IBO, shader, count);
+        }
         m_VertexArray->Unbind();
-
     }
+
+    std::shared_ptr<VertexArray> Mesh::GetVertexArray() {
+        return m_VertexArray;
+    }
+
 // }
+

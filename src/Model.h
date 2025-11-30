@@ -17,7 +17,9 @@ public:
         loadModel(path);
     }
 
-    void Draw(Shader &shader);
+    void Draw(Shader &shader, unsigned int count = 0);
+
+    vector<Mesh>& GetMeshes();
 
 private:
     // model data
@@ -32,6 +34,6 @@ private:
 
     Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
-    vector<shared_ptr<Texture>> loadMaterialTextures(aiMaterial *mat, aiTextureType type,
-                                         string typeName);
+    vector<shared_ptr<Texture> > loadMaterialTextures(aiMaterial *mat, aiTextureType type,
+                                                      string typeName);
 };
