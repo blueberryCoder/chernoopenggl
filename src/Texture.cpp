@@ -77,10 +77,13 @@ Texture::Texture(const std::string &path, const TextureInitParams &params)
     }
 }
 
-Texture::Texture(int width, int height, int format) : m_RendererId(0),
-                                                      m_FilePath(""),
-                                                      m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0) {
-    if (format == GL_DEPTH_COMPONENT) {
+Texture::Texture(const TextureInitParams& params) : m_RendererId(0),
+                                                    m_FilePath(""),
+                                                    m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0),
+                                                    m_InitParams(params) {
+    if (params.type == GL_TEXTURE_2D) {
+        auto width = params.width;
+        auto height = params.height;
         // Create depth texture.
         GLCall(glGenTextures(1, &m_RendererId));
         GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId));
@@ -93,10 +96,9 @@ Texture::Texture(int width, int height, int format) : m_RendererId(0),
         GLCall(glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT32F,
             width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
         GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+        this->m_Width = width;
+        this->m_Height = height;
     }
-
-    this->m_Width = width;
-    this->m_Height = height;
 }
 
 Texture::~Texture() {
@@ -105,7 +107,7 @@ Texture::~Texture() {
 
 void Texture::Bind(unsigned int slot) const {
     GLCall(glActiveTexture(GL_TEXTURE0 + slot))
-    if (m_InitParams.type == GL_TEXTURE_2D) {
+    if (m_InitParams.type == GL_TEXTURE_2D ) {
         GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId))
     } else if (m_InitParams.type == GL_TEXTURE_CUBE_MAP) {
         GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_RendererId))

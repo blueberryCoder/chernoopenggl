@@ -19,6 +19,8 @@ public:
 
     void AttachDepthStencil(const std::shared_ptr<RenderBuffer>& rbo);
 
+    void AttachColor(const std::shared_ptr<Texture>& texture, unsigned int slot = 0);
+
     unsigned int GetID() { return m_RendererID;}
 
 private:

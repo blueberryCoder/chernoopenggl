@@ -67,17 +67,17 @@ namespace test {
             varr->Bind();
             // Planet mesh uses locations 0..2, so instance matrix starts at location 3.
             varr->AddBuffer(*m_RocksVertexBuffer, layout, 3);
-            glVertexAttribDivisor(3, 1);
-            glVertexAttribDivisor(4, 1);
-            glVertexAttribDivisor(5, 1);
-            glVertexAttribDivisor(6, 1);
+            GLCall(glVertexAttribDivisor(3, 1));
+            GLCall(glVertexAttribDivisor(4, 1));
+            GLCall(glVertexAttribDivisor(5, 1));
+            GLCall(glVertexAttribDivisor(6, 1));
         }
-        glEnable(GL_DEPTH_TEST);
+        GLCall(glEnable(GL_DEPTH_TEST));
         SetupCursorCallback();
     }
 
     TestAsteroid::~TestAsteroid() {
-        glDisable(GL_DEPTH_TEST);
+        GLCall(glDisable(GL_DEPTH_TEST));
     }
 
     void TestAsteroid::OnUpdate(float deltaTime) {

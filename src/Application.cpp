@@ -47,6 +47,8 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    // glfwWindowHint(GLFW_SAMPLES, 4);
+
 
     FileUtil::shared().setResourceRootPath("../../res");
 
@@ -66,6 +68,9 @@ int main(void) {
     }
 
     std::cout << glGetString(GL_VERSION) << std::endl;
+
+    // glEnable(GL_MULTISAMPLE);
+
     {
         GLCall(glEnable(GL_BLEND))
         GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA))

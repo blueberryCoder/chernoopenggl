@@ -25,6 +25,13 @@ void FrameBuffer::AttachDepthStencil(const std::shared_ptr<RenderBuffer>& rbo) {
     GLCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo->GetID()););
 }
 
+void FrameBuffer::AttachColor(const std::shared_ptr<Texture> &texture, unsigned int slot) {
+    Bind();
+    texture->Bind();
+    GLCall(glFramebufferTexture(GL_FRAMEBUFFER,
+        GL_COLOR_ATTACHMENT0 + slot , texture->GetID(), 0));
+}
+
 void FrameBuffer::Bind() {
     GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID));
 }

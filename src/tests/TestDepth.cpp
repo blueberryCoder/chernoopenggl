@@ -36,10 +36,13 @@ namespace test {
         m_Shader->SetUniform1i("texture1", 0);
 
         GLCall(glEnable(GL_DEPTH_TEST));
-        m_DepthTexture = std::make_shared<Texture>(960, 540);
+        m_DepthTexture = std::make_shared<Texture>(TextureInitParams{
+            .width = 960,
+            .height = 540
+        });
         m_Fbo = std::make_shared<FrameBuffer>();
         m_Fbo->AttachDepth(m_DepthTexture);
-        auto status  = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        auto status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (status != GL_FRAMEBUFFER_COMPLETE) {
             std::cerr << "Framebuffer is not complete!" << std::endl;
         }

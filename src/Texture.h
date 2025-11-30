@@ -12,10 +12,13 @@ struct TextureInitParams {
     int WRAP_S = GL_REPEAT;
     int WRAP_T = GL_REPEAT;
     int flip = 1;
-    // InitParams() : WRAP_S(GL_REPEAT), WRAP_T(GL_REPEAT), flip(1) {}
-
     int type = GL_TEXTURE_2D;
+
+    // for cube map
     std::vector<std::string> textureFaces;
+
+    int width;
+    int height;
 };
 
 class Texture {
@@ -33,7 +36,7 @@ private:
 public :
     explicit Texture(const std::string &path, const TextureInitParams& params  = TextureInitParams());
 
-    Texture(int width, int height, int format = GL_DEPTH_COMPONENT);
+    Texture(const TextureInitParams& params  = TextureInitParams());
 
     ~Texture();
 
