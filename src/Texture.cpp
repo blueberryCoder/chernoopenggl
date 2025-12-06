@@ -98,6 +98,14 @@ Texture::Texture(const TextureInitParams& params) : m_RendererId(0),
         GLCall(glBindTexture(GL_TEXTURE_2D, 0));
         this->m_Width = width;
         this->m_Height = height;
+    } else if (params.type == GL_TEXTURE_2D_MULTISAMPLE) {
+        GLCall(glGenTextures(1, &m_RendererId));
+        GLCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_RendererId));
+        GLCall(glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, params.samples, GL_RGB,
+                                params.width, params.height, GL_TRUE));
+        GLCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0));
+        this->m_Width = params.width;
+        this->m_Height = params.height;
     }
 }
 
@@ -107,10 +115,12 @@ Texture::~Texture() {
 
 void Texture::Bind(unsigned int slot) const {
     GLCall(glActiveTexture(GL_TEXTURE0 + slot))
-    if (m_InitParams.type == GL_TEXTURE_2D ) {
+    if (m_InitParams.type == GL_TEXTURE_2D) {
         GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId))
     } else if (m_InitParams.type == GL_TEXTURE_CUBE_MAP) {
         GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_RendererId))
+    } else if (m_InitParams.type == GL_TEXTURE_2D_MULTISAMPLE) {
+        GLCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_RendererId))
     }
 }
 
@@ -119,5 +129,7 @@ void Texture::Unbind() const {
         GLCall(glBindTexture(GL_TEXTURE_2D, 0))
     } else if (m_InitParams.type == GL_TEXTURE_CUBE_MAP) {
         GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0))
+    } else if (m_InitParams.type == GL_TEXTURE_2D_MULTISAMPLE) {
+        GLCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0))
     }
 }

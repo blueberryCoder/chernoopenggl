@@ -14,6 +14,8 @@ struct TextureInitParams {
     int flip = 1;
     int type = GL_TEXTURE_2D;
 
+    int samples = 4;
+
     // for cube map
     std::vector<std::string> textureFaces;
 

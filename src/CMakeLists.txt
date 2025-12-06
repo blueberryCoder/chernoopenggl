@@ -63,6 +63,8 @@ add_executable(myopengl
         tests/TestBatchDynamic.cpp
         tests/TestMeanBlur.h
         tests/TestMeanBlur.cpp
+        tests/TestAntiAliasing.h
+        tests/TestAntiAliasing.cpp
         tests/TestAssimp.cpp
         tests/TestAssimp.h
         tests/TestDepth.cpp

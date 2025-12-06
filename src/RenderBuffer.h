@@ -9,6 +9,8 @@ struct RenderBufferInitParams {
     int width = 0;
     int height = 0;
     int format = GL_DEPTH24_STENCIL8;
+
+    int samples = 1;
 };
 
 class RenderBuffer {

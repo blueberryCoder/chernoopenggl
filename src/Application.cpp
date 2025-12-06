@@ -36,6 +36,7 @@
 #include "tests/TestExploding.h"
 #include "tests/TestInstance.h"
 #include "tests/TestAsteroid.h"
+#include "tests/TestAntiAliasing.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -84,6 +85,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestAntiAliasing>("AntiAliasing");
         testMenu->RegisterTest<test::TestAsteroid>("Asteroid");
         testMenu->RegisterTest<test::TestInstance>("Instance");
         testMenu->RegisterTest<test::TestGeometry>("geometry");
@@ -102,6 +104,7 @@ int main(void) {
         testMenu->RegisterTest<test::TestBatchTexture>("Batch Texture");
         testMenu->RegisterTest<test::TestBatchDynamic>("Batch Dynamic");
         testMenu->RegisterTest<test::TestMeanBlur>("Mean Blur");
+        testMenu->RegisterTest<test::TestAntiAliasing>("Anti Aliasing");
 
         Renderer renderer;
 

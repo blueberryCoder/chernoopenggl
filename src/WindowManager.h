@@ -11,6 +11,9 @@ public:
     static WindowManager &shared();
     GLFWwindow *getWindow();
     void SetWindow(GLFWwindow *window);
+
+    void GetWindowSize(int &width, int &height);
+    void GetFramebufferSize(int &width, int &height);
 private:
     WindowManager();
     ~WindowManager();

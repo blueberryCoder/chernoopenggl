@@ -24,3 +24,21 @@ GLFWwindow *WindowManager::getWindow() {
 void WindowManager::SetWindow(GLFWwindow *window) {
     this->m_Window = window;
 }
+
+void WindowManager::GetWindowSize(int &width, int &height) {
+    if (!m_Window) {
+        width = 0;
+        height = 0;
+        return;
+    }
+    glfwGetWindowSize(m_Window, &width, &height);
+}
+
+void WindowManager::GetFramebufferSize(int &width, int &height) {
+    if (!m_Window) {
+        width = 0;
+        height = 0;
+        return;
+    }
+    glfwGetFramebufferSize(m_Window, &width, &height);
+}
