@@ -38,7 +38,8 @@ namespace test {
         GLCall(glEnable(GL_DEPTH_TEST));
         m_DepthTexture = std::make_shared<Texture>(TextureInitParams{
             .width = 960,
-            .height = 540
+            .height = 540,
+            .internalFormat = GL_DEPTH_COMPONENT32F,
         });
         m_Fbo = std::make_shared<FrameBuffer>();
         m_Fbo->AttachDepth(m_DepthTexture);

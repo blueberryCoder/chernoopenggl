@@ -21,6 +21,8 @@ struct TextureInitParams {
 
     int width;
     int height;
+
+    unsigned int internalFormat = GL_RGB;
 };
 
 class Texture {

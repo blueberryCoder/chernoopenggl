@@ -37,6 +37,7 @@
 #include "tests/TestInstance.h"
 #include "tests/TestAsteroid.h"
 #include "tests/TestAntiAliasing.h"
+#include "tests/TestAntiAliasingEffect.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -85,6 +86,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestAntiAliasingEffect>("AntiAliasingEffect");
         testMenu->RegisterTest<test::TestAntiAliasing>("AntiAliasing");
         testMenu->RegisterTest<test::TestAsteroid>("Asteroid");
         testMenu->RegisterTest<test::TestInstance>("Instance");

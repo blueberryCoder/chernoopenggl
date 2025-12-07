@@ -92,9 +92,14 @@ Texture::Texture(const TextureInitParams& params) : m_RendererId(0),
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE));
-        GLCall(glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT32F,
-            width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
+        if (params.internalFormat == GL_DEPTH_COMPONENT32F) {
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE));
+            GLCall(glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT32F,
+                width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
+        } else if (params.internalFormat == GL_RGB) {
+             GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
+        }
+
         GLCall(glBindTexture(GL_TEXTURE_2D, 0));
         this->m_Width = width;
         this->m_Height = height;
