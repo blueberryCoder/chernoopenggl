@@ -23,5 +23,10 @@ uniform sampler2D u_Texture;
 
 void main()
 {    
-    color = texture(u_Texture, TexCoords);
+    vec3 color1 = texture(u_Texture, TexCoords).rgb;
+
+    // BT.601/BT.701 luma coefficients
+    float c = dot(color1, vec3(0.299, 0.587, 0.114));
+
+    color = vec4(vec3(c),1.0);
 }
