@@ -83,6 +83,8 @@ add_executable(myopengl
         tests/TestCubeMap.h
         tests/TestAdvanced.cpp
         tests/TestAdvanced.h
+        tests/TestAdvancedLighting.cpp
+        tests/TestAdvancedLighting.h
         tests/TestGeometry.cpp
         tests/TestGeometry.h
         tests/TestExploding.cpp
