@@ -42,3 +42,7 @@ void WindowManager::GetFramebufferSize(int &width, int &height) {
     }
     glfwGetFramebufferSize(m_Window, &width, &height);
 }
+
+void WindowManager::GetViewportSize(int &width, int &height) {
+    GetFramebufferSize(width, height);
+}

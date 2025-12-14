@@ -62,9 +62,9 @@ Texture::Texture(const std::string &path, const TextureInitParams &params)
                 else if (m_BPP == 4)
                     format = GL_RGBA;
 
-                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, m_Width, m_Height, 0, format, GL_UNSIGNED_BYTE,
+                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, m_Width, m_Height, 0, format,
+                             GL_UNSIGNED_BYTE,
                              data);
-
             }
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -77,7 +77,7 @@ Texture::Texture(const std::string &path, const TextureInitParams &params)
     }
 }
 
-Texture::Texture(const TextureInitParams& params) : m_RendererId(0),
+Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
                                                     m_FilePath(""),
                                                     m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0),
                                                     m_InitParams(params) {
@@ -97,9 +97,11 @@ Texture::Texture(const TextureInitParams& params) : m_RendererId(0),
             GLCall(glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT32F,
                 width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
         } else if (params.internalFormat == GL_RGB) {
-             GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
+            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
+        } else if (params.internalFormat == GL_DEPTH_COMPONENT) {
+            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+                width, width, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr))
         }
-
         GLCall(glBindTexture(GL_TEXTURE_2D, 0));
         this->m_Width = width;
         this->m_Height = height;
@@ -107,7 +109,7 @@ Texture::Texture(const TextureInitParams& params) : m_RendererId(0),
         GLCall(glGenTextures(1, &m_RendererId));
         GLCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_RendererId));
         GLCall(glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, params.samples, GL_RGB,
-                                params.width, params.height, GL_TRUE));
+            params.width, params.height, GL_TRUE));
         GLCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0));
         this->m_Width = params.width;
         this->m_Height = params.height;

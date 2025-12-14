@@ -33,6 +33,7 @@
 #include "tests/TestMeanBlur.h"
 #include "tests/TestAdvanced.h"
 #include "tests/TestAdvancedLighting.h"
+#include "tests/TestShadowMapping.h"
 #include "tests/TestGeometry.h"
 #include "tests/TestExploding.h"
 #include "tests/TestInstance.h"
@@ -73,6 +74,8 @@ int main(void) {
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     // glEnable(GL_MULTISAMPLE);
+    // glEnable(GL_FRAMEBUFFER_SRGB);
+
 
     {
         GLCall(glEnable(GL_BLEND))
@@ -87,6 +90,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestShadowMapping>("shadow mapping");
         testMenu->RegisterTest<test::TestAdvancedLighting>("advanced lighting");
         testMenu->RegisterTest<test::TestAntiAliasingEffect>("AntiAliasingEffect");
         testMenu->RegisterTest<test::TestAntiAliasing>("AntiAliasing");

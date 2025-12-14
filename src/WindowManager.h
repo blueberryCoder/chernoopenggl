@@ -14,6 +14,7 @@ public:
 
     void GetWindowSize(int &width, int &height);
     void GetFramebufferSize(int &width, int &height);
+    void GetViewportSize(int &width, int &height);
 private:
     WindowManager();
     ~WindowManager();
