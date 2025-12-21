@@ -48,6 +48,7 @@ uniform vec3 viewPos;
 
 float ShadowCalculation(vec4 fragPosLightSpace)
 {
+
     // perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
@@ -60,9 +61,11 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 
     vec3 normal = normalize(fs_in.Normal);
     vec3 lightDir = normalize(lightPos - fs_in.FragPos);
-    float bias = max(0.005, 0.005 * (1.0 - dot(normal, lightDir)));
+    float bias = max(0.0005, 0.0005 * (1.0 - dot(normal, lightDir)));
     float shadow = (currentDepth - bias) > closestDepth  ? 1.0 : 0.0;
 
+    if(projCoords.z > 1.0)
+         shadow = 0.0;
     return shadow;
 }
 

@@ -23,10 +23,11 @@ struct TextureInitParams {
     int height;
 
     unsigned int internalFormat = GL_RGB;
+
+    std::shared_ptr<glm::vec4> borderColor;
 };
 
 class Texture {
-public:
 
 private:
     unsigned int m_RendererId;

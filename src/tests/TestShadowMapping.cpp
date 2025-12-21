@@ -16,9 +16,12 @@ namespace test {
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 3.0f, 6.0f));
 
         m_ShadowMapTexture = std::make_shared<Texture>(TextureInitParams{
+            .WRAP_S = GL_CLAMP_TO_EDGE,
+            .WRAP_T = GL_CLAMP_TO_EDGE,
             .width = SHADOW_WIDTH,
             .height = SHADOW_HEIGHT,
             .internalFormat = GL_DEPTH_COMPONENT,
+            .borderColor = std::make_shared<glm::vec4>(glm::vec4(1.0,1.0,1.0,1.0))
         });
         m_ShadowMapFramebuffer = std::make_shared<FrameBuffer>();
         m_ShadowMapFramebuffer->AttachDepth(m_ShadowMapTexture);
@@ -68,6 +71,8 @@ namespace test {
 
     TestShadowMapping::~TestShadowMapping() {
         GLCall(glDisable(GL_DEPTH_TEST));
+        GLCall(glDisable(GL_CULL_FACE));
+
     };
 
     void TestShadowMapping::OnUpdate(float deltaTime) {
@@ -77,7 +82,7 @@ namespace test {
     void TestShadowMapping::OnRender() {
         Renderer renderer;
 
-        glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 20.0f);
+        glm::mat4 lightProjection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, 1.0f, 20.0f);
         glm::mat4 lightView = glm::lookAt(m_LightPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
@@ -114,7 +119,12 @@ namespace test {
             renderer.Draw(*m_CubeVAO, *m_CubeIBO, shader);
         };
 
+        GLCall(glEnable(GL_CULL_FACE));
+        GLCall(glCullFace(GL_FRONT));
         renderScene(*m_DepthShader);
+        GLCall(glCullFace(GL_BACK));
+        GLCall(glDisable(GL_CULL_FACE));
+
 
         m_ShadowMapFramebuffer->Unbind();
 

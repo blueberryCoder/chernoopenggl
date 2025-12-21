@@ -88,10 +88,16 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
         GLCall(glGenTextures(1, &m_RendererId));
         GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId));
 
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, params.WRAP_S));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, params.WRAP_T));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+
+        if (params.borderColor) {
+            auto &color = *params.borderColor;
+            GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, &color.r));
+        }
+
         if (params.internalFormat == GL_DEPTH_COMPONENT32F) {
             GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE));
             GLCall(glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT32F,
