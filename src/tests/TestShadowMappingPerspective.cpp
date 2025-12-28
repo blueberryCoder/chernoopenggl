@@ -2,7 +2,7 @@
 // Created by blueberry on 2025/1/2.
 //
 
-#include "TestShadowMapping.h"
+#include "TestShadowMappingPerspective.h"
 #include "../FileUtil.h"
 #include "../WindowManager.h"
 
@@ -10,9 +10,9 @@
 #include "imgui/imgui.h"
 
 namespace test {
-    TestShadowMapping::TestShadowMapping()
-        : m_LightPos(-2.0f, 4.0f, -1.0f) {
-        SetupCursorCallback();
+    TestShadowMappingPerspective::TestShadowMappingPerspective()
+        : m_LightPos(-0.0f, 4.0f, -0.2f) {
+        // SetupCursorCallback();
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 3.0f, 6.0f));
 
         m_ShadowMapTexture = std::make_shared<Texture>(TextureInitParams{
@@ -21,7 +21,7 @@ namespace test {
             .width = SHADOW_WIDTH,
             .height = SHADOW_HEIGHT,
             .internalFormat = GL_DEPTH_COMPONENT,
-            .borderColor = std::make_shared<glm::vec4>(glm::vec4(1.0,1.0,1.0,1.0))
+            .borderColor = std::make_shared<glm::vec4>(glm::vec4(1.0, 1.0, 1.0, 1.0))
         });
         m_ShadowMapFramebuffer = std::make_shared<FrameBuffer>();
         m_ShadowMapFramebuffer->AttachDepth(m_ShadowMapTexture);
@@ -31,8 +31,8 @@ namespace test {
         m_ShadowMapFramebuffer->Unbind();
 
         m_DepthShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/simple_depth.shader"));
-        m_DebugShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/debug_quad_depth.shader"));
-        m_SceneShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_shadowmapping.shader"));
+        m_DebugShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/debug_quad_depth_perspective.shader"));
+        m_SceneShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_shadowmapping_perspective.shader"));
         m_SceneShader->Bind();
         m_SceneShader->SetUniform1i("diffuseTexture", 0);
         m_SceneShader->SetUniform1i("shadowMap", 1);
@@ -69,19 +69,19 @@ namespace test {
         GLCall(glEnable(GL_DEPTH_TEST));
     };
 
-    TestShadowMapping::~TestShadowMapping() {
+    TestShadowMappingPerspective::~TestShadowMappingPerspective() {
         GLCall(glDisable(GL_DEPTH_TEST));
         GLCall(glDisable(GL_CULL_FACE));
     };
 
-    void TestShadowMapping::OnUpdate(float deltaTime) {
+    void TestShadowMappingPerspective::OnUpdate(float deltaTime) {
         Test::OnUpdate(deltaTime);
     }
 
-    void TestShadowMapping::OnRender() {
+    void TestShadowMappingPerspective::OnRender() {
         Renderer renderer;
 
-        glm::mat4 lightProjection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, 1.0f, 20.0f);
+        glm::mat4 lightProjection = glm::perspective(glm::radians(m_LightFov), 1.0f, m_LightNear, m_LightFar);
         glm::mat4 lightView = glm::lookAt(m_LightPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
@@ -124,7 +124,6 @@ namespace test {
         GLCall(glCullFace(GL_BACK));
         GLCall(glDisable(GL_CULL_FACE));
 
-
         m_ShadowMapFramebuffer->Unbind();
 
         int viewportWidth = 960;
@@ -141,8 +140,8 @@ namespace test {
         if (m_ShowDebugDepth) {
             m_DebugShader->Bind();
             m_DebugShader->SetUniform1i("depthMap", 0);
-            m_DebugShader->SetUniform1f("near_plane", 1.0f);
-            m_DebugShader->SetUniform1f("far_plane", 20.0f);
+            m_DebugShader->SetUniform1f("near_plane", m_LightNear);
+            m_DebugShader->SetUniform1f("far_plane", m_LightFar);
             m_ShadowMapTexture->Bind(0);
 
             renderer.Draw(*m_QuadVAO, *m_QuadIBO, *m_DebugShader);
@@ -160,6 +159,8 @@ namespace test {
         m_SceneShader->SetUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
         m_SceneShader->SetUniformVec3f("lightPos", m_LightPos);
         m_SceneShader->SetUniformVec3f("viewPos", m_Camera->GetPosition());
+        m_SceneShader->SetUniform1f("near_plane", m_LightNear);
+        m_SceneShader->SetUniform1f("far_plane", m_LightFar);
 
         m_DiffuseTexture->Bind(0);
         m_ShadowMapTexture->Bind(1);
@@ -167,19 +168,30 @@ namespace test {
         renderScene(*m_SceneShader);
     }
 
-    void TestShadowMapping::OnImGuiRender() {
+    void TestShadowMappingPerspective::OnImGuiRender() {
         ImGui::Checkbox("Show depth debug", &m_ShowDebugDepth);
+        ImGui::SliderFloat("Light FOV", &m_LightFov, 20.0f, 90.0f);
+        ImGui::SliderFloat("Light Near", &m_LightNear, 0.1f, 5.0f);
+        ImGui::SliderFloat("Light Far", &m_LightFar, 10.0f, 120.0f);
+        ImGui::DragFloat3("Light Pos", &m_LightPos.x, 0.1f);
+        glm::vec3 camPos = m_Camera->GetPosition();
+        if (ImGui::DragFloat3("Camera Pos", &camPos.x, 0.1f)) {
+            m_Camera->SetPosition(camPos);
+        }
+        if (m_LightFar <= m_LightNear + 0.1f) {
+            m_LightFar = m_LightNear + 0.1f;
+        }
     }
 
-    void TestShadowMapping::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
+    void TestShadowMappingPerspective::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
         m_Camera->ProcessInputEvent(window, deltaTime);
     }
 
-    void TestShadowMapping::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
+    void TestShadowMappingPerspective::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
         m_Camera->ProcessCursorPosCallback(window, xpos, ypos);
     }
 
-    void TestShadowMapping::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
+    void TestShadowMappingPerspective::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
         m_Camera->ProcessMouseScroll(yoffset);
     }
 }

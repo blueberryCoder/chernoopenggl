@@ -25,6 +25,7 @@ public:
 
     glm::mat4 GetViewMatrix();
     glm::vec3 GetPosition();
+    void SetPosition(const glm::vec3 &position);
 
     double GetZoom() {
         return zoom;

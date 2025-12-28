@@ -69,6 +69,8 @@ add_executable(myopengl
         tests/TestAntiAliasingEffect.cpp
         tests/TestShadowMapping.cpp
         tests/TestShadowMapping.h
+        tests/TestShadowMappingPerspective.cpp
+        tests/TestShadowMappingPerspective.h
         tests/TestAssimp.cpp
         tests/TestAssimp.h
         tests/TestDepth.cpp

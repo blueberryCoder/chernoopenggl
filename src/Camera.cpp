@@ -25,6 +25,11 @@ glm::vec3 Camera::GetPosition() {
     return m_CamPos;
 }
 
+void Camera::SetPosition(const glm::vec3 &position) {
+    m_CamPos = position;
+    updateCameraCoords();
+}
+
 void Camera::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
     const float speed = 2.0 * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
