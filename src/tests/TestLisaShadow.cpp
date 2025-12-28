@@ -36,7 +36,7 @@ namespace test {
         m_SceneShader->Bind();
         m_SceneShader->SetUniform1i("material.texture_diffuse1", 0);
         m_SceneShader->SetUniform1i("material.texture_specular1", 0);
-        m_SceneShader->SetUniform1i("shadowMap", 1);
+        m_SceneShader->SetUniform1i("shadowMap", 5);
         m_SceneShader->Unbind();
 
         m_PlaneVBO = std::make_shared<VertexBuffer>(m_PlaneVertices, sizeof(m_PlaneVertices));
@@ -138,7 +138,7 @@ namespace test {
         m_SceneShader->SetUniformVec3f("viewPos", m_Camera->GetPosition());
 
         m_PlaneTexture->Bind(0);
-        m_ShadowMapTexture->Bind(1);
+        m_ShadowMapTexture->Bind(5);
 
         model = glm::mat4(1.0f);
         m_SceneShader->SetUniformMat4f("model", model);
