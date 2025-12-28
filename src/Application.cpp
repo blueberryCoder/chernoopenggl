@@ -35,6 +35,7 @@
 #include "tests/TestAdvancedLighting.h"
 #include "tests/TestShadowMapping.h"
 #include "tests/TestShadowMappingPerspective.h"
+#include "tests/TestLisaShadow.h"
 #include "tests/TestGeometry.h"
 #include "tests/TestExploding.h"
 #include "tests/TestInstance.h"
@@ -93,6 +94,7 @@ int main(void) {
 
         testMenu->RegisterTest<test::TestShadowMapping>("shadow mapping");
         testMenu->RegisterTest<test::TestShadowMappingPerspective>("shadow mapping perspective");
+        testMenu->RegisterTest<test::TestLisaShadow>("lisa shadow");
         testMenu->RegisterTest<test::TestAdvancedLighting>("advanced lighting");
         testMenu->RegisterTest<test::TestAntiAliasingEffect>("AntiAliasingEffect");
         testMenu->RegisterTest<test::TestAntiAliasing>("AntiAliasing");
