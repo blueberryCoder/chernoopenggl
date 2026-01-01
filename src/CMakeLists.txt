@@ -73,6 +73,8 @@ add_executable(myopengl
         tests/TestShadowMappingPerspective.h
         tests/TestLisaShadow.cpp
         tests/TestLisaShadow.h
+        tests/TestPointShadow.cpp
+        tests/TestPointShadow.h
         tests/TestAssimp.cpp
         tests/TestAssimp.h
         tests/TestDepth.cpp

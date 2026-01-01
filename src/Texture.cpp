@@ -111,6 +111,55 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
         GLCall(glBindTexture(GL_TEXTURE_2D, 0));
         this->m_Width = width;
         this->m_Height = height;
+    } else if (params.type == GL_TEXTURE_CUBE_MAP) {
+        GLCall(glGenTextures(1, &m_RendererId));
+        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_RendererId));
+
+        auto width = params.width;
+        auto height = params.height;
+
+        if (!params.textureFaces.empty()) {
+            stbi_set_flip_vertically_on_load(params.flip);
+            for (int i = 0; i < params.textureFaces.size(); i++) {
+                auto data = stbi_load(params.textureFaces[i].c_str(), &m_Width, &m_Height, &m_BPP, 0);
+                if (data) {
+                    GLenum format = GL_RGBA;
+                    if (m_BPP == 1) {
+                        format = GL_RED;
+                    } else if (m_BPP == 3) {
+                        format = GL_RGB;
+                    } else if (m_BPP == 4) {
+                        format = GL_RGBA;
+                    }
+                    GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format,
+                        m_Width, m_Height, 0, format, GL_UNSIGNED_BYTE, data));
+                }
+                stbi_image_free(data);
+            }
+        } else {
+            for (int i = 0; i < 6; ++i) {
+                if (params.internalFormat == GL_DEPTH_COMPONENT || params.internalFormat == GL_DEPTH_COMPONENT32F) {
+                    GLenum internalFormat = params.internalFormat;
+                    GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat,
+                        width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
+                } else {
+                    GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, params.internalFormat,
+                        width, height, 0, params.internalFormat, GL_UNSIGNED_BYTE, nullptr));
+                }
+            }
+            this->m_Width = width;
+            this->m_Height = height;
+        }
+
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, params.WRAP_S));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, params.WRAP_T));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, params.WRAP_S));
+        if (params.internalFormat == GL_DEPTH_COMPONENT || params.internalFormat == GL_DEPTH_COMPONENT32F) {
+            GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE));
+        }
+        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
     } else if (params.type == GL_TEXTURE_2D_MULTISAMPLE) {
         GLCall(glGenTextures(1, &m_RendererId));
         GLCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_RendererId));

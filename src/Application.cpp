@@ -36,6 +36,7 @@
 #include "tests/TestShadowMapping.h"
 #include "tests/TestShadowMappingPerspective.h"
 #include "tests/TestLisaShadow.h"
+#include "tests/TestPointShadow.h"
 #include "tests/TestGeometry.h"
 #include "tests/TestExploding.h"
 #include "tests/TestInstance.h"
@@ -92,6 +93,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestPointShadow>("point shadow");
         testMenu->RegisterTest<test::TestShadowMapping>("shadow mapping");
         testMenu->RegisterTest<test::TestShadowMappingPerspective>("shadow mapping perspective");
         testMenu->RegisterTest<test::TestLisaShadow>("lisa shadow");
