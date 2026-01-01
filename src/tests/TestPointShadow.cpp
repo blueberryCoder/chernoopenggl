@@ -100,6 +100,9 @@ namespace test {
         m_DepthShader->SetUniformVec3f("lightPos", m_LightPos);
         m_DepthShader->SetUniform1f("far_plane", m_LightFar);
 
+        for (unsigned int i = 0; i < 6; ++i)
+            m_DepthShader->SetUniformMat4f("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
+
         GLCall(glEnable(GL_CULL_FACE));
         GLCall(glCullFace(GL_FRONT));
 
@@ -155,13 +158,15 @@ namespace test {
             renderer.Draw(*m_CubeVAO, *m_CubeIBO, shader);
         };
 
-        for (size_t i = 0; i < shadowTransforms.size(); ++i) {
-            GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                GL_TEXTURE_CUBE_MAP_POSITIVE_X + static_cast<int>(i), m_ShadowMapTexture->GetID(), 0));
-            GLCall(glClear(GL_DEPTH_BUFFER_BIT));
-            m_DepthShader->SetUniformMat4f("lightSpaceMatrix", shadowTransforms[i]);
-            renderScene(*m_DepthShader, false);
-        }
+        // for (size_t i = 0; i < shadowTransforms.size(); ++i) {
+        //     GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+        //         GL_TEXTURE_CUBE_MAP_POSITIVE_X + static_cast<int>(i), m_ShadowMapTexture->GetID(), 0));
+        //     GLCall(glClear(GL_DEPTH_BUFFER_BIT));
+        //     m_DepthShader->SetUniformMat4f("lightSpaceMatrix", shadowTransforms[i]);
+        // }
+        GLCall(glClear(GL_DEPTH_BUFFER_BIT));
+
+        renderScene(*m_DepthShader, false);
 
         GLCall(glCullFace(GL_BACK));
         GLCall(glDisable(GL_CULL_FACE));
