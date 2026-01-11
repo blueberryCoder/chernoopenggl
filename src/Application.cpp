@@ -13,6 +13,7 @@
 #include "TestCubeMap.h"
 #include "TestDepth.h"
 #include "TestFaceCulling.h"
+#include "TestNormalMapping.h"
 #include "TestStencil.h"
 #include "Texture.h"
 
@@ -93,6 +94,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestNormalMapping>("normal mapping");
         testMenu->RegisterTest<test::TestPointShadow>("point shadow");
         testMenu->RegisterTest<test::TestShadowMapping>("shadow mapping");
         testMenu->RegisterTest<test::TestShadowMappingPerspective>("shadow mapping perspective");
