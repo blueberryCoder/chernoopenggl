@@ -11,7 +11,7 @@
 
 namespace test {
     TestLisaShadow::TestLisaShadow()
-        : m_LightPos(-4.0f, 8.0f, -4.0f) {
+        : m_LightPos(4.0f, 8.0f, 4.0f) {
         SetupCursorCallback();
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 2.0f, 8.0f));
 

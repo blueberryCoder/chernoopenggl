@@ -27,6 +27,8 @@
         layout.Push<float>(3);
         layout.Push<float>(3);
         layout.Push<float>(2);
+        layout.Push<float>(3);
+        layout.Push<float>(3);
         m_VertexArray->AddBuffer(*m_VBO, layout);
     }
 
@@ -34,6 +36,7 @@
         shader.Bind();
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
+        unsigned int normalNr = 1;
         for (unsigned int i = 0; i < textures.size() && i< 3; i++) {
             auto texture = textures[i];
             texture->Bind(i);
@@ -43,6 +46,8 @@
                 number = std::to_string(diffuseNr++);
             } else if (name == "texture_specular") {
                 number = std::to_string(specularNr++);
+            } else if (name == "texture_normal") {
+                number = std::to_string(normalNr++); // transfer unsigned int to string
             }
             // std::cout <<"Shader set material." << name << number << ":" << i << std::endl;
             shader.SetUniform1i("material." + name + number, i);
@@ -63,4 +68,3 @@
     }
 
 // }
-

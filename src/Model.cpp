@@ -14,7 +14,7 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 
 void Model::loadModel(string path) {
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
@@ -49,17 +49,26 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     // std::cout << "debug:processMesh" << debug_cnt++ << std::endl;
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-        Vertex vertex;
+        Vertex vertex{};
         // parse vertices
         vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-        vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+        if (mesh->HasNormals()) {
+            vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+        }
         if (mesh->mTextureCoords[0]) {
             glm::vec2 texCoords;
             texCoords.x = mesh->mTextureCoords[0][i].x;
             texCoords.y = mesh->mTextureCoords[0][i].y;
             vertex.TexCoords = texCoords;
-        } else {
-            vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+            // tangent
+            if (mesh->mTangents) {
+                vertex.Tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+            }
+            // bitangent
+            if (mesh->mBitangents) {
+                vertex.Bitangent = glm::vec3(mesh->mBitangents[i].x, mesh->mBitangents[i].y,
+                    mesh->mBitangents[i].z);
+            }
         }
         vertices.push_back(vertex);
     }
@@ -80,6 +89,9 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 
         auto specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+        auto normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
     }
     return Mesh(vertices, indices, textures);
 }
@@ -104,7 +116,10 @@ vector<shared_ptr<Texture>> Model::loadMaterialTextures(aiMaterial *mat, aiTextu
         }
 
         if (!skip) {
-            auto texture = make_shared<Texture>(filename);
+            TextureInitParams params;
+            // Assimp already flips UVs, so keep images unflipped to avoid double-flip.
+            params.flip = 0;
+            auto texture = make_shared<Texture>(filename, params);
             texture->SetType(typeName);
             // std::cout << "debug:push texture:" << texture->GetID() << std::endl;
             textures.push_back(texture);

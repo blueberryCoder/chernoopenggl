@@ -95,6 +95,8 @@ add_executable(myopengl
         tests/TestAdvancedLighting.h
         tests/TestNormalMapping.cpp
         tests/TestNormalMapping.h
+        tests/TestNormalModel.cpp
+        tests/TestNormalModel.h
         tests/TestGeometry.cpp
         tests/TestGeometry.h
         tests/TestExploding.cpp

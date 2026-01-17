@@ -65,12 +65,12 @@ namespace test {
         for (auto &mesh: m_AsteroidModel->GetMeshes()) {
             auto varr = mesh.GetVertexArray();
             varr->Bind();
-            // Planet mesh uses locations 0..2, so instance matrix starts at location 3.
-            varr->AddBuffer(*m_RocksVertexBuffer, layout, 3);
-            GLCall(glVertexAttribDivisor(3, 1));
-            GLCall(glVertexAttribDivisor(4, 1));
+            // Mesh attributes occupy locations 0..4, so instance matrix starts at location 5.
+            varr->AddBuffer(*m_RocksVertexBuffer, layout, 5);
             GLCall(glVertexAttribDivisor(5, 1));
             GLCall(glVertexAttribDivisor(6, 1));
+            GLCall(glVertexAttribDivisor(7, 1));
+            GLCall(glVertexAttribDivisor(8, 1));
         }
         GLCall(glEnable(GL_DEPTH_TEST));
         SetupCursorCallback();

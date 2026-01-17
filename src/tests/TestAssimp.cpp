@@ -12,9 +12,11 @@ namespace test {
         m_Shader = std::make_shared<Shader>("../../res/shaders/assimp.shader");
         m_Model = std::make_shared<Model>("../../res/models/backpack/backpack.obj");
         SetupCursorCallback();
+        GLCall(glEnable(GL_DEPTH_TEST));
     }
 
     TestAssimp::~TestAssimp() {
+        GLCall(glDisable(GL_DEPTH_TEST));
     }
 
     void TestAssimp::OnUpdate(float deltaTime) {
