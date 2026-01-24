@@ -12,10 +12,12 @@ namespace test {
     TestParallaxMapping::TestParallaxMapping()
         : m_Camera(glm::vec3(0.0f, 0.0f, 3.0f)),
           m_LightPos(0.5f, 1.0f, 0.3f),
-          m_HeightScale(0.1f) {
+          m_HeightScale(0.1f),
+          m_UseSteepParallax(false) {
         SetupCursorCallback();
 
         m_Shader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_parallax.shader"));
+        m_SteepShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_steep_parallax.shader"));
         m_DiffuseTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/bricks2.jpg"));
         m_NormalTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/bricks2_normal.jpg"));
         m_DepthTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/bricks2_disp.jpg"));
@@ -90,6 +92,10 @@ namespace test {
         m_Shader->SetUniform1i("diffuseMap", 0);
         m_Shader->SetUniform1i("normalMap", 1);
         m_Shader->SetUniform1i("depthMap", 2);
+        m_SteepShader->Bind();
+        m_SteepShader->SetUniform1i("diffuseMap", 0);
+        m_SteepShader->SetUniform1i("normalMap", 1);
+        m_SteepShader->SetUniform1i("depthMap", 2);
 
         GLCall(glEnable(GL_DEPTH_TEST));
     }
@@ -106,27 +112,30 @@ namespace test {
         glm::mat4 projection = glm::perspective<float>(fov, 960.0f / 540.0f, 0.1f, 100.0f);
         glm::mat4 model = glm::mat4(1.0f);
 
-        m_Shader->Bind();
-        m_Shader->SetUniformMat4f("projection", projection);
-        m_Shader->SetUniformMat4f("view", view);
-        m_Shader->SetUniformMat4f("model", model);
-        m_Shader->SetUniformVec3f("lightPos", m_LightPos);
-        m_Shader->SetUniformVec3f("viewPos", m_Camera.GetPosition());
-        m_Shader->SetUniform1f("height_scale", m_HeightScale);
+        Shader *activeShader = m_UseSteepParallax ? m_SteepShader.get() : m_Shader.get();
+        activeShader->Bind();
+        activeShader->SetUniformMat4f("projection", projection);
+        activeShader->SetUniformMat4f("view", view);
+        activeShader->SetUniformMat4f("model", model);
+        activeShader->SetUniformVec3f("lightPos", m_LightPos);
+        activeShader->SetUniformVec3f("viewPos", m_Camera.GetPosition());
+        activeShader->SetUniform1f("height_scale", m_HeightScale);
     }
 
     void TestParallaxMapping::OnRender() {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         Renderer renderer;
 
-        m_Shader->Bind();
+        Shader *activeShader = m_UseSteepParallax ? m_SteepShader.get() : m_Shader.get();
+        activeShader->Bind();
         m_DiffuseTexture->Bind(0);
         m_NormalTexture->Bind(1);
         m_DepthTexture->Bind(2);
-        renderer.Draw(*m_VAO, *m_IBO, *m_Shader);
+        renderer.Draw(*m_VAO, *m_IBO, *activeShader);
     }
 
     void TestParallaxMapping::OnImGuiRender() {
+        ImGui::Checkbox("Steep Parallax", &m_UseSteepParallax);
         ImGui::DragFloat3("Light Pos", &m_LightPos.x, 0.05f);
         ImGui::DragFloat("Height Scale", &m_HeightScale, 0.01f, 0.0f, 1.0f);
     }

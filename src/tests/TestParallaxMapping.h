@@ -40,8 +40,10 @@ namespace test {
         Camera m_Camera;
         glm::vec3 m_LightPos;
         float m_HeightScale;
+        bool m_UseSteepParallax;
 
         std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<Shader> m_SteepShader;
         std::shared_ptr<Texture> m_DiffuseTexture;
         std::shared_ptr<Texture> m_NormalTexture;
         std::shared_ptr<Texture> m_DepthTexture;
