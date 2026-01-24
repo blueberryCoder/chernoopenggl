@@ -15,6 +15,7 @@
 #include "TestFaceCulling.h"
 #include "TestNormalMapping.h"
 #include "TestNormalModel.h"
+#include "TestParallaxMapping.h"
 #include "TestStencil.h"
 #include "Texture.h"
 
@@ -95,6 +96,7 @@ int main(void) {
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
 
+        testMenu->RegisterTest<test::TestParallaxMapping>("parallax mapping");
         testMenu->RegisterTest<test::TestNormalMapping>("normal mapping");
         testMenu->RegisterTest<test::TestNormalModel>("normal model");
         testMenu->RegisterTest<test::TestPointShadow>("point shadow");
