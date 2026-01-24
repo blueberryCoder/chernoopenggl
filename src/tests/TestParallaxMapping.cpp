@@ -13,11 +13,12 @@ namespace test {
         : m_Camera(glm::vec3(0.0f, 0.0f, 3.0f)),
           m_LightPos(0.5f, 1.0f, 0.3f),
           m_HeightScale(0.1f),
-          m_UseSteepParallax(false) {
+          m_ParallaxMode(0) {
         SetupCursorCallback();
 
         m_Shader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_parallax.shader"));
         m_SteepShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_steep_parallax.shader"));
+        m_OcclusionShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_occlusion_parallax.shader"));
         m_DiffuseTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/bricks2.jpg"));
         m_NormalTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/bricks2_normal.jpg"));
         m_DepthTexture = std::make_shared<Texture>(FileUtil::shared().GetPath("./textures/bricks2_disp.jpg"));
@@ -96,6 +97,10 @@ namespace test {
         m_SteepShader->SetUniform1i("diffuseMap", 0);
         m_SteepShader->SetUniform1i("normalMap", 1);
         m_SteepShader->SetUniform1i("depthMap", 2);
+        m_OcclusionShader->Bind();
+        m_OcclusionShader->SetUniform1i("diffuseMap", 0);
+        m_OcclusionShader->SetUniform1i("normalMap", 1);
+        m_OcclusionShader->SetUniform1i("depthMap", 2);
 
         GLCall(glEnable(GL_DEPTH_TEST));
     }
@@ -112,7 +117,12 @@ namespace test {
         glm::mat4 projection = glm::perspective<float>(fov, 960.0f / 540.0f, 0.1f, 100.0f);
         glm::mat4 model = glm::mat4(1.0f);
 
-        Shader *activeShader = m_UseSteepParallax ? m_SteepShader.get() : m_Shader.get();
+        Shader *activeShader = m_Shader.get();
+        if (m_ParallaxMode == 1) {
+            activeShader = m_SteepShader.get();
+        } else if (m_ParallaxMode == 2) {
+            activeShader = m_OcclusionShader.get();
+        }
         activeShader->Bind();
         activeShader->SetUniformMat4f("projection", projection);
         activeShader->SetUniformMat4f("view", view);
@@ -126,7 +136,12 @@ namespace test {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         Renderer renderer;
 
-        Shader *activeShader = m_UseSteepParallax ? m_SteepShader.get() : m_Shader.get();
+        Shader *activeShader = m_Shader.get();
+        if (m_ParallaxMode == 1) {
+            activeShader = m_SteepShader.get();
+        } else if (m_ParallaxMode == 2) {
+            activeShader = m_OcclusionShader.get();
+        }
         activeShader->Bind();
         m_DiffuseTexture->Bind(0);
         m_NormalTexture->Bind(1);
@@ -135,7 +150,9 @@ namespace test {
     }
 
     void TestParallaxMapping::OnImGuiRender() {
-        ImGui::Checkbox("Steep Parallax", &m_UseSteepParallax);
+        ImGui::RadioButton("Parallax", &m_ParallaxMode, 0);
+        ImGui::RadioButton("Steep Parallax", &m_ParallaxMode, 1);
+        ImGui::RadioButton("Occlusion Parallax", &m_ParallaxMode, 2);
         ImGui::DragFloat3("Light Pos", &m_LightPos.x, 0.05f);
         ImGui::DragFloat("Height Scale", &m_HeightScale, 0.01f, 0.0f, 1.0f);
     }
