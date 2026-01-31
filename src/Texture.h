@@ -11,6 +11,8 @@ using namespace std;
 struct TextureInitParams {
     int WRAP_S = GL_REPEAT;
     int WRAP_T = GL_REPEAT;
+    int MIN_FILTER = GL_NEAREST;
+    int MAG_FILTER = GL_NEAREST;
     int flip = 1;
     int type = GL_TEXTURE_2D;
 

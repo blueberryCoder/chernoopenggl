@@ -90,8 +90,8 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
 
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, params.WRAP_S));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, params.WRAP_T));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, params.MIN_FILTER));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, params.MAG_FILTER));
 
         if (params.borderColor) {
             auto &color = *params.borderColor;
@@ -104,6 +104,10 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
                 width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
         } else if (params.internalFormat == GL_RGB) {
             GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
+        } else if (params.internalFormat == GL_RGB16F) {
+            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, nullptr));
+        } else if (params.internalFormat == GL_RGBA16) {
+            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_SHORT, nullptr));
         } else if (params.internalFormat == GL_DEPTH_COMPONENT) {
             GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
                 width, width, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr))

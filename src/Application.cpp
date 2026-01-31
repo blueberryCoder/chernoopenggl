@@ -36,6 +36,7 @@
 #include "tests/TestMeanBlur.h"
 #include "tests/TestAdvanced.h"
 #include "tests/TestAdvancedLighting.h"
+#include "tests/TestHDR.h"
 #include "tests/TestShadowMapping.h"
 #include "tests/TestShadowMappingPerspective.h"
 #include "tests/TestLisaShadow.h"
@@ -95,7 +96,7 @@ int main(void) {
         test::Test *currentTest = nullptr;
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
-
+        testMenu->RegisterTest<test::TestHDR>("HDR");
         testMenu->RegisterTest<test::TestParallaxMapping>("parallax mapping");
         testMenu->RegisterTest<test::TestNormalMapping>("normal mapping");
         testMenu->RegisterTest<test::TestNormalModel>("normal model");
