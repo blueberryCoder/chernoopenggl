@@ -38,6 +38,7 @@
 #include "tests/TestAdvancedLighting.h"
 #include "tests/TestHDR.h"
 #include "tests/TestBloom.h"
+#include "tests/TestDeferredShading.h"
 #include "tests/TestShadowMapping.h"
 #include "tests/TestShadowMappingPerspective.h"
 #include "tests/TestLisaShadow.h"
@@ -97,6 +98,7 @@ int main(void) {
         test::Test *currentTest = nullptr;
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
+        testMenu->RegisterTest<test::TestDeferredShading>("Deferred shading");
         testMenu->RegisterTest<test::TestBloom>("Bloom");
         testMenu->RegisterTest<test::TestHDR>("HDR");
         testMenu->RegisterTest<test::TestParallaxMapping>("parallax mapping");

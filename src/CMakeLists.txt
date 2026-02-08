@@ -97,6 +97,8 @@ add_executable(myopengl
         tests/TestHDR.h
         tests/TestBloom.cpp
         tests/TestBloom.h
+        tests/TestDeferredShading.cpp
+        tests/TestDeferredShading.h
         tests/TestNormalMapping.cpp
         tests/TestNormalMapping.h
         tests/TestParallaxMapping.cpp
