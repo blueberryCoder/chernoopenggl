@@ -99,6 +99,8 @@ add_executable(myopengl
         tests/TestBloom.h
         tests/TestDeferredShading.cpp
         tests/TestDeferredShading.h
+        tests/TestSSAOLighting.cpp
+        tests/TestSSAOLighting.h
         tests/TestDeferredShadingVolums.cpp
         tests/TestDeferredShadingVolums.h
         tests/TestSSAO.cpp

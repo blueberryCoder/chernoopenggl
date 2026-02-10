@@ -23,11 +23,11 @@
 #include <vector>
 
 namespace test {
-    class TestSSAO : public Test {
+    class TestSSAOLighting : public Test {
     public:
-        TestSSAO();
+        TestSSAOLighting();
 
-        ~TestSSAO() override;
+        ~TestSSAOLighting() override;
 
         void OnUpdate(float deltaTime) override;
 
@@ -52,8 +52,11 @@ namespace test {
 
         void CreateNoiseTexture();
 
+        void CreateWhiteTexture();
+
         bool m_WasDepthEnabled = false;
         bool m_WasBlendEnabled = false;
+        bool m_SSAOEnabled = true;
         bool m_SSAOBlurEnabled = true;
         int m_GBufferWidth = 0;
         int m_GBufferHeight = 0;
@@ -63,7 +66,7 @@ namespace test {
         std::shared_ptr<Shader> m_GeometryShader;
         std::shared_ptr<Shader> m_SSAOShader;
         std::shared_ptr<Shader> m_SSAOBlurShader;
-        std::shared_ptr<Shader> m_DisplayShader;
+        std::shared_ptr<Shader> m_LightingShader;
 
         std::shared_ptr<FrameBuffer> m_GBuffer;
         std::shared_ptr<Texture> m_GPosition;
@@ -73,7 +76,6 @@ namespace test {
 
         std::shared_ptr<FrameBuffer> m_SSAOFbo;
         std::shared_ptr<Texture> m_SSAOColor;
-
         std::shared_ptr<FrameBuffer> m_SSAOBlurFbo;
         std::shared_ptr<Texture> m_SSAOBlurColor;
 
@@ -86,6 +88,7 @@ namespace test {
         std::vector<glm::vec3> m_SSAOKernel;
         std::mt19937 m_Rng;
         unsigned int m_NoiseTexture = 0;
+        unsigned int m_WhiteTexture = 0;
 
         glm::mat4 m_View{1.0f};
         glm::mat4 m_Projection{1.0f};

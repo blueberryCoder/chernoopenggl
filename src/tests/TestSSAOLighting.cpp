@@ -2,7 +2,7 @@
 // Created by blueberry on 2026/2/10.
 //
 
-#include "TestSSAO.h"
+#include "TestSSAOLighting.h"
 
 #include "../FileUtil.h"
 #include "../WindowManager.h"
@@ -10,18 +10,11 @@
 #include "imgui/imgui.h"
 
 #include <iostream>
-#include <random>
 #include <string>
-
-namespace {
-    float Lerp(float a, float b, float f) {
-        return a + f * (b - a);
-    }
-}
 
 namespace test {
 
-    TestSSAO::TestSSAO() : m_Rng(1337) {
+    TestSSAOLighting::TestSSAOLighting() : m_Rng(1337) {
         SetupCursorCallback();
         m_WasDepthEnabled = glIsEnabled(GL_DEPTH_TEST);
         m_WasBlendEnabled = glIsEnabled(GL_BLEND);
@@ -33,7 +26,7 @@ namespace test {
         m_GeometryShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/ssao_geometry.shader"));
         m_SSAOShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/ssao.shader"));
         m_SSAOBlurShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/ssao_blur.shader"));
-        m_DisplayShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/one_texture.shader"));
+        m_LightingShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/ssao_lighting.shader"));
 
         m_QuadVBO = std::make_shared<VertexBuffer>(m_QuadVertices, sizeof(m_QuadVertices));
         m_QuadIBO = std::make_shared<IndexBuffer>(m_QuadIndices, 6);
@@ -53,7 +46,7 @@ namespace test {
         CreateGBuffer(width, height);
         CreateSSAOBuffer(width, height);
         CreateSSAOBlurBuffer(width, height);
-
+        CreateWhiteTexture();
         BuildKernel();
         CreateNoiseTexture();
 
@@ -70,23 +63,27 @@ namespace test {
         m_SSAOBlurShader->SetUniform1i("ssaoInput", 0);
         m_SSAOBlurShader->Unbind();
 
-        m_DisplayShader->Bind();
-        m_DisplayShader->SetUniform1i("u_Texture", 0);
-        m_DisplayShader->Unbind();
-
+        m_LightingShader->Bind();
+        m_LightingShader->SetUniform1i("gAlbedo", 0);
+        m_LightingShader->SetUniform1i("ssao", 1);
+        m_LightingShader->Unbind();
     }
 
-    TestSSAO::~TestSSAO() {
+    TestSSAOLighting::~TestSSAOLighting() {
         if (m_NoiseTexture != 0) {
             GLCall(glDeleteTextures(1, &m_NoiseTexture));
             m_NoiseTexture = 0;
+        }
+        if (m_WhiteTexture != 0) {
+            GLCall(glDeleteTextures(1, &m_WhiteTexture));
+            m_WhiteTexture = 0;
         }
         if (!m_WasDepthEnabled) {
             GLCall(glDisable(GL_DEPTH_TEST));
         }
     }
 
-    void TestSSAO::OnUpdate(float deltaTime) {
+    void TestSSAOLighting::OnUpdate(float deltaTime) {
         Test::OnUpdate(deltaTime);
 
         int fbWidth = 0;
@@ -116,10 +113,9 @@ namespace test {
 
         m_SSAOShader->Bind();
         m_SSAOShader->SetUniformMat4f("projection", m_Projection);
-
     }
 
-    void TestSSAO::OnRender() {
+    void TestSSAOLighting::OnRender() {
         if (m_WasBlendEnabled) {
             GLCall(glDisable(GL_BLEND));
         }
@@ -142,26 +138,28 @@ namespace test {
         m_Model->Draw(*m_GeometryShader);
         m_GBuffer->Unbind();
 
-        m_SSAOFbo->Bind();
-        GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
-        GLCall(glDisable(GL_DEPTH_TEST));
-
-        m_SSAOShader->Bind();
-        m_GPosition->Bind(0);
-        m_GNormal->Bind(1);
-        GLCall(glActiveTexture(GL_TEXTURE2));
-        GLCall(glBindTexture(GL_TEXTURE_2D, m_NoiseTexture));
-        m_Renderer.Draw(*m_QuadVAO, *m_QuadIBO, *m_SSAOShader);
-        m_SSAOFbo->Unbind();
-
-        if (m_SSAOBlurEnabled) {
-            m_SSAOBlurFbo->Bind();
+        if (m_SSAOEnabled) {
+            m_SSAOFbo->Bind();
+            GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
             GLCall(glClear(GL_COLOR_BUFFER_BIT));
-            m_SSAOBlurShader->Bind();
-            m_SSAOColor->Bind(0);
-            m_Renderer.Draw(*m_QuadVAO, *m_QuadIBO, *m_SSAOBlurShader);
-            m_SSAOBlurFbo->Unbind();
+            GLCall(glDisable(GL_DEPTH_TEST));
+
+            m_SSAOShader->Bind();
+            m_GPosition->Bind(0);
+            m_GNormal->Bind(1);
+            GLCall(glActiveTexture(GL_TEXTURE2));
+            GLCall(glBindTexture(GL_TEXTURE_2D, m_NoiseTexture));
+            m_Renderer.Draw(*m_QuadVAO, *m_QuadIBO, *m_SSAOShader);
+            m_SSAOFbo->Unbind();
+
+            if (m_SSAOBlurEnabled) {
+                m_SSAOBlurFbo->Bind();
+                GLCall(glClear(GL_COLOR_BUFFER_BIT));
+                m_SSAOBlurShader->Bind();
+                m_SSAOColor->Bind(0);
+                m_Renderer.Draw(*m_QuadVAO, *m_QuadIBO, *m_SSAOBlurShader);
+                m_SSAOBlurFbo->Unbind();
+            }
         }
 
         int viewportWidth = 0;
@@ -176,37 +174,47 @@ namespace test {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         GLCall(glDisable(GL_DEPTH_TEST));
 
-        m_DisplayShader->Bind();
-        if (m_SSAOBlurEnabled && m_SSAOBlurColor) {
-            m_SSAOBlurColor->Bind(0);
+        m_LightingShader->Bind();
+        m_GAlbedo->Bind(0);
+        if (m_SSAOEnabled) {
+            if (m_SSAOBlurEnabled && m_SSAOBlurColor) {
+                m_SSAOBlurColor->Bind(1);
+            } else if (m_SSAOColor) {
+                m_SSAOColor->Bind(1);
+            } else {
+                GLCall(glActiveTexture(GL_TEXTURE1));
+                GLCall(glBindTexture(GL_TEXTURE_2D, m_WhiteTexture));
+            }
         } else {
-            m_SSAOColor->Bind(0);
+            GLCall(glActiveTexture(GL_TEXTURE1));
+            GLCall(glBindTexture(GL_TEXTURE_2D, m_WhiteTexture));
         }
-        m_Renderer.Draw(*m_QuadVAO, *m_QuadIBO, *m_DisplayShader);
+        m_Renderer.Draw(*m_QuadVAO, *m_QuadIBO, *m_LightingShader);
 
         if (m_WasBlendEnabled) {
             GLCall(glEnable(GL_BLEND));
         }
     }
 
-    void TestSSAO::OnImGuiRender() {
-        ImGui::Text("SSAO (geometry + AO)");
+    void TestSSAOLighting::OnImGuiRender() {
+        ImGui::Text("SSAO Lighting (gBuffer + albedo)");
+        ImGui::Checkbox("Enable SSAO", &m_SSAOEnabled);
         ImGui::Checkbox("Enable SSAO Blur", &m_SSAOBlurEnabled);
     }
 
-    void TestSSAO::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
+    void TestSSAOLighting::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
         m_Camera->ProcessInputEvent(window, deltaTime);
     }
 
-    void TestSSAO::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
+    void TestSSAOLighting::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
         m_Camera->ProcessCursorPosCallback(window, xpos, ypos);
     }
 
-    void TestSSAO::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
+    void TestSSAOLighting::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
         m_Camera->ProcessMouseScroll(yoffset);
     }
 
-    void TestSSAO::CreateGBuffer(int width, int height) {
+    void TestSSAOLighting::CreateGBuffer(int width, int height) {
         m_GBufferWidth = width;
         m_GBufferHeight = height;
 
@@ -249,12 +257,12 @@ namespace test {
         GLCall(glDrawBuffers(3, attachments));
         GLCall(auto status = glCheckFramebufferStatus(GL_FRAMEBUFFER));
         if (status != GL_FRAMEBUFFER_COMPLETE) {
-            std::cout << "SSAO GBuffer incomplete, status=" << status << std::endl;
+            std::cout << "SSAO Lighting GBuffer incomplete, status=" << status << std::endl;
         }
         m_GBuffer->Unbind();
     }
 
-    void TestSSAO::CreateSSAOBuffer(int width, int height) {
+    void TestSSAOLighting::CreateSSAOBuffer(int width, int height) {
         TextureInitParams ssaoParams{};
         ssaoParams.WRAP_S = GL_CLAMP_TO_EDGE;
         ssaoParams.WRAP_T = GL_CLAMP_TO_EDGE;
@@ -272,12 +280,12 @@ namespace test {
         GLCall(glDrawBuffers(1, attachments));
         GLCall(auto status = glCheckFramebufferStatus(GL_FRAMEBUFFER));
         if (status != GL_FRAMEBUFFER_COMPLETE) {
-            std::cout << "SSAO framebuffer incomplete, status=" << status << std::endl;
+            std::cout << "SSAO lighting framebuffer incomplete, status=" << status << std::endl;
         }
         m_SSAOFbo->Unbind();
     }
 
-    void TestSSAO::CreateSSAOBlurBuffer(int width, int height) {
+    void TestSSAOLighting::CreateSSAOBlurBuffer(int width, int height) {
         TextureInitParams blurParams{};
         blurParams.WRAP_S = GL_CLAMP_TO_EDGE;
         blurParams.WRAP_T = GL_CLAMP_TO_EDGE;
@@ -300,7 +308,7 @@ namespace test {
         m_SSAOBlurFbo->Unbind();
     }
 
-    void TestSSAO::BuildKernel() {
+    void TestSSAOLighting::BuildKernel() {
         m_SSAOKernel.clear();
         m_SSAOKernel.reserve(64);
         std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
@@ -312,13 +320,13 @@ namespace test {
             sample = glm::normalize(sample);
             sample *= randomFloats(m_Rng);
             float scale = static_cast<float>(i) / 64.0f;
-            scale = Lerp(0.1f, 1.0f, scale * scale);
+            scale = 0.1f + (1.0f - 0.1f) * scale * scale;
             sample *= scale;
             m_SSAOKernel.push_back(sample);
         }
     }
 
-    void TestSSAO::CreateNoiseTexture() {
+    void TestSSAOLighting::CreateNoiseTexture() {
         std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
         std::vector<glm::vec3> ssaoNoise;
         ssaoNoise.reserve(16);
@@ -351,6 +359,23 @@ namespace test {
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+        GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+    }
+
+    void TestSSAOLighting::CreateWhiteTexture() {
+        if (m_WhiteTexture != 0) {
+            GLCall(glDeleteTextures(1, &m_WhiteTexture));
+            m_WhiteTexture = 0;
+        }
+
+        float white = 1.0f;
+        GLCall(glGenTextures(1, &m_WhiteTexture));
+        GLCall(glBindTexture(GL_TEXTURE_2D, m_WhiteTexture));
+        GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 1, 1, 0, GL_RED, GL_FLOAT, &white));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
         GLCall(glBindTexture(GL_TEXTURE_2D, 0));
     }
 }

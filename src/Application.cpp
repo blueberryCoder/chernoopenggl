@@ -41,6 +41,7 @@
 #include "tests/TestDeferredShading.h"
 #include "tests/TestDeferredShadingVolums.h"
 #include "tests/TestSSAO.h"
+#include "tests/TestSSAOLighting.h"
 #include "tests/TestShadowMapping.h"
 #include "tests/TestShadowMappingPerspective.h"
 #include "tests/TestLisaShadow.h"
@@ -103,6 +104,7 @@ int main(void) {
         testMenu->RegisterTest<test::TestDeferredShadingVolums>("Deferred shading volumes");
         testMenu->RegisterTest<test::TestDeferredShading>("Deferred shading");
         testMenu->RegisterTest<test::TestSSAO>("SSAO");
+        testMenu->RegisterTest<test::TestSSAOLighting>("SSAO Lighting");
         testMenu->RegisterTest<test::TestBloom>("Bloom");
         testMenu->RegisterTest<test::TestHDR>("HDR");
         testMenu->RegisterTest<test::TestParallaxMapping>("parallax mapping");
