@@ -101,6 +101,8 @@ add_executable(myopengl
         tests/TestDeferredShading.h
         tests/TestDeferredShadingVolums.cpp
         tests/TestDeferredShadingVolums.h
+        tests/TestSSAO.cpp
+        tests/TestSSAO.h
         tests/TestNormalMapping.cpp
         tests/TestNormalMapping.h
         tests/TestParallaxMapping.cpp
