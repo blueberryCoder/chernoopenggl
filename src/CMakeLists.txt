@@ -97,6 +97,8 @@ add_executable(myopengl
         tests/TestHDR.h
         tests/TestPBR.cpp
         tests/TestPBR.h
+        tests/TestPBRTexture.cpp
+        tests/TestPBRTexture.h
         tests/TestBloom.cpp
         tests/TestBloom.h
         tests/TestDeferredShading.cpp

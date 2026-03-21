@@ -39,6 +39,7 @@
 #include "tests/TestHDR.h"
 #include "tests/TestBloom.h"
 #include "tests/TestPBR.h"
+#include "tests/TestPBRTexture.h"
 #include "tests/TestDeferredShading.h"
 #include "tests/TestDeferredShadingVolums.h"
 #include "tests/TestSSAO.h"
@@ -109,6 +110,7 @@ int main(void) {
         testMenu->RegisterTest<test::TestBloom>("Bloom");
         testMenu->RegisterTest<test::TestHDR>("HDR");
         testMenu->RegisterTest<test::TestPBR>("PBR");
+        testMenu->RegisterTest<test::TestPBRTexture>("PBR Texture");
         testMenu->RegisterTest<test::TestParallaxMapping>("parallax mapping");
         testMenu->RegisterTest<test::TestNormalMapping>("normal mapping");
         testMenu->RegisterTest<test::TestNormalModel>("normal model");
