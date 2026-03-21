@@ -26,6 +26,11 @@ void Shader::SetUniformMat4f(const std::string &name, const glm::mat4 &matrix) {
     GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]))
 }
 
+void Shader::SetUniformMat3f(const std::string &name, const glm::mat3 &matrix) {
+    auto location = GetUniformLocation(name);
+    GLCall(glUniformMatrix3fv(location, 1, GL_FALSE, &matrix[0][0]))
+}
+
 void Shader::SetUniformVec3f(const std::string &name, const glm::vec3 &vector) {
     auto location = GetUniformLocation(name);
     GLCall(glUniform3fv(location, 1,&vector[0]))
