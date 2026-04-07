@@ -103,14 +103,14 @@ int main(void) {
         test::Test *currentTest = nullptr;
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
+        testMenu->RegisterTest<test::TestPBRTexture>("PBR Texture");
+        testMenu->RegisterTest<test::TestPBR>("PBR");
         testMenu->RegisterTest<test::TestDeferredShadingVolums>("Deferred shading volumes");
         testMenu->RegisterTest<test::TestDeferredShading>("Deferred shading");
         testMenu->RegisterTest<test::TestSSAO>("SSAO");
         testMenu->RegisterTest<test::TestSSAOLighting>("SSAO Lighting");
         testMenu->RegisterTest<test::TestBloom>("Bloom");
         testMenu->RegisterTest<test::TestHDR>("HDR");
-        testMenu->RegisterTest<test::TestPBR>("PBR");
-        testMenu->RegisterTest<test::TestPBRTexture>("PBR Texture");
         testMenu->RegisterTest<test::TestParallaxMapping>("parallax mapping");
         testMenu->RegisterTest<test::TestNormalMapping>("normal mapping");
         testMenu->RegisterTest<test::TestNormalModel>("normal model");

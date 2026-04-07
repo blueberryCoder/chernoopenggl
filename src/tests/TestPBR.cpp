@@ -147,12 +147,12 @@ namespace test {
 
                 m_SphereVertices.push_back(xPos);
                 m_SphereVertices.push_back(yPos);
-                m_SphereVertices.push_back(zPos);
+                m_SphereVertices.push_back(zPos); // Position
                 m_SphereVertices.push_back(xPos);
                 m_SphereVertices.push_back(yPos);
-                m_SphereVertices.push_back(zPos);
+                m_SphereVertices.push_back(zPos); // Normal
                 m_SphereVertices.push_back(xSegment);
-                m_SphereVertices.push_back(ySegment);
+                m_SphereVertices.push_back(ySegment); // UV
             }
         }
 
