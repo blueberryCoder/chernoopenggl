@@ -6,9 +6,12 @@
 
 #include "Test.h"
 #include "../Camera.h"
+#include "../FrameBuffer.h"
 #include "../IndexBuffer.h"
 #include "../Renderer.h"
+#include "../RenderBuffer.h"
 #include "../Shader.h"
+#include "../Texture.h"
 #include "../VertexArray.h"
 #include "../VertexBuffer.h"
 
@@ -59,10 +62,10 @@ namespace test {
         std::shared_ptr<VertexBuffer> m_CubeVBO;
         std::shared_ptr<IndexBuffer> m_CubeIBO;
 
-        unsigned int m_HdrTexture = 0;
+        std::shared_ptr<Texture> m_HdrTexture;
+        std::shared_ptr<FrameBuffer> m_CaptureFBO;
+        std::shared_ptr<RenderBuffer> m_CaptureRBO;
         unsigned int m_EnvCubemap = 0;
-        unsigned int m_CaptureFBO = 0;
-        unsigned int m_CaptureRBO = 0;
 
         glm::vec3 m_Albedo = glm::vec3(0.5f, 0.0f, 0.0f);
         float m_Ao = 1.0f;

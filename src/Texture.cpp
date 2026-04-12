@@ -14,33 +14,59 @@ Texture::Texture(const std::string &path, const TextureInitParams &params)
     if (params.type == GL_TEXTURE_2D) {
         // Create 2D Texture.
         stbi_set_flip_vertically_on_load(params.flip);
-        m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 0);
-        if (m_LocalBuffer) {
-            GLenum format = GL_RGBA;
-            if (m_BPP == 1)
-                format = GL_RED;
-            else if (m_BPP == 3)
-                format = GL_RGB;
-            else if (m_BPP == 4)
-                format = GL_RGBA;
+        if (params.internalFormat == GL_RGB16F) {
+            float *floatBuffer = stbi_loadf(path.c_str(), &m_Width, &m_Height, &m_BPP, 0);
+            if (floatBuffer) {
+                GLenum format = GL_RGB;
+                if (m_BPP == 1) {
+                    format = GL_RED;
+                } else if (m_BPP == 4) {
+                    format = GL_RGBA;
+                }
 
-            GLCall(glGenTextures(1, &m_RendererId));
-            GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId));
-
-            // https://stackoverflow.com/questions/34497195/difference-between-format-and-internalformat
-            GLCall(
-                glTexImage2D(GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, format, GL_UNSIGNED_BYTE, m_LocalBuffer));
-            GLCall(glGenerateMipmap(GL_TEXTURE_2D));
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, params.WRAP_S));
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, params.WRAP_T));
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-            GLCall(glBindTexture(GL_TEXTURE_2D, 0));
-            stbi_image_free(m_LocalBuffer);
+                GLCall(glGenTextures(1, &m_RendererId));
+                GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId));
+                GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F,
+                    m_Width, m_Height, 0, format, GL_FLOAT, floatBuffer));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, params.WRAP_S));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, params.WRAP_T));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, params.MIN_FILTER));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, params.MAG_FILTER));
+                GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+                stbi_image_free(floatBuffer);
+            } else {
+                std::cout << "HDR texture failed to load at path: " << path << std::endl;
+                stbi_image_free(floatBuffer);
+            }
         } else {
-            std::cout << "Texture failed to load at path: " << path << std::endl;
-            stbi_image_free(m_LocalBuffer);
+            m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 0);
+            if (m_LocalBuffer) {
+                GLenum format = GL_RGBA;
+                if (m_BPP == 1)
+                    format = GL_RED;
+                else if (m_BPP == 3)
+                    format = GL_RGB;
+                else if (m_BPP == 4)
+                    format = GL_RGBA;
+
+                GLCall(glGenTextures(1, &m_RendererId));
+                GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId));
+
+                // https://stackoverflow.com/questions/34497195/difference-between-format-and-internalformat
+                GLCall(
+                    glTexImage2D(GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, format, GL_UNSIGNED_BYTE, m_LocalBuffer));
+                GLCall(glGenerateMipmap(GL_TEXTURE_2D));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, params.WRAP_S));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, params.WRAP_T));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+                GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+                GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+                stbi_image_free(m_LocalBuffer);
+            } else {
+                std::cout << "Texture failed to load at path: " << path << std::endl;
+                stbi_image_free(m_LocalBuffer);
+            }
         }
     } else if (params.type == GL_TEXTURE_CUBE_MAP) {
         // Create CubeMap texture

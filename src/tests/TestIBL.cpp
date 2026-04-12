@@ -5,11 +5,11 @@
 #include "TestIBL.h"
 
 #include "../FileUtil.h"
+#include "../Texture.h"
 #include "../VertexBufferLayout.h"
 #include "../WindowManager.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "imgui/imgui.h"
-#include "stb_image/stb_image.h"
 
 #include <algorithm>
 #include <array>
@@ -51,17 +51,8 @@ namespace test {
     }
 
     TestIBL::~TestIBL() {
-        if (m_CaptureRBO != 0) {
-            GLCall(glDeleteRenderbuffers(1, &m_CaptureRBO));
-        }
-        if (m_CaptureFBO != 0) {
-            GLCall(glDeleteFramebuffers(1, &m_CaptureFBO));
-        }
         if (m_EnvCubemap != 0) {
             GLCall(glDeleteTextures(1, &m_EnvCubemap));
-        }
-        if (m_HdrTexture != 0) {
-            GLCall(glDeleteTextures(1, &m_HdrTexture));
         }
         if (!m_WasDepthEnabled) {
             GLCall(glDisable(GL_DEPTH_TEST));
@@ -285,35 +276,20 @@ namespace test {
     }
 
     void TestIBL::LoadHdrTexture() {
+        TextureInitParams params{};
+        params.flip = 1;
+        params.type = GL_TEXTURE_2D;
+        params.internalFormat = GL_RGB16F;
+        params.WRAP_S = GL_CLAMP_TO_EDGE;
+        params.WRAP_T = GL_CLAMP_TO_EDGE;
+        params.MIN_FILTER = GL_LINEAR;
+        params.MAG_FILTER = GL_LINEAR;
+
         std::string hdrPath = FileUtil::shared().GetPath("./textures/hdr/newport_loft.hdr");
-        stbi_set_flip_vertically_on_load(true);
-
-        int width = 0;
-        int height = 0;
-        int components = 0;
-        float *data = stbi_loadf(hdrPath.c_str(), &width, &height, &components, 0);
-        if (!data) {
+        m_HdrTexture = std::make_shared<Texture>(hdrPath, params);
+        if (m_HdrTexture->GetID() == 0) {
             std::cerr << "Failed to load HDR texture: " << hdrPath << std::endl;
-            return;
         }
-
-        GLenum format = GL_RGB;
-        if (components == 1) {
-            format = GL_RED;
-        } else if (components == 4) {
-            format = GL_RGBA;
-        }
-
-        GLCall(glGenTextures(1, &m_HdrTexture));
-        GLCall(glBindTexture(GL_TEXTURE_2D, m_HdrTexture));
-        GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, format, GL_FLOAT, data));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-        GLCall(glBindTexture(GL_TEXTURE_2D, 0));
-
-        stbi_image_free(data);
     }
 
     void TestIBL::CreateEnvironmentCubemap() {
@@ -330,17 +306,19 @@ namespace test {
         GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
         GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 
-        GLCall(glGenFramebuffers(1, &m_CaptureFBO));
-        GLCall(glGenRenderbuffers(1, &m_CaptureRBO));
-        GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO));
-        GLCall(glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO));
-        GLCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, kCaptureSize, kCaptureSize));
-        GLCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_CaptureRBO));
-        GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+        RenderBufferInitParams captureParams{};
+        captureParams.width = kCaptureSize;
+        captureParams.height = kCaptureSize;
+        captureParams.format = GL_DEPTH24_STENCIL8;
+        m_CaptureRBO = std::make_shared<RenderBuffer>(captureParams);
+
+        m_CaptureFBO = std::make_shared<FrameBuffer>();
+        m_CaptureFBO->AttachDepthStencil(m_CaptureRBO);
+        m_CaptureFBO->Unbind();
     }
 
     void TestIBL::CaptureEnvironmentCubemap() {
-        if (m_HdrTexture == 0 || m_EnvCubemap == 0) {
+        if (!m_HdrTexture || m_HdrTexture->GetID() == 0 || !m_CaptureFBO || m_EnvCubemap == 0) {
             return;
         }
 
@@ -359,12 +337,11 @@ namespace test {
         WindowManager::shared().GetViewportSize(viewportWidth, viewportHeight);
 
         GLCall(glViewport(0, 0, kCaptureSize, kCaptureSize));
-        GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO));
+        m_CaptureFBO->Bind();
 
         m_CubeShader->Bind();
         m_CubeShader->SetUniformMat4f("projection", captureProjection);
-        GLCall(glActiveTexture(GL_TEXTURE0));
-        GLCall(glBindTexture(GL_TEXTURE_2D, m_HdrTexture));
+        m_HdrTexture->Bind(0);
 
         for (unsigned int i = 0; i < captureViews.size(); ++i) {
             m_CubeShader->SetUniformMat4f("view", captureViews[i]);
@@ -374,7 +351,7 @@ namespace test {
             m_Renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_CubeShader);
         }
 
-        GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+        m_CaptureFBO->Unbind();
         if (viewportWidth > 0 && viewportHeight > 0) {
             GLCall(glViewport(0, 0, viewportWidth, viewportHeight));
         }
