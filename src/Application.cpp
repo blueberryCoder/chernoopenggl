@@ -38,6 +38,7 @@
 #include "tests/TestAdvancedLighting.h"
 #include "tests/TestHDR.h"
 #include "tests/TestBloom.h"
+#include "tests/TestDiffuseIBL.h"
 #include "tests/TestIBL.h"
 #include "tests/TestPBR.h"
 #include "tests/TestPBRTexture.h"
@@ -104,6 +105,7 @@ int main(void) {
         test::Test *currentTest = nullptr;
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
+        testMenu->RegisterTest<test::TestDiffuseIBL>("Diffuse IBL");
         testMenu->RegisterTest<test::TestIBL>("IBL");
         testMenu->RegisterTest<test::TestPBRTexture>("PBR Texture");
         testMenu->RegisterTest<test::TestPBR>("PBR");

@@ -1,11 +1,10 @@
 //
-// Created by blueberry on 2026/4/11.
+// Created by blueberry on 2026/5/17.
 //
 
-#include "TestIBL.h"
+#include "TestDiffuseIBL.h"
 
 #include "../FileUtil.h"
-#include "../Texture.h"
 #include "../VertexBufferLayout.h"
 #include "../WindowManager.h"
 #include "glm/gtc/matrix_transform.hpp"
@@ -19,10 +18,20 @@
 namespace {
     constexpr float kPi = 3.14159265359f;
     constexpr unsigned int kCaptureSize = 512;
+    constexpr unsigned int kIrradianceSize = 32;
+
+    const std::array<glm::mat4, 6> kCaptureViews = {
+        glm::lookAt(glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
+        glm::lookAt(glm::vec3(0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
+        glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)),
+        glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)),
+        glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
+        glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f))
+    };
 }
 
 namespace test {
-    TestIBL::TestIBL()
+    TestDiffuseIBL::TestDiffuseIBL()
         : m_Camera(glm::vec3(0.0f, 0.0f, 20.0f)) {
         SetupCursorCallback();
         m_WasDepthEnabled = glIsEnabled(GL_DEPTH_TEST);
@@ -30,6 +39,8 @@ namespace test {
 
         m_PbrShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_ibl_pbr.shader"));
         m_CubeShader = std::make_shared<Shader>(FileUtil::shared().GetPath("./shaders/test_ibl_cube.shader"));
+        m_IrradianceShader = std::make_shared<Shader>(
+            FileUtil::shared().GetPath("./shaders/irradiance_convolution.shader"));
         m_BackgroundShader = std::make_shared<Shader>(
             FileUtil::shared().GetPath("./shaders/test_ibl_background.shader"));
 
@@ -38,6 +49,8 @@ namespace test {
         LoadHdrTexture();
         CreateEnvironmentCubemap();
         CaptureEnvironmentCubemap();
+        CreateIrradianceCubemap();
+        CaptureIrradianceCubemap();
 
         m_PbrShader->Bind();
         m_PbrShader->SetUniformVec3f("albedo", m_Albedo);
@@ -47,11 +60,17 @@ namespace test {
         m_CubeShader->Bind();
         m_CubeShader->SetUniform1i("equirectangularMap", 0);
 
+        m_IrradianceShader->Bind();
+        m_IrradianceShader->SetUniform1i("environmentMap", 0);
+
         m_BackgroundShader->Bind();
         m_BackgroundShader->SetUniform1i("environmentMap", 0);
     }
 
-    TestIBL::~TestIBL() {
+    TestDiffuseIBL::~TestDiffuseIBL() {
+        if (m_IrradianceMap != 0) {
+            GLCall(glDeleteTextures(1, &m_IrradianceMap));
+        }
         if (m_EnvCubemap != 0) {
             GLCall(glDeleteTextures(1, &m_EnvCubemap));
         }
@@ -61,7 +80,7 @@ namespace test {
         GLCall(glDepthFunc(GL_LESS));
     }
 
-    void TestIBL::OnUpdate(float deltaTime) {
+    void TestDiffuseIBL::OnUpdate(float deltaTime) {
         Test::OnUpdate(deltaTime);
 
         int fbWidth = 0;
@@ -91,12 +110,12 @@ namespace test {
         m_BackgroundShader->SetUniformMat4f("projection", projection);
     }
 
-    void TestIBL::OnRender() {
+    void TestDiffuseIBL::OnRender() {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
         m_PbrShader->Bind();
         GLCall(glActiveTexture(GL_TEXTURE0));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap));
+        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_IrradianceMap));
         for (int row = 0; row < m_RowCount; ++row) {
             float metallic = static_cast<float>(row) / static_cast<float>(std::max(1, m_RowCount - 1));
             m_PbrShader->SetUniform1f("metallic", metallic);
@@ -132,27 +151,28 @@ namespace test {
         GLCall(glDepthFunc(GL_LESS));
     }
 
-    void TestIBL::OnImGuiRender() {
+    void TestDiffuseIBL::OnImGuiRender() {
         ImGui::ColorEdit3("Albedo", &m_Albedo[0]);
         ImGui::SliderFloat("AO", &m_Ao, 0.0f, 1.0f);
         ImGui::SliderFloat("Spacing", &m_Spacing, 1.2f, 4.0f);
         ImGui::SliderFloat("Sphere Scale", &m_SphereScale, 0.2f, 1.0f);
-        ImGui::Text("Background: newport_loft.hdr -> cubemap");
+        ImGui::Text("Diffuse IBL: irradiance cubemap");
+        ImGui::Text("Background: newport_loft.hdr");
     }
 
-    void TestIBL::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
+    void TestDiffuseIBL::ProcessInputEvent(GLFWwindow *window, float deltaTime) {
         m_Camera.ProcessInputEvent(window, deltaTime);
     }
 
-    void TestIBL::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
+    void TestDiffuseIBL::ProcessCursorPosCallback(GLFWwindow *window, double xpos, double ypos) {
         m_Camera.ProcessCursorPosCallback(window, xpos, ypos);
     }
 
-    void TestIBL::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
+    void TestDiffuseIBL::ProcessMouseScroll(GLFWwindow *window, double yoffset) {
         m_Camera.ProcessMouseScroll(yoffset);
     }
 
-    void TestIBL::BuildSphereMesh() {
+    void TestDiffuseIBL::BuildSphereMesh() {
         const unsigned int xSegments = 64;
         const unsigned int ySegments = 64;
 
@@ -210,14 +230,14 @@ namespace test {
         m_SphereVAO->AddBuffer(*m_SphereVBO, layout);
     }
 
-    void TestIBL::DrawSphere() const {
+    void TestDiffuseIBL::DrawSphere() const {
         m_PbrShader->Bind();
         m_SphereVAO->Bind();
         m_SphereIBO->Bind();
         GLCall(glDrawElements(GL_TRIANGLE_STRIP, m_SphereIBO->GetCount(), GL_UNSIGNED_INT, nullptr));
     }
 
-    void TestIBL::BuildCubeMesh() {
+    void TestDiffuseIBL::BuildCubeMesh() {
         const float cubeVertices[] = {
             -1.0f,  1.0f, -1.0f,
             -1.0f, -1.0f, -1.0f,
@@ -278,7 +298,7 @@ namespace test {
         m_CubeVAO->AddBuffer(*m_CubeVBO, layout);
     }
 
-    void TestIBL::LoadHdrTexture() {
+    void TestDiffuseIBL::LoadHdrTexture() {
         TextureInitParams params{};
         params.flip = 1;
         params.type = GL_TEXTURE_2D;
@@ -295,7 +315,7 @@ namespace test {
         }
     }
 
-    void TestIBL::CreateEnvironmentCubemap() {
+    void TestDiffuseIBL::CreateEnvironmentCubemap() {
         GLCall(glGenTextures(1, &m_EnvCubemap));
         GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap));
         for (unsigned int i = 0; i < 6; ++i) {
@@ -320,21 +340,12 @@ namespace test {
         m_CaptureFBO->Unbind();
     }
 
-    void TestIBL::CaptureEnvironmentCubemap() {
+    void TestDiffuseIBL::CaptureEnvironmentCubemap() {
         if (!m_HdrTexture || m_HdrTexture->GetID() == 0 || !m_CaptureFBO || m_EnvCubemap == 0) {
             return;
         }
 
-        // project equirectangular to cube
         const glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
-        const std::array<glm::mat4, 6> captureViews = {
-            glm::lookAt(glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
-            glm::lookAt(glm::vec3(0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
-            glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)),
-            glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)),
-            glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
-            glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f))
-        };
 
         int viewportWidth = 0;
         int viewportHeight = 0;
@@ -347,12 +358,67 @@ namespace test {
         m_CubeShader->SetUniformMat4f("projection", captureProjection);
         m_HdrTexture->Bind(0);
 
-        for (unsigned int i = 0; i < captureViews.size(); ++i) {
-            m_CubeShader->SetUniformMat4f("view", captureViews[i]);
+        for (unsigned int i = 0; i < kCaptureViews.size(); ++i) {
+            m_CubeShader->SetUniformMat4f("view", kCaptureViews[i]);
             GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                                           GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_EnvCubemap, 0));
             GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
             m_Renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_CubeShader);
+        }
+
+        m_CaptureFBO->Unbind();
+        if (viewportWidth > 0 && viewportHeight > 0) {
+            GLCall(glViewport(0, 0, viewportWidth, viewportHeight));
+        }
+    }
+
+    void TestDiffuseIBL::CreateIrradianceCubemap() {
+        GLCall(glGenTextures(1, &m_IrradianceMap));
+        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_IrradianceMap));
+        for (unsigned int i = 0; i < 6; ++i) {
+            GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F,
+                                kIrradianceSize, kIrradianceSize, 0, GL_RGB, GL_FLOAT, nullptr));
+        }
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
+    }
+
+    void TestDiffuseIBL::CaptureIrradianceCubemap() {
+        if (!m_CaptureFBO || !m_CaptureRBO || m_EnvCubemap == 0 || m_IrradianceMap == 0) {
+            return;
+        }
+
+        const glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+
+        int viewportWidth = 0;
+        int viewportHeight = 0;
+        WindowManager::shared().GetViewportSize(viewportWidth, viewportHeight);
+
+        RenderBufferInitParams irradianceParams{};
+        irradianceParams.width = kIrradianceSize;
+        irradianceParams.height = kIrradianceSize;
+        irradianceParams.format = GL_DEPTH24_STENCIL8;
+        m_CaptureRBO = std::make_shared<RenderBuffer>(irradianceParams);
+        m_CaptureFBO->AttachDepthStencil(m_CaptureRBO);
+
+        GLCall(glViewport(0, 0, kIrradianceSize, kIrradianceSize));
+        m_CaptureFBO->Bind();
+
+        m_IrradianceShader->Bind();
+        m_IrradianceShader->SetUniformMat4f("projection", captureProjection);
+        GLCall(glActiveTexture(GL_TEXTURE0));
+        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap));
+
+        for (unsigned int i = 0; i < kCaptureViews.size(); ++i) {
+            m_IrradianceShader->SetUniformMat4f("view", kCaptureViews[i]);
+            GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                                          GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_IrradianceMap, 0));
+            GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+            m_Renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_IrradianceShader);
         }
 
         m_CaptureFBO->Unbind();

@@ -40,6 +40,7 @@ uniform vec3 lightPositions[4];
 uniform vec3 lightColors[4];
 
 uniform vec3 camPos;
+uniform samplerCube irradianceMap;
 
 const float PI = 3.14159265359;
 // ----------------------------------------------------------------------------
@@ -132,7 +133,13 @@ void main()
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }
 
-    vec3 ambient = vec3(0.03) * albedo * ao;
+    vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
+    vec3 kD = vec3(1.0) - kS;
+    kD *= 1.0 - metallic;
+
+    vec3 irradiance = texture(irradianceMap, N).rgb;
+    vec3 diffuse = irradiance * albedo;
+    vec3 ambient = kD * diffuse * ao;
 
     vec3 color = ambient + Lo;
 

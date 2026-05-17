@@ -95,6 +95,8 @@ add_executable(myopengl
         tests/TestAdvancedLighting.h
         tests/TestHDR.cpp
         tests/TestHDR.h
+        tests/TestDiffuseIBL.cpp
+        tests/TestDiffuseIBL.h
         tests/TestIBL.cpp
         tests/TestIBL.h
         tests/TestPBR.cpp
