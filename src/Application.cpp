@@ -40,6 +40,7 @@
 #include "tests/TestBloom.h"
 #include "tests/TestDiffuseIBL.h"
 #include "tests/TestIBL.h"
+#include "tests/TestSpecularIBL.h"
 #include "tests/TestPBR.h"
 #include "tests/TestPBRTexture.h"
 #include "tests/TestDeferredShading.h"
@@ -105,6 +106,7 @@ int main(void) {
         test::Test *currentTest = nullptr;
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
+        testMenu->RegisterTest<test::TestSpecularIBL>("Specular IBL");
         testMenu->RegisterTest<test::TestDiffuseIBL>("Diffuse IBL");
         testMenu->RegisterTest<test::TestIBL>("IBL");
         testMenu->RegisterTest<test::TestPBRTexture>("PBR Texture");
