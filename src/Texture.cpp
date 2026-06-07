@@ -8,6 +8,49 @@
 
 #include "stb_image/stb_image.h"
 
+namespace {
+    GLenum ResolveTextureFormat(const TextureInitParams &params) {
+        if (params.format != 0) {
+            return params.format;
+        }
+        switch (params.internalFormat) {
+            case GL_RED:
+                return GL_RED;
+            case GL_RG:
+            case GL_RG16F:
+                return GL_RG;
+            case GL_RGB:
+            case GL_RGB16F:
+                return GL_RGB;
+            case GL_RGBA:
+            case GL_RGBA16:
+                return GL_RGBA;
+            case GL_DEPTH_COMPONENT:
+            case GL_DEPTH_COMPONENT32F:
+                return GL_DEPTH_COMPONENT;
+            default:
+                return GL_RGB;
+        }
+    }
+
+    GLenum ResolveTextureDataType(const TextureInitParams &params) {
+        if (params.dataType != 0) {
+            return params.dataType;
+        }
+        switch (params.internalFormat) {
+            case GL_RGB16F:
+            case GL_RG16F:
+            case GL_DEPTH_COMPONENT:
+            case GL_DEPTH_COMPONENT32F:
+                return GL_FLOAT;
+            case GL_RGBA16:
+                return GL_UNSIGNED_SHORT;
+            default:
+                return GL_UNSIGNED_BYTE;
+        }
+    }
+}
+
 Texture::Texture(const std::string &path, const TextureInitParams &params)
     : m_RendererId(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0) {
     this->m_InitParams = params;
@@ -110,6 +153,8 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
     if (params.type == GL_TEXTURE_2D) {
         auto width = params.width;
         auto height = params.height;
+        GLenum format = ResolveTextureFormat(params);
+        GLenum dataType = ResolveTextureDataType(params);
         // Create depth texture.
         GLCall(glGenTextures(1, &m_RendererId));
         GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererId));
@@ -128,15 +173,11 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
             GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE));
             GLCall(glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT32F,
                 width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
-        } else if (params.internalFormat == GL_RGB) {
-            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
-        } else if (params.internalFormat == GL_RGB16F) {
-            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, nullptr));
-        } else if (params.internalFormat == GL_RGBA16) {
-            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_SHORT, nullptr));
         } else if (params.internalFormat == GL_DEPTH_COMPONENT) {
             GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
                 width, width, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr))
+        } else {
+            GLCall(glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, width, height, 0, format, dataType, nullptr));
         }
         GLCall(glBindTexture(GL_TEXTURE_2D, 0));
         this->m_Width = width;
@@ -147,6 +188,8 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
 
         auto width = params.width;
         auto height = params.height;
+        GLenum format = ResolveTextureFormat(params);
+        GLenum dataType = ResolveTextureDataType(params);
 
         if (!params.textureFaces.empty()) {
             stbi_set_flip_vertically_on_load(params.flip);
@@ -174,18 +217,18 @@ Texture::Texture(const TextureInitParams &params) : m_RendererId(0),
                         width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
                 } else {
                     GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, params.internalFormat,
-                        width, height, 0, params.internalFormat, GL_UNSIGNED_BYTE, nullptr));
+                        width, height, 0, format, dataType, nullptr));
                 }
             }
             this->m_Width = width;
             this->m_Height = height;
         }
 
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, params.MIN_FILTER));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, params.MAG_FILTER));
         GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, params.WRAP_S));
         GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, params.WRAP_T));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, params.WRAP_S));
+        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, params.WRAP_T));
         if (params.internalFormat == GL_DEPTH_COMPONENT || params.internalFormat == GL_DEPTH_COMPONENT32F) {
             GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE));
         }

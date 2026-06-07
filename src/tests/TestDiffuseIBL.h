@@ -66,10 +66,10 @@ namespace test {
         std::shared_ptr<IndexBuffer> m_CubeIBO;
 
         std::shared_ptr<Texture> m_HdrTexture;
+        std::shared_ptr<Texture> m_EnvCubemap;
+        std::shared_ptr<Texture> m_IrradianceMap;
         std::shared_ptr<FrameBuffer> m_CaptureFBO;
         std::shared_ptr<RenderBuffer> m_CaptureRBO;
-        unsigned int m_EnvCubemap = 0;
-        unsigned int m_IrradianceMap = 0;
 
         glm::vec3 m_Albedo = glm::vec3(0.5f, 0.0f, 0.0f);
         float m_Ao = 1.0f;

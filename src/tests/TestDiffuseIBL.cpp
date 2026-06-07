@@ -68,12 +68,6 @@ namespace test {
     }
 
     TestDiffuseIBL::~TestDiffuseIBL() {
-        if (m_IrradianceMap != 0) {
-            GLCall(glDeleteTextures(1, &m_IrradianceMap));
-        }
-        if (m_EnvCubemap != 0) {
-            GLCall(glDeleteTextures(1, &m_EnvCubemap));
-        }
         if (!m_WasDepthEnabled) {
             GLCall(glDisable(GL_DEPTH_TEST));
         }
@@ -114,8 +108,7 @@ namespace test {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
         m_PbrShader->Bind();
-        GLCall(glActiveTexture(GL_TEXTURE0));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_IrradianceMap));
+        m_IrradianceMap->Bind(0);
         for (int row = 0; row < m_RowCount; ++row) {
             float metallic = static_cast<float>(row) / static_cast<float>(std::max(1, m_RowCount - 1));
             m_PbrShader->SetUniform1f("metallic", metallic);
@@ -145,8 +138,7 @@ namespace test {
 
         GLCall(glDepthFunc(GL_LEQUAL));
         m_BackgroundShader->Bind();
-        GLCall(glActiveTexture(GL_TEXTURE0));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap));
+        m_EnvCubemap->Bind(0);
         m_Renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_BackgroundShader);
         GLCall(glDepthFunc(GL_LESS));
     }
@@ -316,18 +308,18 @@ namespace test {
     }
 
     void TestDiffuseIBL::CreateEnvironmentCubemap() {
-        GLCall(glGenTextures(1, &m_EnvCubemap));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap));
-        for (unsigned int i = 0; i < 6; ++i) {
-            GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F,
-                                kCaptureSize, kCaptureSize, 0, GL_RGB, GL_FLOAT, nullptr));
-        }
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
+        TextureInitParams params{};
+        params.type = GL_TEXTURE_CUBE_MAP;
+        params.width = kCaptureSize;
+        params.height = kCaptureSize;
+        params.internalFormat = GL_RGB16F;
+        params.format = GL_RGB;
+        params.dataType = GL_FLOAT;
+        params.WRAP_S = GL_CLAMP_TO_EDGE;
+        params.WRAP_T = GL_CLAMP_TO_EDGE;
+        params.MIN_FILTER = GL_LINEAR;
+        params.MAG_FILTER = GL_LINEAR;
+        m_EnvCubemap = std::make_shared<Texture>(params);
 
         RenderBufferInitParams captureParams{};
         captureParams.width = kCaptureSize;
@@ -341,7 +333,7 @@ namespace test {
     }
 
     void TestDiffuseIBL::CaptureEnvironmentCubemap() {
-        if (!m_HdrTexture || m_HdrTexture->GetID() == 0 || !m_CaptureFBO || m_EnvCubemap == 0) {
+        if (!m_HdrTexture || m_HdrTexture->GetID() == 0 || !m_CaptureFBO || !m_EnvCubemap) {
             return;
         }
 
@@ -361,7 +353,7 @@ namespace test {
         for (unsigned int i = 0; i < kCaptureViews.size(); ++i) {
             m_CubeShader->SetUniformMat4f("view", kCaptureViews[i]);
             GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                                          GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_EnvCubemap, 0));
+                                          GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_EnvCubemap->GetID(), 0));
             GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
             m_Renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_CubeShader);
         }
@@ -373,22 +365,22 @@ namespace test {
     }
 
     void TestDiffuseIBL::CreateIrradianceCubemap() {
-        GLCall(glGenTextures(1, &m_IrradianceMap));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_IrradianceMap));
-        for (unsigned int i = 0; i < 6; ++i) {
-            GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F,
-                                kIrradianceSize, kIrradianceSize, 0, GL_RGB, GL_FLOAT, nullptr));
-        }
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
+        TextureInitParams params{};
+        params.type = GL_TEXTURE_CUBE_MAP;
+        params.width = kIrradianceSize;
+        params.height = kIrradianceSize;
+        params.internalFormat = GL_RGB16F;
+        params.format = GL_RGB;
+        params.dataType = GL_FLOAT;
+        params.WRAP_S = GL_CLAMP_TO_EDGE;
+        params.WRAP_T = GL_CLAMP_TO_EDGE;
+        params.MIN_FILTER = GL_LINEAR;
+        params.MAG_FILTER = GL_LINEAR;
+        m_IrradianceMap = std::make_shared<Texture>(params);
     }
 
     void TestDiffuseIBL::CaptureIrradianceCubemap() {
-        if (!m_CaptureFBO || !m_CaptureRBO || m_EnvCubemap == 0 || m_IrradianceMap == 0) {
+        if (!m_CaptureFBO || !m_CaptureRBO || !m_EnvCubemap || !m_IrradianceMap) {
             return;
         }
 
@@ -410,13 +402,12 @@ namespace test {
 
         m_IrradianceShader->Bind();
         m_IrradianceShader->SetUniformMat4f("projection", captureProjection);
-        GLCall(glActiveTexture(GL_TEXTURE0));
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap));
+        m_EnvCubemap->Bind(0);
 
         for (unsigned int i = 0; i < kCaptureViews.size(); ++i) {
             m_IrradianceShader->SetUniformMat4f("view", kCaptureViews[i]);
             GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                                          GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_IrradianceMap, 0));
+                                          GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_IrradianceMap->GetID(), 0));
             GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
             m_Renderer.Draw(*m_CubeVAO, *m_CubeIBO, *m_IrradianceShader);
         }

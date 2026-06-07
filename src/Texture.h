@@ -25,6 +25,8 @@ struct TextureInitParams {
     int height;
 
     unsigned int internalFormat = GL_RGB;
+    unsigned int format = 0;
+    unsigned int dataType = 0;
 
     std::shared_ptr<glm::vec4> borderColor;
 };
@@ -62,7 +64,7 @@ public :
         this->m_Type = type;
     }
 
-    unsigned int GetID() {
+    unsigned int GetID() const {
         return m_RendererId;
     }
 
