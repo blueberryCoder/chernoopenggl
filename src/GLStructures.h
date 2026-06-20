@@ -5,6 +5,8 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <memory>
 
 #include "IndexBuffer.h"
 #include "VertexArray.h"

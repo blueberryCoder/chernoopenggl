@@ -71,7 +71,7 @@ int main(void) {
     // glfwWindowHint(GLFW_SAMPLES, 4);
 
 
-    FileUtil::shared().setResourceRootPath("../../res");
+    FileUtil::shared().setResourceRootPath("../res");
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);

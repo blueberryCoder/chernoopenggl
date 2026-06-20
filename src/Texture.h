@@ -5,6 +5,8 @@
 #ifndef MYOPENGL_TEXTURE_H
 #define MYOPENGL_TEXTURE_H
 
+#include <vector>
+#include <memory>
 #include "Renderer.h"
 using namespace std;
 
