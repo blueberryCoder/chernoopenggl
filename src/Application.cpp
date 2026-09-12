@@ -57,6 +57,7 @@
 #include "tests/TestAsteroid.h"
 #include "tests/TestAntiAliasing.h"
 #include "tests/TestAntiAliasingEffect.h"
+#include "tests/TestCanonicalFace.h"
 
 int main(void) {
     GLFWwindow *window;
@@ -106,6 +107,7 @@ int main(void) {
         test::Test *currentTest = nullptr;
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
+        testMenu->RegisterTest<test::TestCanonicalFace>("Canonical Face");
         testMenu->RegisterTest<test::TestSpecularIBL>("Specular IBL");
         testMenu->RegisterTest<test::TestDiffuseIBL>("Diffuse IBL");
         testMenu->RegisterTest<test::TestIBL>("IBL");

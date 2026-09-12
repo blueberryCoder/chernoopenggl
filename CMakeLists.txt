@@ -77,6 +77,8 @@ add_executable(myopengl
         src/tests/TestPointShadow.h
         src/tests/TestAssimp.cpp
         src/tests/TestAssimp.h
+        src/tests/TestCanonicalFace.cpp
+        src/tests/TestCanonicalFace.h
         src/tests/TestDepth.cpp
         src/tests/TestDepth.h
         src/tests/TestStencil.h
